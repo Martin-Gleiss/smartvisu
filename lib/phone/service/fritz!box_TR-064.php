@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Stefan Vonbrunn
- * @copyright   2014 - 2024
+ * @copyright   2014 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -16,7 +16,7 @@ require_once const_path_system . 'phone/phone.php';
  * This can only work if you enable "Zugriff für Anwendungen zulassen".
  * you can find this config switch inside the web console -> Home network -> Network -> Network Settings
  * It is required that "Extented View" of the web console is enabled - that this checkbox is shown.
- * 
+ *
  */
 class phone_fritzbox_TR064 extends phone
 {
@@ -28,13 +28,13 @@ class phone_fritzbox_TR064 extends phone
         'verify_peer_name' => false,
         'allow_self_signed' => true
     );
-    
+
     public function __construct($http_vals)
     {
         parent::init($http_vals);
         // maximum number of records fetched from phonesystem.
         $this->max_calls_to_fetch = 20;
-        // use some default user if only password is set on smartvisu 
+        // use some default user if only password is set on smartvisu
         if (\strlen($this->user) == 0 && strlen($this->pass) > 0)
             $this->user = 'admin';
         if (\strlen($this->port) == 0)
@@ -59,21 +59,21 @@ class phone_fritzbox_TR064 extends phone
         $protocol = ($this->port == '49443') ? 'https' : 'http';
         $baseurl = strpos($this->server, '://') === FALSE ? $protocol."://".$this->server : $this->server;
         $url      = $baseurl.":".$this->port."/upnp/control/x_contact";
-        
-        return (file_get_contents($url, false, stream_context_create($context)));        
+
+        return (file_get_contents($url, false, stream_context_create($context)));
     }
     /**
-     * InitChallenge: the phone systems responds to this SOAP message 
+     * InitChallenge: the phone systems responds to this SOAP message
      * always with "Unauthenticated" if a password is set
      * This is only used for getting the Nonce and Realm like :
      * <Nonce>A025059762AFE268</Nonce>  <Realm>F!Box SOAP-Auth</Realm>
      */
     private function InitChallenge()
     {
-        // define soap message    
+        // define soap message
         $soap_msg_InitChallenge = '
         <?xml version="1.0" encoding="utf-8"?>
-        <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" 
+        <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" >
         <s:Header><h:InitChallenge xmlns:h="http://soap-authentication.org/digest/2001/10/" s:mustUnderstand="1">
         <UserID>' . $this->user . '</UserID>
@@ -81,23 +81,23 @@ class phone_fritzbox_TR064 extends phone
         </u:GetCallList></s:Body></s:Envelope>';
         if (($response = $this->DoSOAPCall($soap_msg_InitChallenge)) === FALSE)
             return FALSE;
-        $this->debug($response, "Fritz RAW response InitChallenge (Unauthenticated is OK at this point!)");
+        $this->debug($response, trans('phone_error_message', 'fritz_raw'));
         if (preg_match_all("(\<.+\>(.+)\<\/.+\>)U", $response, $this->challenge) === FALSE) {
-            $this->error('Phone: fritz!box', 'SOAP Challenge parsing error!');
+            $this->error('Phone: fritz!box', trans('phone_error_message', 'fritz_soap_challenge'));
         }
-        $this->debug($this->challenge, "preg_matched InitChallenge (Unauthenticated is OK at this point!)");
+        $this->debug($this->challenge,trans('phone_error_message', 'fritz_init_ok'));
     }
     /**
-     * GetCallListURL: Create a authentication hash and use that with the real request to get the callList URL  
+     * GetCallListURL: Create a authentication hash and use that with the real request to get the callList URL
      */
     private function GetCallListURL()
     {
-        //create authentication sting 
+        //create authentication sting
         $Auth  = MD5(MD5($this->user . ':' . $this->challenge['1']['2'] . ':' . $this->pass) . ':' . $this->challenge['1']['1']);
         // define soap message
         $soap_msg_GetCallList = '
         <?xml version="1.0" encoding="utf-8"?>
-        <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" 
+        <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
         xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" >
         <s:Header><h:ClientAuth xmlns:h="http://soap-authentication.org/digest/2001/10/" s:mustUnderstand="1">
         <Nonce>' . $this->challenge['1']['1'] . '</Nonce>
@@ -107,83 +107,83 @@ class phone_fritzbox_TR064 extends phone
         </h:ClientAuth></s:Header>
         <s:Body><u:GetCallList xmlns:u="urn:dslforum-org:service:X_AVM-DE_OnTel:1"></u:GetCallList></s:Body>
         </s:Envelope>';
-        $this->debug($soap_msg_GetCallList, "send GetCallList");
+        $this->debug($soap_msg_GetCallList, trans('phone_error_message', 'fritz_send_calllist'));
         $response = $this->DoSOAPCall($soap_msg_GetCallList);
         if (($response = $this->DoSOAPCall($soap_msg_GetCallList)) === FALSE)
             return FALSE;
-        $this->debug($response, "Fritz RAW response GetCallListURL");
+        $this->debug($response, trans('phone_error_message', 'fritz_raw_calllist'));
         if (preg_match_all("(\<.+\>(.+)\<\/.+\>)U", $response, $response_parts) === FALSE) {
-            $this->error('Phone: fritz!box', 'SOAP parsing error!');
+            $this->error('Phone: fritz!box', trans('phone_error_message', 'fritz_soap'));
         }
-        $this->debug($response_parts, "preg_matched GetCallListURL");
+        $this->debug($response_parts, trans('phone_error_message', 'fritz_match_calllist'));
         if (substr($response_parts['1']['3'], 0, 4) === 'http') {
             $this->call_list_url = $response_parts['1']['3'];
         } else {
-            $this->error('Phone: fritz!box', 'GetCallList / Login failed!');
+            $this->error('Phone: fritz!box', trans('phone_error_message', 'fritz_calllist'));
             return FALSE;
         }
     }
     /**
-     * TransformCallList: Download the callList limited by "calls_to_fetch" variable 
-     * and align the xml data to the standard format of smartvisu        
+     * TransformCallList: Download the callList limited by "calls_to_fetch" variable
+     * and align the xml data to the standard format of smartvisu
      */
     private function TransformCallList()
     {
         // build download url
         $url = $this->call_list_url . '&max=' . $this->max_calls_to_fetch;
-        $this->debug($url, "URL for call_list");
+        $this->debug($url,trans('phone_error_message', 'fritz_calllist_url') );
         // download xml file and put it to xml parser
-		$loadError = '';
+        $loadError = '';
         $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $this->context_ssl))));
         if (substr($this->errorMessage, 0, 17) == 'file_get_contents') {
-			$loadError = substr(strrchr($this->errorMessage, ':'), 2);
-			$this->error('Phone: fritz!box_TR-064', 'Read request failed with message: '.$loadError);
-		}
-		else {
-			$simplexml      = simplexml_load_string($GetCallListXml);
-			$this->debug($GetCallListXml, "GetCallListXml");
-			/*
-			[Id] => 1767
-			[Type] => 1
-			[Caller] => 0175000000
-			[Called] => Amt ISDN 123456789
-			[Name] => Mustermann, Max
-			[Numbertype] => isdn
-			[Device] => Wohnzimmer
-			[Port] => 10
-			[Date] => 08.02.14 12:43
-			[Duration] => 0:32
-			*/
-			// map fritz box xml values to the smartvisu standard        
-			foreach ($simplexml->xpath('//Call') as $call) {
-				// check if we got german date format and translate to ISO date 
-				//(smartvisu is using strtotime later on)
-				if (preg_match("/[0-3]\d\.[0-1]\d\.\d{2}\s([0-1][0-9]|[2][0-3]):([0-5][0-9])/", $call->Date)) {
-					$date       = DateTime::createFromFormat('d.m.y H:i', $call->Date);
-					$call->Date = $date->format('Y-m-d H:i');
-				}
-				// bulid data array for smartvisu
-				$this->data[] = array(
-					'pos' =>      (string) $call->Id,
-					'dir' =>      (string) ($call->Type == 10 ? 10 : 2 - $call->Type),
-					'date' =>     (string) $call->Date,
-					'number' =>   (string) $call->Caller,
-					'name' =>     (string) $call->Name,
-					'called' =>   (string) $call->Called,
-					'duration' => (string) $call->Duration
-				);
-				$call = '';
-			}
-		}
+            $loadError = substr(strrchr($this->errorMessage, ':'), 2);
+            $this->error('Phone: fritz!box_TR-064', trans('phone_error_message', 'fritz_read').$loadError);
+        }
+        else {
+            $simplexml      = simplexml_load_string($GetCallListXml);
+            $this->debug($GetCallListXml, "GetCallListXml");
+            /*
+            [Id] => 1767
+            [Type] => 1
+            [Caller] => 0175000000
+            [Called] => Amt ISDN 123456789
+            [Name] => Mustermann, Max
+            [Numbertype] => isdn
+            [Device] => Wohnzimmer
+            [Port] => 10
+            [Date] => 08.02.14 12:43
+            [Duration] => 0:32
+            */
+            // map fritz box xml values to the smartvisu standard
+            foreach ($simplexml->xpath('//Call') as $call) {
+                // check if we got german date format and trans to ISO date
+                //(smartvisu is using strtotime later on)
+                if (preg_match("/[0-3]\d\.[0-1]\d\.\d{2}\s([0-1][0-9]|[2][0-3]):([0-5][0-9])/", $call->Date)) {
+                    $date       = DateTime::createFromFormat('d.m.y H:i', $call->Date);
+                    $call->Date = $date->format('Y-m-d H:i');
+                }
+                // bulid data array for smartvisu
+                $this->data[] = array(
+                    'pos' =>      (string) $call->Id,
+                    'dir' =>      (string) ($call->Type == 10 ? 10 : 2 - $call->Type),
+                    'date' =>     (string) $call->Date,
+                    'number' =>   (string) $call->Caller,
+                    'name' =>     (string) $call->Name,
+                    'called' =>   (string) $call->Called,
+                    'duration' => (string) $call->Duration
+                );
+                $call = '';
+            }
+        }
     }
     public function run()
     {
         //$this->debug( 'smartvisu settings Server:"'.$this->server.'" User:"'.$this->user.'" Password:"'.$this->pass.'"' );
         // try to get Realm and Nonce from Box - this is required for login
         if ($this->InitChallenge() === FALSE) {
-            $this->error('Phone: fritz!box', 'Error Connecting - check IP Address and TR-064 setting');
+            $this->error('Phone: fritz!box', trans('phone_error_message', 'fritz_connect'));
             return FALSE;
-            // when no password is set - InitChallenge returns CallList URL    directly    
+            // when no password is set - InitChallenge returns CallList URL directly
         } elseif (substr($this->challenge['1']['0'], 0, 4) == 'http') {
             $this->call_list_url = $this->challenge['1']['0'];
             $this->TransformCallList();
