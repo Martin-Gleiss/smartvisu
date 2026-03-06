@@ -28,10 +28,10 @@
 
 ### Fixed Bugs
 - device specific settings could not be read if visu root folder name was a symlink (because of incorrect cookie path determination)
-- timeshift function in app "analyse_plots" did not take new plot duration if this was changed for the plot.
+- timeshift function in app "analyse_plots" did not take new plot duration if this was changed in the plot parameters.
 - plot.timeshift made the plot disappear if it was used on plots with zoom=advanced while the preserve zoom option was enabled but the plot was not zoomed
-- .gitignore was faulty and ignored the important config.ini files in the example and documents directoroes.
-- device.uzsugraph did not work for backends w/o UZSU interpolation feature
+- .gitignore was faulty and ignored the important config.ini files in the example and documents directories.
+- device.uzsugraph did not work for backends w/o UZSU interpolation feature.
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
