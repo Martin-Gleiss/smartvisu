@@ -1885,7 +1885,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           point: {
             events: {
               drop: function (e) {
-                self.sunTimes[e.target.uzsuEvent] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                self.sunTimes[e.target.uzsuEvent][e.target.uzsuDay] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
                 self._delay(function() { self.draw() }, 10); // redraw has to be deferred otherwise highcharts draggable plugin throws an exception
               },
               click: null
@@ -2401,7 +2401,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                     className: 'uzsu-event-sunrise',
                     label: { text: sv_lang.uzsu.sunrise }
                 });
-                sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
+                sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', uzsuDay: dayIdx, marker: { symbol: 'sunrise' } });
             }
             if(hasSunset) {
                 plotLines.push({
@@ -2409,7 +2409,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                     className: 'uzsu-event-sunset',
                     label: { text: sv_lang.uzsu.sunset }
                 });
-                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
+                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', uzsuDay: dayIdx, marker: { symbol: 'sunset' } })
             }
         }
     }
