@@ -1716,6 +1716,9 @@ div.ui-slider-switch{
 [data-widget="device.uzsugraph"] .highcharts-navigator-yaxis {
   display: none;
 }
+[data-widget="device.uzsugraph"] .highcharts-series-3 .highcharts-graph{
+    stroke-width: 0px;
+}
 
 /**
  * --- W i d g e t s :   M U L T I M E D I A ----------------------------------

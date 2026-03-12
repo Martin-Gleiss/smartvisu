@@ -18,6 +18,7 @@
 - an error message is shown in status.activelist if data received is not in JSON format
 - language support for Fritz!Box TR-064 service
 - device.uzsugraph now selects the appropriate weekday when adding a new UZSU entry after user has clicked inside the graph 
+- better readability of device.uzsugraph, mainly in light designs
 
 ### Updated Libraries
 - ICS Parser v3.5.1
