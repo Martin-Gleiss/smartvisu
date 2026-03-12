@@ -1595,3 +1595,11 @@ span.rs-number {
 .rs-tooltip-text {
   font-size: 2.7em;
 }
+
+/**
+ * ---------- UZSU Graph ------------------------------------------------
+ */
+ .highcharts-root .uzsu-event-sunrise {
+  fill: #e1d500;
+  stroke: rgba(225, 213, 0, 0.5);
+}

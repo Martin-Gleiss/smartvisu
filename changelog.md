@@ -17,6 +17,8 @@
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
 - an error message is shown in status.activelist if data received is not in JSON format
 - language support for Fritz!Box TR-064 service
+- device.uzsugraph now selects the appropriate weekday when adding a new UZSU entry after user has clicked inside the graph 
+- better readability of device.uzsugraph, mainly in light designs
 
 ### Updated Libraries
 - ICS Parser v3.5.1
@@ -33,6 +35,7 @@
 - plot.timeshift made the plot disappear if it was used on plots with zoom=advanced while the preserve zoom option was enabled but the plot was not zoomed
 - .gitignore was faulty and ignored the important config.ini files in the example and documents directories.
 - device.uzsugraph did not work for backends w/o UZSU interpolation feature.
+- device.uzsugraph showed false interpolation simulation after sunrise/sunset was dragged in the graph
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php

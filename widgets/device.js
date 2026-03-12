@@ -1756,6 +1756,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     this._super();  //call _create method of prototype widget sv.device_uzsu
 
     var self = this;
+    var dayLength = 24*60*60*1000  // one day in milliseconds
     
     // init data (used if no update follows because item does not exist yet)
     this._uzsudata = { active : true, list : [] }
@@ -1871,7 +1872,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         { // sunrise & sunset
           name: 'sun',
           id: 'sun',
-          zIndex: 1,
+          zIndex: 10,
           type: 'scatter',
           tooltip: {
             headerFormat: '',
@@ -1885,7 +1886,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           point: {
             events: {
               drop: function (e) {
-                self.sunTimes[e.target.uzsuEvent] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
+                self.sunTimes[e.target.uzsuEvent][e.target.uzsuDay] = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
                 self._delay(function() { self.draw() }, 10); // redraw has to be deferred otherwise highcharts draggable plugin throws an exception
               },
               click: null
@@ -1897,7 +1898,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         type: 'datetime',
         ordinal:false,
         min: this._startTimestamp,
-        max: 1000*60*60*24 + this._startTimestamp,
+        max: this._startTimestamp + dayLength,
         showLastLabel: false,
         crosshair: { snap: false },
         dateTimeLabelFormats: { day: '%a' }
@@ -1926,7 +1927,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       navigator: {
         enabled: true,
         min: this._startTimestamp,
-        max: 1000*60*60*24*7 + this._startTimestamp,
+        max: this._startTimestamp + dayLength,
       },
       rangeSelector: {
         enabled: false,
@@ -1952,8 +1953,10 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
               return;
 
             // find timestamp of first point and round it to minimal time step
-            var firstX = Math.round((e.xAxis[0].value - e.xAxis[0].axis.min) % (1000*60*60*24) / (timeStep)) * timeStep + e.xAxis[0].axis.min;
-
+            var firstX = Math.round((e.xAxis[0].value - e.xAxis[0].axis.min) % dayLength / (timeStep)) * timeStep + e.xAxis[0].axis.min;
+            var selectedDay = (parseInt((e.xAxis[0].value - self._startTimestamp)/dayLength) + 6 + new Date().getDay()) %7;
+            var selectedDayName = Object.keys(self.weekDays)[selectedDay];
+            
             // round and limit value
             var yValue = e.yAxis[0].value;
             if(min != undefined && yValue < min)
@@ -1962,7 +1965,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
               yValue = max;
             yValue = Math.round((yValue - min || 0) / step) * step + min || 0;
 
-            var uzsuEntry = { active: true, once: false, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
+            var uzsuEntry = { rrule: 'FREQ=WEEKLY;BYDAY=' + selectedDayName, active: true, once: false, event: 'time', timeCron: self.element.highcharts().time.dateFormat('%H:%M', firstX), value: yValue };
             self._uzsuRuntimePopup(uzsuEntry);
 
           }
@@ -2004,7 +2007,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                       if(e.target.uzsuEntry.event == 'time')
                         e.target.uzsuEntry.timeCron = self.element.highcharts().time.dateFormat('%H:%M', e.target.x);
                       else // sunrise or sunset
-                        e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % (1000*60*60*24)) - (self._getSunTime(e.target.uzsuEntry.event, 0) % (1000*60*60*24)))/1000/60);
+                        e.target.uzsuEntry.timeOffset = Math.round(((e.target.x % dayLength) - (self._getSunTime(e.target.uzsuEntry.event, 0) % dayLength))/1000/60);
                       self._save();
                     }
                   }
@@ -2012,6 +2015,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             }
         }
       },
+      accessibility: {enabled: false},
     },
     function (chart) {
 
@@ -2030,8 +2034,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           y: chart.yAxis[0].toValue(e.chartY)
         };
 
-
-        position.x = Math.round((position.x - self._startTimestamp) % (1000*60*60*24) / (timeStep)) * timeStep + self._startTimestamp;
+        position.x = Math.round((position.x - self._startTimestamp) % dayLength / timeStep) * timeStep + self._startTimestamp;
         if(min != undefined && position.y < min)
           position.y = min;
         else if(max != undefined && position.y > max)
@@ -2108,14 +2111,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
       // Zoom buttons
       self.customZoomButtons = [
-        { day: 'mo', shape: 'square', xMin:               0, xMax: 24*60*60*1000 },
-        { day: 'tu', shape: 'square', xMin:   24*60*60*1000, xMax: 2*24*60*60*1000 },
-        { day: 'we', shape: 'square', xMin: 2*24*60*60*1000, xMax: 3*24*60*60*1000 },
-        { day: 'th', shape: 'square', xMin: 3*24*60*60*1000, xMax: 4*24*60*60*1000 },
-        { day: 'fr', shape: 'square', xMin: 4*24*60*60*1000, xMax: 5*24*60*60*1000 },
-        { day: 'sa', shape: 'square', xMin: 5*24*60*60*1000, xMax: 6*24*60*60*1000 },
-        { day: 'su', shape: 'square', xMin: 6*24*60*60*1000, xMax: 7*24*60*60*1000 },
-        { day: 'w',  shape: 'circle', xMin:               0, xMax: 7 *24*60*60*1000, langKey: 'week' },
+        { day: 'mo', shape: 'square', xMin:             0, xMax:     dayLength },
+        { day: 'tu', shape: 'square', xMin:     dayLength, xMax: 2 * dayLength },
+        { day: 'we', shape: 'square', xMin: 2 * dayLength, xMax: 3 * dayLength },
+        { day: 'th', shape: 'square', xMin: 3 * dayLength, xMax: 4 * dayLength },
+        { day: 'fr', shape: 'square', xMin: 4 * dayLength, xMax: 5 * dayLength },
+        { day: 'sa', shape: 'square', xMin: 5 * dayLength, xMax: 6 * dayLength },
+        { day: 'su', shape: 'square', xMin: 6 * dayLength, xMax: 7 * dayLength },
+        { day: 'w',  shape: 'circle', xMin:             0, xMax: 7 * dayLength, langKey: 'week' },
       ];
       chart.text = [];
 
@@ -2158,6 +2161,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
   },
 
   draw: function() {
+    var dayLength = 24*60*60*1000  // on day in milliseconds  
     var chart = this.element.highcharts();
     
     var interpolation = this.hasInterpolation ? this._uzsudata.interpolation : {type: 'none'};
@@ -2201,7 +2205,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     //                        "once" is executed on the day with the lowest number in the sequence
     // ******************************************************************************
     var today = new Date().getDay();        // delivers SU = 0
-    this._startTimestamp = (4 + today - 1) % 7 *1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60;
+    this._startTimestamp = (4 + today - 1) % 7 * dayLength + new Date(0).getTimezoneOffset()*1000*60;
 
     for (var day in this.weekDays) {
         this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;
@@ -2262,7 +2266,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
         var rrule = responseEntry.rrule;
         if (!rrule)
-            rrule = 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU';
+            rrule = 'FREQ=WEEKLY;BYDAY=';
         var ind = rrule.indexOf('BYDAY=');
         // if RRULE BYDAY is included
         if (ind > 0) {
@@ -2275,7 +2279,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
             // push all events into the timeline starting from Monday. Sorting will be done later
             $.each(days, function(dayIdx, day) {
-                var rruleOffset = self.rruleDays[day]*1000*60*60*24;
+                var rruleOffset = self.rruleDays[day] * dayLength;
                 var sunOffset = 0;
                 var isActive = (responseEntry.activeToday && self.rruleDays[day] == 0) || (responseEntry.active && !(responseEntry.once && self.rruleDays[day] != Math.min.apply(null, rruleDaySequence)));
                 //DEBUG: if (responseEntry.once) console.log(responseEntry.activeToday, responseEntry.active, self.rruleDays[day], rruleDaySequence, isActive)
@@ -2320,16 +2324,16 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     // push additional points for daywise interpolation
     if (interpolation.hasOwnProperty('perday') && interpolation.perday == true) {
         for (var i = 1; i < 8; i++) {
-            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 10, y: -999});
-            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 20, y: -999});
-            seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 30, y: -999});
+            seriesData.active.push({x: this._startTimestamp + i* dayLength - 10, y: -999});
+            seriesData.active.push({x: this._startTimestamp + i* dayLength - 20, y: -999});
+            seriesData.active.push({x: this._startTimestamp + i* dayLength - 30, y: -999});
             if (i != 7)
-                seriesData.active.push({x: this._startTimestamp + i* 24*60*60*1000 - 40, y: -999});
+                seriesData.active.push({x: this._startTimestamp + i* dayLength - 40, y: -999});
         }
     }
 
     var navigatorMin = this._startTimestamp
-    var navigatorMax = navigatorMin + 7*24*60*60*1000;
+    var navigatorMax = navigatorMin + 7*dayLength;
 
     // ******************************************************************************
     // set plot data for active points
@@ -2360,14 +2364,14 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             data.unshift({x: data[0].x - 20, y: data[data.length - 1].y});
             data.unshift({x: navigatorMin, y: data[data.length - 1].y});
         } else {
-            navigatorMin =  data[data.length-1].x-1000*60*60*24*7;
+            navigatorMin =  data[data.length-1].x - 7 * dayLength;
             data.unshift({ x: navigatorMin, y: data[data.length-1].y, className: data[data.length-1].className });
-            data.unshift({ x: data[data.length-2].x-1000*60*60*24*7, y: data[data.length-2].y, className: data[data.length-2].className });
-            navigatorMax = data[2].x+1000*60*60*24*7;
+            data.unshift({ x: data[data.length-2].x - 7 * dayLength, y: data[data.length-2].y, className: data[data.length-2].className });
+            navigatorMax = data[2].x + 7 * dayLength;
             data.push({ x: navigatorMax, y: data[2].y, className: data[2].className });
             // 2nd point at end would cause highcharts to break the plot area boundaries during dragging -> omit this for now
             // and wait for the solution for https://github.com/highcharts/highcharts/issues/20351
-            // data.push({ x: data[3].x+1000*60*60*24*7, y: data[3].y, className: data[3].className });
+            // data.push({ x: data[3].x + 7 * dayLength, y: data[3].y, className: data[3].className });
         }
     }
 
@@ -2397,19 +2401,19 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
         for(dayIdx = 0; dayIdx < 7; dayIdx++) {
             if(hasSunrise) {
                 plotLines.push({
-                    value: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24,
+                    value: self._getSunTime('sunrise', dayIdx) + dayIdx * dayLength,
                     className: 'uzsu-event-sunrise',
                     label: { text: sv_lang.uzsu.sunrise }
                 });
-                sunData.push({ x: self._getSunTime('sunrise', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', marker: { symbol: 'sunrise' } });
+                sunData.push({ x: self._getSunTime('sunrise', dayIdx) + dayIdx * dayLength, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', uzsuDay: dayIdx, marker: { symbol: 'sunrise' } });
             }
             if(hasSunset) {
                 plotLines.push({
-                    value: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24,
+                    value: self._getSunTime('sunset', dayIdx)+dayIdx* dayLength,
                     className: 'uzsu-event-sunset',
                     label: { text: sv_lang.uzsu.sunset }
                 });
-                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx*1000*60*60*24, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', marker: { symbol: 'sunset' } })
+                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx* dayLength, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', uzsuDay: dayIdx, marker: { symbol: 'sunset' } })
             }
         }
     }
@@ -2421,8 +2425,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     // ******************************************************************************
     chart.xAxis[0].update({
         min: this._startTimestamp,
-        max: 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp,
-    //    floor: this._startTimestamp,
+        max: this._startTimestamp + (hasDays ? 7 : 1) * dayLength,
         plotLines: plotLines
         }, false);
 
@@ -2435,7 +2438,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       }
     });
 
-    chart.xAxis[0].setExtremes(this._startTimestamp, 1000*60*60*24 * (hasDays ? 7 : 1) + this._startTimestamp)
+    chart.xAxis[0].setExtremes(this._startTimestamp,  this._startTimestamp + (hasDays ? 7 : 1) * dayLength);
 
     chart.redraw();
 
