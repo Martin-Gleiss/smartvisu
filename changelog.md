@@ -19,6 +19,8 @@
 - language support for Fritz!Box TR-064 service
 - device.uzsugraph now selects the appropriate weekday when adding a new UZSU entry after user has clicked inside the graph 
 - better readability of device.uzsugraph, mainly in light designs
+- Error message if plot config file was not found
+- Language support for errors during init (driver, plot config)
 
 ### Updated Libraries
 - ICS Parser v3.5.1
