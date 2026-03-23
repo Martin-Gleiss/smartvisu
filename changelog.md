@@ -19,6 +19,8 @@
 - language support for Fritz!Box TR-064 service
 - device.uzsugraph now selects the appropriate weekday when adding a new UZSU entry after user has clicked inside the graph 
 - better readability of device.uzsugraph, mainly in light designs
+- Error message if plot config file was not found
+- Language support for errors during init (driver, plot config)
 
 ### Updated Libraries
 - ICS Parser v3.5.1
@@ -40,6 +42,9 @@
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
+
+### PHP Version tested
+- php 8.5.4
 
 
 ## v3.6.0 | 16.12.2025

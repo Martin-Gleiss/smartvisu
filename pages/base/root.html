@@ -42,11 +42,15 @@
     <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
 /** define files to import for configured plot library */
+{% set plotcfg_error_msg = '' %}
 {% set plotcfg  = configmeta('lib/config/plot.'~config_plot_library~'.cfg') %}
+{%- if plotcfg|length == 0 %}
+    {% set plotcfg_error_msg = lang('init_error_message','plotcfg') %}
+{% endif -%}
 {% set plot_css = plotcfg["default"]["plot_css"]|trim %}
 {% set plot_lib = plotcfg["default"]["plot_lib"]|trim|split(',') %}
 {% set plot_js  = plotcfg["default"]["plot_js"]|trim %}
-    <!-- load all css assets -->
+<!-- load all css assets -->
 /** CSS assets **/
 {% set design_css = isfile('designs/' ~ config_design ~ '.css') ? 'designs/' ~ config_design ~ '.css' : 'dropins/designs/' ~ config_design ~ '.css' %}
 {% set cssFiles = [
@@ -97,6 +101,8 @@
     {%- endfor %}
 {% endif %}
 
+
+    <!-- load and initialize jQuery and jQuery mobile framework -->
     <script src="vendor/jquery/jquery-2.2.4.min.js"></script>
 
     <script>
@@ -122,7 +128,6 @@
             // start event handlers needed for e.g. eCharts to determine color scheme and size
             if (typeof plotDesign == 'object')
                 plotDesign.init();
-
         });
     </script>
 
@@ -130,11 +135,11 @@
 
 /** if configured backend driver is not available (e.g. deprecated -> removed) start w/ offline driver */
 {% set driver_error_msg = "" %}
-{% if not isfile('driver/io_' ~ config_driver ~ '.js') %}
-    {% set driver_error_msg = 'Configured backend driver not found. Starting with Offline driver' %}
+{%- if not isfile('driver/io_' ~ config_driver ~ '.js') %}
+    {% set driver_error_msg = lang('init_error_message', 'driver') %}
     {% set config_driver = 'offline'%}
 {% endif %}
-
+    <!-- load all javaScript assets -->
 /** JavaScript assets **/
 /** we put one of our own scripts first in order to avoid vendor libraries setting "use-strict" which throws errors in cache mode */
 {% set jsFiles = ['lib/base/jquery.mobile.slider.js']|
@@ -279,7 +284,11 @@
         if(io.socketErrorNotification == null || !notify.exists(io.socketErrorNotification)) 
             io.socketErrorNotification = notify.message('warning', 'Backend Driver', "{{ driver_error_msg }}");
         {% endif %}
-
+        // show warning if plot config is not available
+        {% if plotcfg_error_msg is not empty %}
+        if(notify.plotErrorNotification == null || !notify.exists(notify.plotErrorNotification))
+            notify.plotErrorNotification = notify.message('warning', 'Plot Libraries', "{{ plotcfg_error_msg }}");
+        {% endif %}
         // reset all collapsibles in menu to original state
         {% if config_collapsible_reset %}
             $(sv.activePage).find('.secondary [data-collapsed="false"] .ui-collapsible-heading-collapsed').parents().first().collapsible('expand');

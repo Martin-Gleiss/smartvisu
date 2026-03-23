@@ -451,7 +451,7 @@
 * @param {item(bool,num)=} an item for the current state of the actuator (optional)
 * @param {value=0.5} step for plus/minus buttons (optional, default: 0.5)
 * @param {text[]=} list of additional widgets / content to display
-* @param {text[bool,num]=} type of the actor and valve state: bool=on/off, num = PWM percentage value (optional, default = bool)
+* @param {text(bool,num)=} type of the actor and valve state: bool=on/off, num = PWM percentage value (optional, default = bool)
 */
 {% macro smallrtr(id, txt, item_actual, item_set, item_comfort, item_night, item_frost, item_state, step, supplements, statetype) %}
 {% import "@widgets/basic.html" as basic %}
