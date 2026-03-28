@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and others
-* @copyright   2012 - 2022
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -13,9 +13,9 @@
 *
 * @param {id=} unique id for this widget (optional)
 * @param {item(bool,num)} an item being switched
-* @param {item(num)} an item containing the start time of the countdown as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
-* @param {item(str)} an item containing the duration of the countdown (h,i,s format) or a fixed duration, e.g. '10i 30s'  
-* @param {duration=10s} the countdown interval in seconds, e.g. '60s' (default: '10s')  
+* @param {item(num,str,datetime,timestamp)} an item containing the start time of the countdown as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {item(str)} an item containing the duration of the countdown (h,i,s format) or a fixed duration, e.g. '10i 30s'
+* @param {duration=10s} the countdown interval in seconds, e.g. '60s' (default: '10s')
 * @param {text(item,zero)=item} the mode of stopping the timer 'item' (default): countdown runs until item is changed; 'zero' = like 'item' but countdown stops at 00:00:00
 * @param {text='--:--:--'} the text displayed when countdown is inactive (default '--:--:--')
 * @param {text=} value for the switching item as condition. Countdown starts only if item equals condition (optional, default = '')
@@ -23,13 +23,13 @@
 * @author Wolfram v. Hülsen
 */
 {% macro countdown(id, item, starttime, duration, interval, stopmode, idletxt, condition ) %}
-	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
-	{% if stopmode != "zero" %} {% set stopmode = "item" %} {% endif %}
-	{% if idletxt is empty %} {% set idletxt = "--:--:--" %} {% endif %}
-	{% set duration_item = duration|first in [0,1,2,3,4,5,6,7,8,9] ? '' : duration %} 
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" data-stopmode="{{ stopmode }}" 
-		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ starttime }}, {{ duration_item }}" data-fixduration = "{{ duration_item == '' ? duration : '' }}" data-condition="{{ condition }}">{{ idletxt }}
-	</span>
+    {% if interval is empty %} {% set interval = "10s" %} {% endif %}
+    {% if stopmode != "zero" %} {% set stopmode = "item" %} {% endif %}
+    {% if idletxt is empty %} {% set idletxt = "--:--:--" %} {% endif %}
+    {% set duration_item = duration|first in [0,1,2,3,4,5,6,7,8,9] ? '' : duration %} 
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countdown" data-interval="{{ interval }}" data-stopmode="{{ stopmode }}" 
+        data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ starttime }}, {{ duration_item }}" data-fixduration = "{{ duration_item == '' ? duration : '' }}" data-condition="{{ condition }}">{{ idletxt }}
+    </span>
 {% endmacro %}
 
 
@@ -37,7 +37,7 @@
 * Counts up time difference of the actual time versus a starting time from an item 
 *
 * @param {id=} unique id for this widget (optional)
-* @param {item(num,str)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
+* @param {item(num,str,datetime,timestamp)} an item containing the start time as string (e.g. "2023-05-21T23:00:34.566439+02:00") or timestamp
 * @param {item(num,bool)=} an item used to enable / disable the timer (item value 0=disabled, others = enabled) (optional,default = enabled)
 * @param {duration=10s} the count interval in seconds, e.g. '60s' (default: '10s')  
 * @param {text=} the text displayed if the timer is disabled. If no text is given the display will be hidden (optional, no default)
@@ -45,10 +45,10 @@
 * @author Wolfram v. Hülsen
 */
 {% macro countup(id, item, activate, interval, idletxt) %}
-	{% if interval is empty %} {% set interval = "10s" %} {% endif %}
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countup" data-interval="{{ interval }}"  
-		data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ activate }}">{{ idletxt }}
-	</span>
+    {% if interval is empty %} {% set interval = "10s" %} {% endif %}
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.countup" data-interval="{{ interval }}"  
+        data-idletxt="{{ idletxt }}" class="miniclock" data-item="{{ item }}, {{ activate }}">{{ idletxt }}
+    </span>
 {% endmacro %}
 
 
@@ -62,25 +62,25 @@
 * @info based on jDigiClock by Radoslav Dimov
 */
 {% macro digiclock(id, location, repeat) %}
-	{% set uid = uid(page, id) %}
-	
-	/** stopitem will be set to "true" when new page is loaded in order to stop the clock from loading digits till eternity ;) */
-	/** use data-item="" in order to trigger update when page is loaded from cache or by page refresh */
-	<div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock" stoptimer="false" data-item=""
-	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
-	 ></div>
+    {% set uid = uid(page, id) %}
 
-	{% if not location is empty %}
-		<div class="center digiweather" style="visibility: hidden;" data-widget="clock.digiclock" data-repeat="{{ repeat|default('15i') }}"
-			data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php?location={{ location|default(config_weather_location)|url_encode }}">
-			<div id="{{ uid }}-spot" class="spot">
-				<div class="temp"></div>
-				<div class="city"></div>
-				<div class="cond"></div>
-				<img src="">
-			</div>
-		</div>
-	{% endif %}
+    /** stopitem will be set to "true" when new page is loaded in order to stop the clock from loading digits till eternity ;) */
+    /** use data-item="" in order to trigger update when page is loaded from cache or by page refresh */
+    <div id="{{ uid }}-digiclock" data-widget="clock.digiclock" class="digiclock" stoptimer="false" data-item=""
+     {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
+     ></div>
+
+    {% if not location is empty %}
+        <div class="center digiweather" style="visibility: hidden;" data-widget="clock.digiclock" data-repeat="{{ repeat|default('15i') }}"
+            data-service-url="lib/weather/service/{{ config_weather_service|url_encode }}.php?location={{ location|default(config_weather_location)|url_encode }}">
+            <div id="{{ uid }}-spot" class="spot">
+                <div class="temp"></div>
+                <div class="city"></div>
+                <div class="cond"></div>
+                <img src="">
+            </div>
+        </div>
+    {% endif %}
 {% endmacro %}
 
 
@@ -91,11 +91,11 @@
 * @param {color(icon0to5)=} 
 */
 {% macro iconclock(id, color) %}
-	{% import "@widgets/icon.html" as icon %}
+    {% import "@widgets/icon.html" as icon %}
 
-	<span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
-	 {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
-	 >{{ icon.clock(id, '', '', color) }}</span>
+    <span id="{{ uid(page, id) }}-iconclock" data-widget="clock.iconclock" data-repeat="1i" class="iconclock"
+     {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
+     >{{ icon.clock(id, '', '', color) }}</span>
 {% endmacro %}
 
 
@@ -107,8 +107,8 @@
 */
 {% macro miniclock(id, format) %}
 
-	<span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
-		data-format="{{ format|default('time') }}"
-		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
-		>{{ "now"|date('H:i') }}</span>
+    <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="clock.miniclock" data-repeat="1i" class="miniclock"
+        data-format="{{ format|default('time') }}"
+        {% if config_timesource == 'server' %} data-servertime="yes" {% endif %}
+        >{{ "now"|date('H:i') }}</span>
 {% endmacro %}
