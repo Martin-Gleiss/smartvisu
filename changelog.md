@@ -21,6 +21,7 @@
 - better readability of device.uzsugraph, mainly in light designs
 - Error message if plot config file was not found
 - Language support for errors during init (driver, plot config)
+- item types datetime and timestamp are now available for widget assistant and template checker
 
 ### Updated Libraries
 - ICS Parser v3.5.1
