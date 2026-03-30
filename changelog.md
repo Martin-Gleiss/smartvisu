@@ -22,6 +22,7 @@
 - Error message if plot config file was not found
 - Language support for errors during init (driver, plot config)
 - item types datetime and timestamp are now available for widget assistant and template checker
+- smarthomeng and offline driver convert an item to a Date object if value is an ISO timedate string (starting with e.g. 2026-03-29T12:03)
 
 ### Updated Libraries
 - ICS Parser v3.5.1
