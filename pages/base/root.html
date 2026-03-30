@@ -41,7 +41,7 @@
 
     <link rel="stylesheet" href="vendor/jquery.mobile/jquery.mobile.structure-1.4.5.min.css" />
 
-/** define files to import for configured plot library */
+<!-- getting asset filenames for configured plot library from file lib/config/plot.{{config_plot_library}}.cfg -->
 {% set plotcfg_error_msg = '' %}
 {% set plotcfg  = configmeta('lib/config/plot.'~config_plot_library~'.cfg') %}
 {%- if plotcfg|length == 0 %}
