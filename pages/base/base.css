@@ -15,6 +15,7 @@
   src: url('dosis.eot') format('embedded-opentype'), url('dosis.woff') format('woff'), url('dosis.ttf') format('truetype');
 }
 
+/* initialize some classes for responsive layout which will be redefined in the following device-specific @media statements */
 .visible-phone, .menu-visible-phone, .visible-tablet, .minimum-tablet, .visible-desktop, .minimum-desktop, .menu-visible-smallphone  {
   display: none;
 }
@@ -195,9 +196,8 @@ html body .ui-page .hide {
   font-weight: normal;
 }
 
-/* min-height for scrollbars and push out url, min-width for smallest device */
+/* min-width for smallest device */
 .ui-content {
-/*    min-height: 850px; */
   min-width: 290px;
 }
 
@@ -2241,7 +2241,6 @@ div.ui-slider-switch{
     overflow: hidden;
     white-space: nowrap;
 }
-/** ----------------------------------------------------------------*/
 
 svg.icon, .icon {
   vertical-align: middle;
@@ -2252,12 +2251,6 @@ svg.icon, .icon {
 svg.icon { 
   margin: 1px;
 }
-
-/** do not show hand on icon
-svg.icon:hover {
-  cursor: pointer;
-}
-*/
 
 svg.icon text {
   font-size: 30px;
@@ -2449,8 +2442,6 @@ svg.icon.midi,
 
  .popup_list li {
      box-sizing: border-box;
-     /* height: 42px;
-     line-height: 40px; */
      font-weight: normal;
  }
 
@@ -2461,8 +2452,6 @@ svg.icon.midi,
 
  .popup_list .row_ext-popup {
    padding: 0;
-   /* line-height: 42px;
-   height: 42px; */
  }
 
  .popup_list .row_ext-popup .plot{
@@ -2578,12 +2567,6 @@ svg.icon.midi,
     float: inherit;
   }
 }
-
-/* uncomment if menu shall be displayed below the room pages
-  .base .secondary {
-    width: 100%;
-  }  */
-
 
 
 /**
