@@ -233,7 +233,9 @@
             ssl: '{{ config_driver_ssl }}',
             username: '{{ config_driver_username }}',
             password: '{{ config_driver_password }}',
-            signalBusy: '{{ config_driver_signalBusy }}'
+            loopback: '{{ config_driver_loopback }}',
+            signalBusy: '{{ config_driver_signalBusy }}',
+            realtime: '{{ config_driver_realtime }}'
         },
         reconnectTime: parseInt('{{ config_reconnect_time }}'),
         pingInterval: parseInt('{{ config_ping_interval }}'),
