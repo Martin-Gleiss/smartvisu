@@ -173,7 +173,7 @@
 		{%- if source|length < loop.index -%}
 			{%- set source = source|merge([source|last]) -%}
 		{%- endif -%}
-		{%- set sourcei = source[loop.index0] -%}
+		{%- set sourcei = source[loop.index0]|lower == 'item' ? 'item' : 'database' -%}
 		{%- if count|length < loop.index -%}
 			{%- set count = count|merge([count|last]) -%}
 		{%- endif -%}
@@ -296,7 +296,7 @@
 */
 
 {% macro sparkline(id, item, mode, tmin, tmax, ymin, ymax, count, width, height, exposure, unit, source, href, rel) %}
-	{% set source = source|default('database') %}
+	{% set source = source|lower == 'item' ? 'item' : 'database' %}
 	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}
