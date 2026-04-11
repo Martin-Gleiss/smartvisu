@@ -162,11 +162,11 @@
 	</div>
 
 
-	<h5>New as of v3.4: Activity Indicators</h5>
+	<h5>Activity Indicators</h5>
 smartVISU can be configured to wait for the backends item update after a command sent instead of updating items internally. While some backends wait for the response of the respective actor before responding, others just echo 
-the received command as item update. For the latter, smartVISU v3.4 introduces combined status and control items which send the command to the control item and receive the response on the status item. The user needs to
+the received command as item update. For the latter, smartVISU v3.4 introduced combined status and control items which send the command to the control item and receive the response on the status item. The user needs to
 link these to the respective control and status objects in the backend. To visualize an ongoing activity, the "indicator" parameter can be set to highlight the active switch with different options. The indicator will be started
-with the click on the switch and stopped by a received update or after a defined timeout. <br>
+with the click on the switch and stopped by a received update or after a defined timeout.<br><b>New as of v3.7:</b> indicator can be limited on events where the item value changes by adding ':change' to the indicator parameter, e.g. 'blink:15:change'.<br>
 
 	<h5>Examples</h5>
 		
