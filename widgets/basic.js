@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Martin Gleiss, Stefan Widmer, Wolfram v. Hülsen
- * @copyright   2012 - 2025
+ * @copyright   2012 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -52,7 +52,8 @@ $.widget("sv.basic_select", $.sv.widget, {
 
     options: {
         indicatorType: '',
-        indicatorDuration: 3
+        indicatorDuration: 3,
+        indicatorMode: 'update'
     },
 
     _create: function(){
@@ -96,6 +97,8 @@ $.widget("sv.basic_select", $.sv.widget, {
         'change': function(ev) {
             this._write(this.element.val());
             if (this.options.indicatorType != ''){
+                if (this.options.indicatorMode == 'change' && this.element.val() == widget.get(this.options.item))
+                    return
                 var that = this;
                 this.element.parents('.ui-select').addClass('blink');
                 this._timer = setTimeout(function(){
@@ -1202,6 +1205,7 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
         vals: '',
         indicatorType: '',
         indicatorDuration: 3,
+        indicatorMode: 'update',
         itemLongpress: '',
         valueLongpress: null,
         valueLongrelease: null
@@ -1261,6 +1265,8 @@ $.widget("sv.basic_stateswitch", $.sv.widget, {
             var new_idx = (old_idx + 1) % list_val.length;
             // get next value
             var new_val = list_val[new_idx];
+            if (this.options.indicatorMode == 'change' && new_val == old_val)
+                indicatorType = null;
             // set direction for indicator type 'simulate'
             if (new_val > this._current_val)
                 this._direction = 1;

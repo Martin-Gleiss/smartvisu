@@ -428,6 +428,7 @@
 * @param {item(list)=} an item containing all selectable values (optional) - overrides existing value definitions, available for menu type only
 * @param {item(list)=} an item containing the texts corresponding to the selectable values (optional even if itemvals is specified), available for menu type only
 * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+    add ':change' after the timeout as a third parameter in order to disable the indicator on updates without value change (e.g. 'blink:15:change')
     You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
     The indicator options will not be applied to the select element of type 'menu' which will convert all options to 'blink'.
 *
@@ -440,11 +441,12 @@
             {% set indicatorparms = indicator|split(":") %}
             {% set indicator = indicatorparms[0] %}
             {% set indicator_duration = indicatorparms[1] %}
+            {% set indicator_mode = indicatorparams|length > 2 and indicatorparams[2] == 'change' ? 'change' : 'update' %}
         {% else %} 
             {% set indicator_duration = config_indicator_duration|default(3) %}
         {% endif %}
         <select{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.select" data-native-menu="false" data-item="{{ item }}, {{ itemvals }}, {{ itemtxts }}" 
-        data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}">
+        data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}" data-indicator-mode="{{ indicator_mode }}">
         <option></option>
         {% if itemvals == '' or itemvals is empty %}
             {% for val in value|default([0,1]) %}
@@ -581,6 +583,7 @@
 * @param {color[?](icon0to5,hidden,blank)=icon0} array of colors; 'icon0' through 'icon5' or e. g. '#f00' for red (optional, default: icon0)
     additionally you can use 'hidden' to not diplay at all or 'blank' to make it invisible but preserve the space that would be used.
 * @param {color(icon0to5,blink,simulate,:)=} activity indicator which is active until response (or a timeout  is reached); pass either a color, icon class, 'blink' or 'simulate'. Timeout is 3s by default and can be set globally using the configuration key "indicator_duration". Add a colon and integer number to specify an individual timeout, e.g. 'blink:15' (optional)
+    add ':change' after the timeout as a third parameter in order to disable the indicator on updates without value change (e.g. 'blink:15:change')
     You can also set an indicator icon, text and color by passing these as additional parameters in the icon, text and color arrays. Just provide one icon more than you have values to switch. A dynamic icon can be used also along with the 'simulate' option.
 * @param {text=} an item to which a value is sent on longpress OR an id of a popup, with prefix '#' (optional)
 * @param {text=} the value to send on longpress (optional)
@@ -603,13 +606,14 @@
         {% set indicatorparms = indicator|split(":") %}
         {% set indicator = indicatorparms[0] %}
         {% set indicator_duration = indicatorparms[1] %}
+        {% set indicator_mode = indicatorparms|length > 2 and indicatorparms[2] == 'change' ? 'change' : 'update' %}
     {% else %} 
         {% set indicator_duration = config_indicator_duration|default(3) %}
     {% endif %}
     
     <a style="display:none"></a> /** Work around for bug in jQuery Mobile, see https://knx-user-forum.de/forum/supportforen/smartvisu/31967-neues-widget-nur-aktive-lampen-anzeigen-ausschalten-ermöglichen?p=1145001#post1145001 */
     <span{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.stateswitch" data-item="{{ item }}"
-        data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}"
+        data-value="{{ value|first }}" data-vals="{{ implode(value) }}" data-indicator-type="{{ indicator }}" data-indicator-duration="{{ indicator_duration }}" data-indicator-mode="{{ indicator_mode }}"
         data-item-longpress="{{ item_longpress }}"{% if not value_longpress is null %} data-value-longpress="{{ value_longpress }}"{% endif %}{% if not value_longrelease is null %} data-value-longrelease="{{ value_longrelease }}"{% endif %}
         style="display: none !important;">
     {% for val in ( indicator is not empty and icon is iterable and icon|length > value|length ? value|merge(['indicator']) : value) %}
