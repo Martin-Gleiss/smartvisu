@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * @package     Widget - Assistant
  * @author      Andre Kohler
- * @copyright   2020
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -22,10 +22,10 @@ $dirlist = dir('../../icons/ws/');
 $myArray = [];
 while (($item = $dirlist->read()) !== false)
 {
-	if (preg_match("/svg/",$item))
-	{
-	  array_push($myArray,$item);
-	}
+    if (preg_match("/svg/",$item))
+    {
+      array_push($myArray,$item);
+    }
 }
 
 $dirlist->close();
@@ -40,16 +40,16 @@ return json_encode($myArray);
 
 function render_inline ($value)
 {
-	$widget = $value["widget"];
-	$myData = explode("<br>",$widget);
-	$myNewWidgets = "";
-	foreach ($myData as $entry) 
-	{
-	 $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
-	}
-	$myFile = file_get_contents('tmpl_assistant_2.html');
-	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	$success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
+    $widget = $value["widget"];
+    $myData = explode("<br>",$widget);
+    $myNewWidgets = "";
+    foreach ($myData as $entry) 
+    {
+     $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
+    }
+    $myFile = file_get_contents('tmpl_assistant_2.html');
+    $myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
+    $success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
     return $success;
 }
 
@@ -59,16 +59,21 @@ function render_inline ($value)
 
 function render_outline ($value)
 {
-	$widget = $value["widget"];
-	$myData = explode("<br>",$widget);
-	$myNewWidgets = "";
-	foreach ($myData as $entry) 
-	{
-	 $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
-	}
-	$myFile = file_get_contents('tmpl_assistant_1.html');
-	$myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
-	$success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
+    $widget = $value["widget"];
+    $myData = explode("<br>",$widget);
+    $myNewWidgets = "";
+    $hasQuad = false;
+    foreach ($myData as $entry) 
+    {
+     $myNewWidgets = $myNewWidgets ."" . $entry . "<br><br>\n";
+     if(strpos($entry, 'quad_list') !== false) 
+         $hasQuad = true;
+    }
+    $myFile = file_get_contents('tmpl_assistant_1.html');
+    $myFile = str_replace("{{ %widget% }}",$myNewWidgets, $myFile);
+    if ($hasQuad) 
+        $myFile = str_replace('{% extends "base.html" %}', '{% extends "quad_base.html" %}', $myFile);
+    $success = file_put_contents('../../pages/'.config_pages.'/assistant.html', $myFile);
     return $success;
 }
 
@@ -77,7 +82,7 @@ function render_outline ($value)
 // ************************************************
 function load_items ($value)
 {
-	$myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
+    $myFile = file_get_contents(const_path.'pages/'.config_pages.'/masteritem.json');
     return $myFile;
 }
 

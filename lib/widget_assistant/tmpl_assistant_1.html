@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Andre Kohler
-* @copyright   2020
+* @copyright   2020 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -11,63 +11,56 @@
 
 {% block content %}
 
-		<div>
-			<h3>Render-Result</h3>
-			<br>
-				{{ %widget% }} 
-		</div>
+        <div>
+            <h3>Render-Result</h3>
+            <br>
+                {{ %widget% }} 
+        </div>
         <div id="last_updated">
-   			<h3>Here you will see the last update time of the rendered widgets</h3>
+               <h3>Here you will see the last update time of the rendered widgets</h3>
         </div>
 
-	
+    
     <script>
     var lastTimeStamp = 0;
 
+    function CheckUpdate() {
+        $.ajax({
+            url: "lib/widget_assistant/widget_assistant.php",
+            method: "GET",
+            dataType: "text",
+            data: {
+                command : 'get_time_stamp'
+            },
+            success: function (result) {
+                newTimeStamp = (parseInt(result))*1000
+                //console.log("last timestamp: " + lastTimeStamp + ' - ' +  "new timestamp: " + newTimeStamp)
+                if (lastTimeStamp == 0) {
+                    lastTimeStamp = newTimeStamp
+                    date_Obj = new Date(newTimeStamp)
+                    console.log("got first rendering timestamp :" + newTimeStamp)
+                    newText = date_Obj.toString()
+                    document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
+                }
 
-    function CheckUpdate()
-
-    {
-	     $.ajax({
-		       url: "lib/widget_assistant/widget_assistant.php",
-		       method: "GET",
-		       dataType: "text",
-		       data: {
-			       		command : 'get_time_stamp'
-			       	 },
-		       success: function (result) {
-                   newTimeStamp = (parseInt(result))*1000
-     	           //console.log("last timestamp: " + lastTimeStamp + ' - ' +  "new timestamp: " + newTimeStamp)
-                    if (lastTimeStamp == 0)
-                        {
-                         lastTimeStamp = newTimeStamp
-                         date_Obj = new Date(newTimeStamp)
-             	           console.log("got timestamp :" + newTimeStamp)
-                         newText = date_Obj.toString()
-              		       document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
-                        }
-
-                    if (newTimeStamp > lastTimeStamp)
-                        {
-                         lastTimeStamp = newTimeStamp
-                         location.reload(); 
-                         date_Obj = new Date(newTimeStamp)
-             	           console.log("got timestamp :" + newTimeStamp)
-                         newText = date_Obj.toGMTString()
-              		       document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
-                        }
-
-		       },
-		       error: function (result) {
-			       console.log("Error getting TimeStamp")
-		       }
-		     });
-
+                if (newTimeStamp > lastTimeStamp) {
+                    lastTimeStamp = newTimeStamp
+                    location.reload(); 
+                    date_Obj = new Date(newTimeStamp)
+                    console.log("got next rendering timestamp :" + newTimeStamp)
+                    newText = date_Obj.toGMTString()
+                    document.getElementById("last_updated").innerHTML = 'last updatet at :'+newText
+                }
+            },
+            error: function (result) {
+                console.log("Error getting TimeStamp")
+            }
+        });
     }
 
     setInterval(CheckUpdate,1000)
-    </script>	
-	
+    </script>    
+    
 
 {% endblock %}
 
