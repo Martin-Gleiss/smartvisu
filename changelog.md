@@ -41,6 +41,7 @@
 - .gitignore was faulty and ignored the important config.ini files in the example and documents directories.
 - device.uzsugraph did not work for backends w/o UZSU interpolation feature.
 - device.uzsugraph showed false interpolation simulation after sunrise/sunset was dragged in the graph
+- widget assistant did not display quad widgets in outline mode. Solved by extending template "quad_base" if a quad widget is present.
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
