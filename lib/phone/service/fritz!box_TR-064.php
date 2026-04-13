@@ -13,9 +13,8 @@ require_once '../../../lib/includes.php';
 require_once const_path_system . 'phone/phone.php';
 /**
  * This class reads the phonelist of a fritz!box phonesystem via TR-064 protocol
- * This can only work if you enable "Zugriff für Anwendungen zulassen".
- * you can find this config switch inside the web console -> Home network -> Network -> Network Settings
- * It is required that "Extented View" of the web console is enabled - that this checkbox is shown.
+ * This can only work if you enable access for applications ("Zugriff für Anwendungen zulassen").
+ * You can find the option inside the web console -> Home network -> Network -> Network Settings -> Extended sSettings
  *
  */
 class phone_fritzbox_TR064 extends phone
@@ -134,7 +133,7 @@ class phone_fritzbox_TR064 extends phone
         $this->debug($url,trans('phone_error_message', 'fritz_calllist_url') );
         // download xml file and put it to xml parser
         $loadError = '';
-        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('http://' => array('ssl' => $this->context_ssl))));
+        $GetCallListXml = file_get_contents($url, false, stream_context_create(array('ssl' => $this->context_ssl)));
         if (substr($this->errorMessage, 0, 17) == 'file_get_contents') {
             $loadError = substr(strrchr($this->errorMessage, ':'), 2);
             $this->error('Phone: fritz!box_TR-064', trans('phone_error_message', 'fritz_read').$loadError);
