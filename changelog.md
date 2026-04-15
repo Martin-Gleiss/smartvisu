@@ -13,6 +13,7 @@
 - the changeable config options are available in javaScript as "sv.config.cache", "sv.config.design", "sv.config.driver.name", "sv.config.driver.address" ...
 - the smartVISU icon is available now as SVG "logo_smartvisu.svg" in ./icons/ws and ./icons/sw
 - the widget "lib.sysinfo" shows the current settings of the options changeable with the request parameters and can be activated in the headline with 'svstatus="1"' (config.ini or request parameter)
+- Fritz!Box-TR064 Service has been extended with the "action" request parameter. Options: "update" (get user interface info incl. update notification) and "deviceinfo" (get device info).
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
