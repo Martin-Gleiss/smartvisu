@@ -42,7 +42,7 @@
 	<br />
 	<hr /><br />
 
-	{% set widget = page|slice(7)|replace({'_': '.'}) %}
+	{% set widget = page|slice(7)|preg_replace('/_/', '.', 1) %}
 
 	{% if pagepath != '' and widget != pagepath %}
 
