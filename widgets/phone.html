@@ -77,7 +77,7 @@
 * @see misc/fundamentals#Duration-Format
 * @author Wolfram v. Hülsen
 */
-{% macro data_deviceinfo(id, repeat) %}
+{% macro data_deviceinfo(repeat) %}
     <div style="display: none;" data-widget="phone.data_deviceinfo"  data-repeat="{{ repeat|default('1d') }}" data-service-url="lib/phone/service/{{ config_phone_service|url_encode }}.php?action=deviceinfo">
     </div>
 {% endmacro %}
