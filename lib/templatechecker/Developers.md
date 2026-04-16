@@ -177,3 +177,14 @@ Valid values:
 **Additional settings:**  
 
 * None
+
+# Widget Result Descriptor
+Since v3.6.a there is a new "internal" item type identified by a leading "@" character. Internal items are written by widgets and are 
+independent of the backend system. E.g. the widget "phone.data_updateinfo" sets items like "@phone.update.available".
+To inform the template checker of the additional items, a "result" identifier is introduced in the docstring:
+```
+* @result @phone.update.(available|bool,version|str,download|str,info|str)
+```
+The identifier starts with the base name (e.g. "@phone.update.") followed by the individual item parts with their types. If the template 
+checker finds a result identifier, it constructs an array of these items and adds this to the items found in the item dictionary
+"masteritem.json", written by a backend-side script.
