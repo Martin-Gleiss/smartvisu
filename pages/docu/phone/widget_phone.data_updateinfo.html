@@ -1,0 +1,32 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "widget_phone.html" %}
+
+{% block example %}
+
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">&#123;&#123; phone.data_updateinfo('', '1d' ) &#125;&#125;</code>
+    </div>
+    <div class="html">
+        This widget calls the configured phone service (Fritz!box TR-064 only!) and requests the "User Interface Info" which contains information on firmware updates. 
+        The information received is transferred to the following standard items while the "@" prefix marks the items as internal / not requested to the backend:
+        <ul>
+            <li> @phone.update.available: boolean notifier if update is available</li>
+            <li> @phone.update.version: new software version, if available</li>
+            <li> @phone.update.download: download URL if update available</li>
+            <li> @phone.update.info: URL for download information, if avaliable</li>
+        </ul>
+        The "repeat" parameter gives the update interval for the data.<br>
+        
+    </div>
+
+{% endblock %}

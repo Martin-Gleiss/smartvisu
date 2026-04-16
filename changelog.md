@@ -5,6 +5,7 @@
 - empty title is now allowed in device.uzsugraph and is the new default. (Default was "UZSU" before in order to occupy the space above the graph for the layout.)
 - status.customstyle has got a new option to compare elapsed time after a timestamp given by an item - e.g. to show timeouts on widgets which don't receive sensor updates any more
 - activity indicator in basic.select and basic stateswitch can now be limited to actions where the item value changes (e.g. blink 15 seconds if item changes: indicator = 'blink:15:change')
+- new widgets phone.data_updateinfo and phone.data_deviceinfo provide Fritz!Box data as "internal" items, e.g. "@phone.update.available"
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
@@ -13,6 +14,8 @@
 - the changeable config options are available in javaScript as "sv.config.cache", "sv.config.design", "sv.config.driver.name", "sv.config.driver.address" ...
 - the smartVISU icon is available now as SVG "logo_smartvisu.svg" in ./icons/ws and ./icons/sw
 - the widget "lib.sysinfo" shows the current settings of the options changeable with the request parameters and can be activated in the headline with 'svstatus="1"' (config.ini or request parameter)
+- Fritz!Box-TR064 Service has been extended with the "action" request parameter. Options: "update" (get user interface info incl. update notification) and "deviceinfo" (get device info).
+- new type of "internal" items starting with a "@" character. These items are provided by widgets (e.g. phone.data_updateinfo) and do not get requested from the backend.
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
@@ -42,6 +45,7 @@
 - device.uzsugraph did not work for backends w/o UZSU interpolation feature.
 - device.uzsugraph showed false interpolation simulation after sunrise/sunset was dragged in the graph
 - widget assistant did not display quad widgets in outline mode. Solved by extending template "quad_base" if a quad widget is present.
+- Fritz!box TR-064 service did not work on SSL-port 49443 due to a faulty stream context definition
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
