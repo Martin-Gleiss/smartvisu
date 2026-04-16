@@ -4,7 +4,7 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      Andre Kohler
- * @copyright   2020 - 2025
+ * @copyright   2020 - 2026
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
  */
@@ -13,89 +13,95 @@
  */
 class Items {
 
-	/**
-	 * items containing the widget
-	 */
-	private $items;
+    /**
+     * items containing the widget
+     */
+    private $items;
 
-	/**
-	 * ready
-	 */
-	private $ready;
+    /**
+     * ready
+     */
+    private $ready;
 
-	/**
-	 * getState
-	 */
-	public function getState() {
-		return $this->ready;
-	}
-	public function setState($value) {
-		$this->ready = $value;
-	}
-	/**
-	 * get items Array
-	 */
-	public function getItems() {
-		return $this->items;
-	}
+    /**
+     * getState
+     */
+    public function getState() {
+        return $this->ready;
+    }
+    public function setState($value) {
+        $this->ready = $value;
+    }
+    /**
+     * get items Array
+     */
+    public function getItems() {
+        return $this->items;
+    }
 
-	/**
-	 * getItemType
-	 */
-	public function getItemType($name) {
-		return $this->items[$name];
-	}
-	
-	/**
-	 * ItemExists
-	 */
-	public function ItemExists($name) {
-		if (strpos($name, 'property') === false)
-			return isset($this->items[$name]) && !$this->items[$name] == null;
-		else {
-			$pos = strpos($name, 'property');
-			$itemname = substr($name, 0, $pos -1);
-			$propertyname = substr($name, $pos + 9); 
-			if (isset($this->items[$itemname]) && !$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
-				$this->items[$name] = itemProperties::getPropertyType($propertyname);
-			
-			return isset($this->items[$name]) && !$this->items[$name] == null;
-		}
-	}
+    /**
+     * getItemType
+     */
+    public function getItemType($name) {
+        return $this->items[$name];
+    }
 
-	/**
-	 * constructor
-	 * Reads the masteritem file and transforms it into an array
-	 */
-	function __construct($path) {
-		$this->ready = FALSE;
-		$this->items = array();
-		// get the main pages path
-		preg_match('/(pages\/[a-zA-Z0-9]+)/', $path, $mainPath);
+    /**
+     * ItemExists
+     */
+    public function ItemExists($name) {
+        if (strpos($name, 'property') === false)
+            return isset($this->items[$name]) && !$this->items[$name] == null;
+        else {
+            $pos = strpos($name, 'property');
+            $itemname = substr($name, 0, $pos -1);
+            $propertyname = substr($name, $pos + 9); 
+            if (isset($this->items[$itemname]) && !$this->items[$itemname] == null && itemProperties::propertyExists($propertyname)) 
+                $this->items[$name] = itemProperties::getPropertyType($propertyname);
+            
+            return isset($this->items[$name]) && !$this->items[$name] == null;
+        }
+    }
 
-		if ($mainPath[0] == 'pages/smarthome' && !is_file(const_path.$mainPath[0].'/masteritem.json') && config_pages != 'smarthome')
-			$mainPath[0] = 'pages/'.config_pages; 
+    /**
+     * Add an item with type 
+     */
+    public function addItem($name, $type){
+        $this->items[$name] = $type;
+    }
 
-		try {
-			if (is_file(const_path.$mainPath[0].'/masteritem.json'))
-			{
-			@$myFile = file_get_contents(const_path.$mainPath[0].'/masteritem.json');
-			$Items1 = str_replace('[','',$myFile);
-			$Items1 = str_replace(']','',$Items1);
-			$Items1 = str_replace("\"",'',$Items1);
-			$Items2=explode(",",$Items1);
-			
-			foreach ($Items2 as $key) { 
-				$this->items[trim(explode('|',$key)[0])] = trim(explode('|',$key)[1]);
-				}
-			}
-			if ($this->items != NULL && \count($this->items) > 1)
-			$this->ready = TRUE;
-		}
-		catch (Exception $e) {
-			$this->ready = FALSE;
-		}
-		
-	}
+    /**
+     * constructor
+     * Reads the masteritem file and transforms it into an array
+     */
+    function __construct($path) {
+        $this->ready = FALSE;
+        $this->items = array();
+        // get the main pages path
+        preg_match('/(pages\/[a-zA-Z0-9]+)/', $path, $mainPath);
+
+        if ($mainPath[0] == 'pages/smarthome' && !is_file(const_path.$mainPath[0].'/masteritem.json') && config_pages != 'smarthome')
+            $mainPath[0] = 'pages/'.config_pages; 
+
+        try {
+            if (is_file(const_path.$mainPath[0].'/masteritem.json'))
+            {
+            @$myFile = file_get_contents(const_path.$mainPath[0].'/masteritem.json');
+            $Items1 = str_replace('[','',$myFile);
+            $Items1 = str_replace(']','',$Items1);
+            $Items1 = str_replace("\"",'',$Items1);
+            $Items2 = explode(",",$Items1);
+            
+            foreach ($Items2 as $key) { 
+                $this->items[trim(explode('|',$key)[0])] = trim(explode('|',$key)[1]);
+                }
+            }
+            if ($this->items != NULL && \count($this->items) > 1)
+            $this->ready = TRUE;
+        }
+        catch (Exception $e) {
+            $this->ready = FALSE;
+        }
+    }
 
 }
