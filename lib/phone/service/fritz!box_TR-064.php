@@ -248,9 +248,11 @@ class phone_fritzbox_TR064 extends phone
     private function GetDeviceInfo()
     {
         $response = $this->DoAuthSoapCall('urn:dslforum-org:service:DeviceInfo:1', 'GetInfo', 'deviceinfo');
+
         $this->debug($response, trans('phone_error_message', 'fritz_raw_device_info'));
 
-        if ($response === FALSE) {
+        // "auth. failed" error can occur here if FB user has no configuration rights
+        if ($response === FALSE || strpos($response, 'auth. failed') >0 ) {
             $this -> error('Phone: fritz!box', trans('phone_error_message', 'fritz_deviceinfo_error'));
             return false;
         }
