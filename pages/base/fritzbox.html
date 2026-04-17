@@ -1,0 +1,44 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. Hülsen
+* @copyright   2012 - 2026
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "rooms.html" %} 
+
+{% block content %}
+{{ phone.data_deviceinfo }}
+{{ phone.data_updateinfo }}
+    <h1>Fritz!box System Info</h1>
+    <br>
+    <div>
+        <b>Modell:</b> {{ basic.print('', '@phone.deviceinfo.model') }}, <b>Seriennummer:</b> {{ basic.print('', '@phone.deviceinfo.serialnumber') }}<br>
+        <b>Firmware:</b> v{{ basic.print('', '@phone.deviceinfo.software', '', 'VAR1.substring(4)') }}<br>
+        <b>Spec.:</b> v{{ basic.print('', '@phone.deviceinfo.spec') }}<br>
+        <b>Addresse:</b> {{ config_phone_server}}<br>
+        <b>TR-064 Port:</b> {{ config_phone_port|default(49000) }}<br>
+        <br>
+        <b>Verbunden seit:</b> {{ basic.print('', '@phone.deviceinfo.uptime', 'long', 'new Date() - VAR1*1000') }} (
+                               {{ basic.print('', '@phone.deviceinfo.uptime', '', 'timedisplay(VAR1*1000) + " Stunden"') }} )
+    </div>
+
+    <h2>Updateprüfung</h2>
+    <div>
+        <b>{{ basic.symbol('', '@phone.update.available', ['Update verfügbar:', 'Kein Update verfügbar'], '', [1,0] ) }}</b> 
+        <span data-bind="{{ page}}-updateinfo"> v{{ basic.print('', '@phone.update.version','', '') }}</span><br>
+        <div data-bind="{{page}}-updateinfo">
+            <b> Info:</b> <a id="{{ page }}-infolink" href="" target="blank">{{ basic.print('', '@phone.update.info') }}</a><br>
+            {{ basic.print('', '@phone.update.info','script', '$("#'~page~'-infolink").attr("href", VAR)') }}
+            <b> Download:</b> <a id="{{ page }}-downloadlink" href="" target="blank">{{ basic.print('', '@phone.update.download') }}</a> <b>(Achtung: Download startet sofort!)</b><br>
+            {{ basic.print('', '@phone.update.download','script', '$("#'~page~'-downloadlink").attr("href", VAR)') }}
+        </div>
+        {{ status.collapse( page~'-updateinfo', '@phone.update.available', '1', 'show') }}
+    </div>
+
+    <h2>Log</h2>
+    {{ status.log('log1', '@phone.deviceinfo.log', 10) }}
+    
+{% endblock %}
