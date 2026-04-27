@@ -1750,7 +1750,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
 
   rruleDays: {},
 
-  _startTimestamp: 4*1000*60*60*24 + new Date(0).getTimezoneOffset()*1000*60,  //1.1.1970 was a Thursday -> 4 days until Monday
+  _startTimestamp: 4*1000*60*60*24 + new Date().getTimezoneOffset()*1000*60,  //1.1.1970 was a Thursday -> 4 days until Monday
 
   _create: function() {
     this._super();  //call _create method of prototype widget sv.device_uzsu
@@ -1826,7 +1826,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     var chart = this.element.highcharts({
       title: { text: this.options.headline },
       legend: false,
-      //time: {timezoneOffset: new Date().getTimezoneOffset()},   //to do: uncomment with next Highcharts version
+      time: {timezoneOffset: new Date().getTimezoneOffset()},   //to do: uncomment with next Highcharts version
       series: [
         { // active
           name: 'active',
@@ -2205,7 +2205,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
     //                        "once" is executed on the day with the lowest number in the sequence
     // ******************************************************************************
     var today = new Date().getDay();        // delivers SU = 0
-    this._startTimestamp = (4 + today - 1) % 7 * dayLength + new Date(0).getTimezoneOffset()*1000*60;
+    this._startTimestamp = (4 + today - 1) % 7 * dayLength + new Date().getTimezoneOffset()*1000*60;
 
     for (var day in this.weekDays) {
         this.rruleDays[day] = this.weekDays[day] - (6 + today) % 7;

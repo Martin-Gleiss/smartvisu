@@ -30,6 +30,7 @@
 
 ### Updated Libraries
 - ICS Parser v3.5.1
+- Highcharts v12.6
 
 ### Deprecated
 - base template for quad design is now quad_base.html (according to base.html in standard design). quad_root.html is deprecated and kept only to avoid breaking changes.

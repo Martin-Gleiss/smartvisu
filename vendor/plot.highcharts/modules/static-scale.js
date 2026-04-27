@@ -1,14 +1,13 @@
-/*
- Highcharts Gantt JS v11.0.1 (2023-05-08)
-
- StaticScale
-
- (c) 2016-2021 Torstein Honsi, Lars A. V. Cabrera
-
- License: www.highcharts.com/license
-*/
-'use strict';(function(a){"object"===typeof module&&module.exports?(a["default"]=a,module.exports=a):"function"===typeof define&&define.amd?define("highcharts/modules/static-scale",["highcharts"],function(b){a(b);a.Highcharts=b;return a}):a("undefined"!==typeof Highcharts?Highcharts:void 0)})(function(a){function b(a,c,f,b){a.hasOwnProperty(c)||(a[c]=b.apply(null,f),"function"===typeof CustomEvent&&window.dispatchEvent(new CustomEvent("HighchartsModuleLoaded",{detail:{path:c,module:a[c]}})))}a=a?
-a._modules:{};b(a,"Extensions/StaticScale.js",[a["Core/Axis/Axis.js"],a["Core/Chart/Chart.js"],a["Core/Utilities.js"]],function(a,c,b){var g=b.addEvent,f=b.defined,h=b.isNumber,k=b.pick;g(a,"afterSetOptions",function(){var a=this.chart.options.chart;!this.horiz&&h(this.options.staticScale)&&(!a.height||a.scrollablePlotArea&&a.scrollablePlotArea.minHeight)&&(this.staticScale=this.options.staticScale)});c.prototype.adjustHeight=function(){"adjustHeight"!==this.redrawTrigger&&((this.axes||[]).forEach(function(a){var b=
-a.chart,c=!!b.initiatedScale&&b.options.animation,d=a.options.staticScale;if(a.staticScale&&f(a.min)){var e=k(a.brokenAxis&&a.brokenAxis.unitLength,a.max+a.tickInterval-a.min)*d;e=Math.max(e,d);d=e-b.plotHeight;!b.scrollablePixelsY&&1<=Math.abs(d)&&(b.plotHeight=e,b.redrawTrigger="adjustHeight",b.setSize(void 0,b.chartHeight+d,c));a.series.forEach(function(a){(a=a.sharedClipKey&&b.sharedClips[a.sharedClipKey])&&a.attr(b.inverted?{width:b.plotHeight}:{height:b.plotHeight})})}}),this.initiatedScale=
-!0);this.redrawTrigger=null};g(c,"render",c.prototype.adjustHeight)});b(a,"masters/modules/static-scale.src.js",[],function(){})});
-//# sourceMappingURL=static-scale.js.map
+!/**
+ * Highcharts Gantt JS v12.6.0 (2026-04-13)
+ * @module highcharts/modules/static-scale
+ * @requires highcharts
+ *
+ * StaticScale
+ *
+ * (c) 2016-2026 Highsoft AS
+ * Author: Torstein Hønsi, Lars A. V. Cabrera
+ *
+ * A commercial license may be required depending on use.
+ * See www.highcharts.com/license
+ */function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e(t._Highcharts):"function"==typeof define&&define.amd?define("highcharts/modules/static-scale",["highcharts/highcharts"],function(t){return e(t)}):"object"==typeof exports?exports["highcharts/modules/static-scale"]=e(t._Highcharts):t.Highcharts=e(t.Highcharts)}("u"<typeof window?this:window,function(t){return function(){"use strict";var e={944:function(e){e.exports=t}},r={};function i(t){var n=r[t];if(void 0!==n)return n.exports;var o=r[t]={exports:{}};return e[t](o,o.exports,i),o.exports}i.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return i.d(e,{a:e}),e},i.d=function(t,e){for(var r in e)i.o(e,r)&&!i.o(t,r)&&Object.defineProperty(t,r,{enumerable:!0,get:e[r]})},i.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)};var n={};i.d(n,{default:function(){return l}});var o=i(944),a=i.n(o);function s(t,e,r,i){void 0===i&&(i={});var n="function"==typeof t&&t.prototype||t;Object.hasOwnProperty.call(n,"hcEvents")||(n.hcEvents={});var o=n.hcEvents;a().Point&&t instanceof a().Point&&t.series&&t.series.chart&&(t.series.chart.runTrackerClick=!0);var s=t.addEventListener;s&&s.call(t,e,r,!!a().supportsPassiveEvents&&{passive:void 0===i.passive?-1!==e.indexOf("touch"):i.passive,capture:!1}),o[e]||(o[e]=[]);var c={fn:r,order:"number"==typeof i.order?i.order:1/0};return o[e].push(c),o[e].sort(function(t,e){return t.order-e.order}),function(){!function(t,e,r){function i(e,r){var i=t.removeEventListener;i&&i.call(t,e,r,!1)}function n(r){var n,o;if(t.nodeName){e?(n={})[e]=!0:n=r;var a=n,s=function(t,e){if(r[e])for(o=r[e].length;o--;)i(e,r[e][o].fn)};for(var c in a)Object.hasOwnProperty.call(a,c)&&s.call(a[c],a[c],c,a)}}var o="function"==typeof t&&t.prototype||t;if(Object.hasOwnProperty.call(o,"hcEvents")){var a=o.hcEvents;if(e){var s=a[e]||[];r?(a[e]=s.filter(function(t){return r!==t.fn}),i(e,r)):(n(a),a[e]=[])}else n(a),delete o.hcEvents}}(t,e,r)}}function c(){var t,e,r=this.chart.userOptions.chart;!this.horiz&&"number"==typeof(t=this.options.staticScale)&&!isNaN(t)&&t<1/0&&t>-1/0&&(!(null==r?void 0:r.height)||(null==(e=r.scrollablePlotArea)?void 0:e.minHeight))&&(this.staticScale=this.options.staticScale)}function h(){var t,e;if("adjustHeight"!==this.redrawTrigger){for(var r=0,i=this.axes||[];r<i.length;r++)!function(r){var i=r.chart,n=r.options.staticScale;if(r.staticScale&&n&&null!=r.min&&null!=r.max){var o=(null!=(e=null==(t=r.brokenAxis)?void 0:t.unitLength)?e:r.max+r.tickInterval-r.min)*n,a=(o=Math.max(o,n))-i.plotHeight;!i.scrollablePixelsY&&Math.abs(a)>=1&&(i.plotHeight=o,i.redrawTrigger="adjustHeight",i.setSize(void 0,i.chartHeight+a,!!i.initiatedScale&&void 0)),r.series.forEach(function(t){var e=t.sharedClipKey&&i.sharedClips[t.sharedClipKey];e&&e.attr(i.inverted?{width:i.plotHeight}:{height:i.plotHeight})})}}(i[r]);this.initiatedScale=!0}this.redrawTrigger=void 0}a().doc,a().win,Array.prototype.find;var u=a();({compose:function(t,e){var r=e.prototype;r.adjustHeight||(s(t,"afterSetOptions",c),r.adjustHeight=h,s(e,"render",r.adjustHeight))}}).compose(u.Axis,u.Chart);var l=a();return n.default}()});
