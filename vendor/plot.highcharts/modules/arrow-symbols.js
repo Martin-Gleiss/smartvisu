@@ -1,5 +1,5 @@
 !/**
- * Highcharts JS v12.6.0 (2026-04-13)
+ * Highcharts JS v13.0.0 (2026-06-11)
  * @module highcharts/modules/arrow-symbols
  * @requires highcharts
  *
@@ -8,6 +8,6 @@
  * (c) 2017-2026 Highsoft AS
  * Author: Lars A. V. Cabrera
  *
- * A commercial license may be required depending on use.
- * See www.highcharts.com/license
- */function(r,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(r._Highcharts):"function"==typeof define&&define.amd?define("highcharts/modules/arrow-symbols",["highcharts/highcharts"],function(r){return t(r)}):"object"==typeof exports?exports["highcharts/modules/arrow-symbols"]=t(r._Highcharts):r.Highcharts=t(r.Highcharts)}("u"<typeof window?this:window,function(r){return function(){"use strict";var t={944:function(t){t.exports=r}},e={};function o(r){var n=e[r];if(void 0!==n)return n.exports;var u=e[r]={exports:{}};return t[r](u,u.exports,o),u.exports}o.n=function(r){var t=r&&r.__esModule?function(){return r.default}:function(){return r};return o.d(t,{a:t}),t},o.d=function(r,t){for(var e in t)o.o(t,e)&&!o.o(r,e)&&Object.defineProperty(r,e,{enumerable:!0,get:t[e]})},o.o=function(r,t){return Object.prototype.hasOwnProperty.call(r,t)};var n={};o.d(n,{default:function(){return h}});var u=o(944),i=o.n(u);function f(r,t,e,o){return[["M",r,t+o/2],["L",r+e,t],["L",r,t+o/2],["L",r+e,t+o]]}function a(r,t,e,o){return f(r,t,e/2,o)}function c(r,t,e,o){return[["M",r+e,t],["L",r,t+o/2],["L",r+e,t+o],["Z"]]}function s(r,t,e,o){return c(r,t,e/2,o)}({compose:function(r){var t=r.prototype.symbols;t.arrow=f,t["arrow-filled"]=c,t["arrow-filled-half"]=s,t["arrow-half"]=a,t["triangle-left"]=c,t["triangle-left-half"]=s}}).compose(i().SVGRenderer);var h=i();return n.default}()});
+ * A commercial license may be required depending on use,
+ * see www.highcharts.com/license
+ */function(r,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(r._Highcharts):"function"==typeof define&&define.amd?define("highcharts/modules/arrow-symbols",["highcharts/highcharts"],function(r){return t(r)}):"object"==typeof exports?exports["highcharts/modules/arrow-symbols"]=t(r._Highcharts):r.Highcharts=t(r.Highcharts)}("u"<typeof window?this:window,function(r){return function(){"use strict";var t,e={944:function(t){t.exports=r}},n={};function o(r){var t=n[r];if(void 0!==t)return t.exports;var u=n[r]={exports:{}};return e[r](u,u.exports,o),u.exports}o.n=function(r){var t=r&&r.__esModule?function(){return r.default}:function(){return r};return o.d(t,{a:t}),t},o.d=function(r,t){for(var e in t)o.o(t,e)&&!o.o(r,e)&&Object.defineProperty(r,e,{enumerable:!0,get:t[e]})},o.o=function(r,t){return Object.prototype.hasOwnProperty.call(r,t)};var u={};o.d(u,{default:function(){return h}});var i=o(944),f=o.n(i);function a(r,t,e,n){return[["M",r,t+n/2],["L",r+e,t],["L",r,t+n/2],["L",r+e,t+n]]}function c(r,t,e,n){return[["M",r+e,t],["L",r,t+n/2],["L",r+e,t+n],["Z"]]}function s(r,t,e,n){return c(r,t,e/2,n)}(t=f().SVGRenderer.prototype.symbols).arrow=a,t["arrow-filled"]=c,t["arrow-filled-half"]=s,t["arrow-half"]=function(r,t,e,n){return a(r,t,e/2,n)},t["triangle-left"]=c,t["triangle-left-half"]=s;var h=f();return u.default}()});
