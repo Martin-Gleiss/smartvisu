@@ -685,6 +685,8 @@ $.widget("sv.plot_gauge_", $.sv.plot_highcharts, {
             },
 
             pane: {
+                size: '100%',
+                innerSize: '60%',
                 background: [{
                     outerRadius: '100%',
                     innerRadius: '60%',
@@ -838,8 +840,11 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
 
 
         for (var i = 0; i < this.items.length; i++) {
-            if (mode == 'scale') { // type = scale
-                var bands = [{
+           if (mode == 'scale') { 
+           /**
+           * ----------  Gauge type = scale  -------------
+           */
+                 var bands = [{
                         outerRadius: '99%',
                         thickness: 15,
                         from: percent,
@@ -879,6 +884,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                 yaxis[i] = {
                     min: 0,
                     max: 100,
+                    offset: 0,
                     minorTickInterval: 1.5,
                     minorTickLength: 17,
                     minorTickPosition: 'inside',
@@ -910,7 +916,9 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                     startAngle: -130,
                     endAngle: 130,
                     background: [{
-                        outerRadius: '108%'
+                        outerRadius: '108%',
+                        innerRadius: 0,
+                        shape: 'circle'
                     }]
                 }
                 series[i] = {
@@ -925,14 +933,18 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                     }
                 }
             }
-            else // type = speedometer
-            {
+            
+            /**
+            * ----------  Gauge type = speedometer  -------------
+            */
+            else {
                 var bands = [];
                 if (this.options.stop && this.options.color) {
                     for (var j = 0; j < datastop.length; j++) {
                         bands.push({
                             from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-                            to: parseFloat(datastop[j])
+                            to: parseFloat(datastop[j]),
+                            thickness: 10
                         });
                     }
                     for (var j = 0; j < color.length; j++) {
@@ -943,7 +955,8 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
 
                 yaxis[i] = {
                     min: 0,
-                    max: 100,
+                    max: 100,       // value is percent of range
+                    offset: 0,
                     minorTickInterval: 'auto',
                     minorTickLength: 10,
                     minorTickPosition: 'inside',
@@ -954,6 +967,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                     labels: {
                         step: 2,
                         rotation: 'auto',
+                        distance: -25,
                         formatter: function () {return (((this.value * range) / 100) + diff)}
                     },
                     title: {
@@ -962,22 +976,42 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                     plotBands: bands.length > 0 ? bands : null
                 }
                 gauge[i] = {
+                    dial: {
+                        baseWidth: 3,
+                        topWidth: 1,
+                        borderRadius: 0,
+                        radius: '80%',
+                        baseLength: '70%', 
+                        rearLength: '10%'
+                    },
+                    pivot: {
+                        borderWidth: 0,
+                        radius: 5
+                    }
                 }
                 pane[i] = {
                     startAngle: -150,
                     endAngle: 150,
                     size: "95%",
+                    innerSize: '90%',
                     background: [{
                         className: 'outer-pane',
-                        outerRadius: '109%'
+                        outerRadius: '109%',
+                        shape: 'circle'
                     }, {
                         className: 'middle-pane',
-                        outerRadius: '107%'
+                        outerRadius: '107%',
+                        shape: 'circle'
                     }, {
                     }, {
                         className: 'inner-pane',
                         outerRadius: '105%',
-                        innerRadius: '103%'
+                        innerRadius: '103%',
+                        shape: 'circle'
+                    }, {
+                        outerRadius: '103%',
+                        innerRadius: 0,
+                        shape: 'circle'
                     }]
                 }
 
@@ -1007,7 +1041,7 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
                 }
             },
             plotOptions: {
-                 gauge: gauge[0],
+                 gauge: gauge[0]                 
             },
             pane: pane,
             tooltip: {
@@ -1177,6 +1211,7 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot_highcharts, {
                 max: 100,
                 minorTickPosition: 'outside',
                 tickPosition: 'outside',
+                offset: 0,
                 labels: {
                     rotation: 'auto',
                     distance: 20,
@@ -1229,11 +1264,14 @@ $.widget("sv.plot_gauge_vumeter", $.sv.plot_highcharts, {
             },
             plotOptions: {
                 gauge: {
+                    clip: true, 
                     dataLabels: {
                         enabled: false
                     },
                     dial: {
-                        radius: '100%'
+                        radius: '100%',
+                        baseWidth: 3,
+                        topWidth: 1
                     }
                 }
             },
@@ -2117,3 +2155,4 @@ $.widget("sv.plot_bargraph", $.sv.plot_highcharts, {
     },
 
 });
+

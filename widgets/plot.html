@@ -296,7 +296,7 @@
 */
 
 {% macro sparkline(id, item, mode, tmin, tmax, ymin, ymax, count, width, height, exposure, unit, source, href, rel) %}
-	{% set source = source|lower == 'item' ? 'item' : 'database' %}
+	{% set source = source|default('database')|lower == 'item' ? 'item' : 'database' %}
 	{% set tmax = (tmax|default('now')|lower=='0h' or tmax==0 or tmax is empty) ? 'now' : tmax %}
 	{% set tmin = tmin|default('1h') %}
 	{% set mode = mode|default('avg') %}

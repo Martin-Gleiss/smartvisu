@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v12.6.0 (2026-04-13)
+ * @license Highcharts JS v13.0.0 (2026-06-11)
  * @module highcharts/modules/data-tools
  * @requires highcharts
  *
@@ -8,8 +8,8 @@
  *
  * (c) 2010-2026 Highsoft AS
  *
- * A commercial license may be required depending on use.
- * See www.highcharts.com/license
+ * A commercial license may be required depending on use,
+ * see www.highcharts.com/license
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -99,1424 +99,14 @@ __webpack_require__.d(__webpack_exports__, {
 // EXTERNAL MODULE: external {"amd":["highcharts/highcharts"],"commonjs":["highcharts"],"commonjs2":["highcharts"],"root":["Highcharts"]}
 var highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_ = __webpack_require__(944);
 var highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default = /*#__PURE__*/__webpack_require__.n(highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_);
-;// ./code/es5/es-modules/Shared/Utilities.js
-/* *
- *
- *  (c) 2009-2026 Highsoft AS
- *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
- *
- *
- * */
-var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-
-var doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).doc, win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
-/**
- * Add an event listener.
- *
- * @function Highcharts.addEvent<T>
- *
- * @param  {Highcharts.Class<T>|T} el
- *         The element or object to add a listener to. It can be a
- *         {@link HTMLDOMElement}, an {@link SVGElement} or any other object.
- *
- * @param  {string} type
- *         The event type.
- *
- * @param  {Highcharts.EventCallbackFunction<T>|Function} fn
- *         The function callback to execute when the event is fired.
- *
- * @param  {Highcharts.EventOptionsObject} [options]
- *         Options for adding the event.
- *
- * @sample highcharts/members/addevent
- *         Use a general `render` event to draw shapes on a chart
- *
- * @return {Function}
- *         A callback function to remove the added event.
- */
-function addEvent(el, type, fn, options) {
-    if (options === void 0) { options = {}; }
-    // Add hcEvents to either the prototype (in case we're running addEvent on a
-    // class) or the instance. If hasOwnProperty('hcEvents') is false, it is
-    // inherited down the prototype chain, in which case we need to set the
-    // property on this instance (which may itself be a prototype).
-    var owner = typeof el === 'function' && el.prototype || el;
-    if (!Object.hasOwnProperty.call(owner, 'hcEvents')) {
-        owner.hcEvents = {};
-    }
-    var events = owner.hcEvents;
-    // Allow click events added to points, otherwise they will be prevented by
-    // the TouchPointer.pinch function after a pinch zoom operation (#7091).
-    if ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).Point && // Without H a dependency loop occurs
-        el instanceof (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).Point &&
-        el.series &&
-        el.series.chart) {
-        el.series.chart.runTrackerClick = true;
-    }
-    // Handle DOM events
-    // If the browser supports passive events, add it to improve performance
-    // on touch events (#11353).
-    var addEventListener = el.addEventListener;
-    if (addEventListener) {
-        addEventListener.call(el, type, fn, (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).supportsPassiveEvents ? {
-            passive: options.passive === void 0 ?
-                type.indexOf('touch') !== -1 : options.passive,
-            capture: false
-        } : false);
-    }
-    if (!events[type]) {
-        events[type] = [];
-    }
-    var eventObject = {
-            fn: fn,
-            order: typeof options.order === 'number' ? options.order : Infinity
-        };
-    events[type].push(eventObject);
-    // Order the calls
-    events[type].sort(function (a, b) { return a.order - b.order; });
-    // Return a function that can be called to remove this event.
-    return function () {
-        removeEvent(el, type, fn);
-    };
-}
-/**
- * Non-recursive method to find the lowest member of an array. `Math.min` raises
- * a maximum call stack size exceeded error in Chrome when trying to apply more
- * than 150.000 points. This method is slightly slower, but safe.
- *
- * @function Highcharts.arrayMin
- *
- * @param {Array<*>} data
- *        An array of numbers.
- *
- * @return {number}
- *         The lowest number.
- */
-function arrayMin(data) {
-    var i = data.length,
-        min = data[0];
-    while (i--) {
-        if (data[i] < min) {
-            min = data[i];
-        }
-    }
-    return min;
-}
-/**
- * Non-recursive method to find the lowest member of an array. `Math.max` raises
- * a maximum call stack size exceeded error in Chrome when trying to apply more
- * than 150.000 points. This method is slightly slower, but safe.
- *
- * @function Highcharts.arrayMax
- *
- * @param {Array<*>} data
- *        An array of numbers.
- *
- * @return {number}
- *         The highest number.
- */
-function arrayMax(data) {
-    var i = data.length,
-        max = data[0];
-    while (i--) {
-        if (data[i] > max) {
-            max = data[i];
-        }
-    }
-    return max;
-}
-/**
- * Set or get an attribute or an object of attributes.
- *
- * To use as a setter, pass a key and a value, or let the second argument be a
- * collection of keys and values. When using a collection, passing a value of
- * `null` or `undefined` will remove the attribute.
- *
- * To use as a getter, pass only a string as the second argument.
- *
- * @function Highcharts.attr
- *
- * @param {Highcharts.HTMLDOMElement|Highcharts.SVGDOMElement} elem
- *        The DOM element to receive the attribute(s).
- *
- * @param {string|Highcharts.HTMLAttributes|Highcharts.SVGAttributes} [keyOrAttribs]
- *        The property or an object of key-value pairs.
- *
- * @param {number|string} [value]
- *        The value if a single property is set.
- *
- * @return {string|null|undefined}
- *         When used as a getter, return the value.
- */
-function attr(elem, keyOrAttribs, value) {
-    var isGetter = isString(keyOrAttribs) && !defined(value);
-    var ret;
-    var attrSingle = function (value,
-        key) {
-            // Set the value
-            if (defined(value)) {
-                elem.setAttribute(key,
-        value);
-            // Get the value
-        }
-        else if (isGetter) {
-            ret = elem.getAttribute(key);
-            // IE7 and below cannot get class through getAttribute (#7850)
-            if (!ret && key === 'class') {
-                ret = elem.getAttribute(key + 'Name');
-            }
-            // Remove the value
-        }
-        else {
-            elem.removeAttribute(key);
-        }
-    };
-    // If keyOrAttribs is a string
-    if (isString(keyOrAttribs)) {
-        attrSingle(value, keyOrAttribs);
-        // Else if keyOrAttribs is defined, it is a hash of key/value pairs
-    }
-    else {
-        objectEach(keyOrAttribs, attrSingle);
-    }
-    return ret;
-}
-/**
- * Constrain a value to within a lower and upper threshold.
- *
- * @internal
- * @param {number} value The initial value
- * @param {number} min The lower threshold
- * @param {number} max The upper threshold
- * @return {number} Returns a number value within min and max.
- */
-function clamp(value, min, max) {
-    return value > min ? value < max ? value : max : min;
-}
-/**
- * Fix JS round off float errors.
- *
- * @function Highcharts.correctFloat
- *
- * @param {number} num
- *        A float number to fix.
- *
- * @param {number} [prec=14]
- *        The precision.
- *
- * @return {number}
- *         The corrected float number.
- */
-function correctFloat(num, prec) {
-    // When the number is higher than 1e14 use the number (#16275)
-    return num > 1e14 ? num : parseFloat(num.toPrecision(prec || 14));
-}
-/**
- * Utility function to create an HTML element with attributes and styles.
- *
- * @function Highcharts.createElement
- *
- * @param {string} tag
- *        The HTML tag.
- *
- * @param {Highcharts.HTMLAttributes} [attribs]
- *        Attributes as an object of key-value pairs.
- *
- * @param {Highcharts.CSSObject} [styles]
- *        Styles as an object of key-value pairs.
- *
- * @param {Highcharts.HTMLDOMElement} [parent]
- *        The parent HTML object.
- *
- * @param {boolean} [nopad=false]
- *        If true, remove all padding, border and margin.
- *
- * @return {Highcharts.HTMLDOMElement}
- *         The created DOM element.
- */
-function createElement(tag, attribs, styles, parent, nopad) {
-    var el = doc.createElement(tag);
-    if (attribs) {
-        extend(el, attribs);
-    }
-    if (nopad) {
-        css(el, { padding: '0', border: 'none', margin: '0' });
-    }
-    if (styles) {
-        css(el, styles);
-    }
-    if (parent) {
-        parent.appendChild(el);
-    }
-    return el;
-}
-/**
- * Utility for crisping a line position to the nearest full pixel depending on
- * the line width.
- *
- * @internal
- * @param {number} value       The raw pixel position
- * @param {number} lineWidth   The line width
- * @param {boolean} [inverted] Whether the containing group is inverted.
- *                             Crisping round numbers on the y-scale need to go
- *                             to the other side because the coordinate system
- *                             is flipped (scaleY is -1)
- * @return {number}            The pixel position to use for a crisp display
- */
-function crisp(value, lineWidth, inverted) {
-    if (lineWidth === void 0) { lineWidth = 0; }
-    var mod = lineWidth % 2 / 2,
-        inverter = inverted ? -1 : 1;
-    return (Math.round(value * inverter - mod) + mod) * inverter;
-}
-/**
- * Set CSS on a given element.
- *
- * @function Highcharts.css
- *
- * @param {Highcharts.HTMLDOMElement|Highcharts.SVGDOMElement} el
- *        An HTML DOM element.
- *
- * @param {Highcharts.CSSObject} styles
- *        Style object with camel case property names.
- *
- * @return {void}
- */
-function css(el, styles) {
-    extend(el.style, styles);
-}
-/**
- * Check if an object is null or undefined.
- *
- * @function Highcharts.defined
- *
- * @param {*} obj
- *        The object to check.
- *
- * @return {boolean}
- *         False if the object is null or undefined, otherwise true.
- */
-function defined(obj) {
-    return typeof obj !== 'undefined' && obj !== null;
-}
-/**
- * Utility method that destroys any SVGElement instances that are properties on
- * the given object. It loops all properties and invokes destroy if there is a
- * destroy method. The property is then delete.
- *
- * @function Highcharts.destroyObjectProperties
- *
- * @param {*} obj
- *        The object to destroy properties on.
- *
- * @param {*} [except]
- *        Exception, do not destroy this property, only delete it.
- */
-function destroyObjectProperties(obj, except, destructablesOnly) {
-    objectEach(obj, function (val, n) {
-        // If the object is non-null and destroy is defined
-        if (val !== except && (val === null || val === void 0 ? void 0 : val.destroy)) {
-            // Invoke the destroy
-            val.destroy();
-        }
-        // Delete the property from the object
-        if ((val === null || val === void 0 ? void 0 : val.destroy) || !destructablesOnly) {
-            delete obj[n];
-        }
-    });
-}
-/**
- * Discard a HTML element
- *
- * @function Highcharts.discardElement
- *
- * @param {Highcharts.HTMLDOMElement} element
- *        The HTML node to discard.
- */
-function discardElement(element) {
-    var _a;
-    (_a = element === null || element === void 0 ? void 0 : element.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(element);
-}
-// eslint-disable-next-line valid-jsdoc
-/**
- * Return the deep difference between two objects. It can either return the new
- * properties, or optionally return the old values of new properties.
- * @internal
- */
-function diffObjects(newer, older, keepOlder, collectionsWithUpdate) {
-    var ret = {};
-    /**
-     * Recurse over a set of options and its current values, and store the
-     * current values in the ret object.
-     */
-    function diff(newer, older, ret, depth) {
-        var keeper = keepOlder ? older : newer;
-        objectEach(newer, function (newerVal, key) {
-            if (!depth &&
-                collectionsWithUpdate &&
-                collectionsWithUpdate.indexOf(key) > -1 &&
-                older[key]) {
-                newerVal = splat(newerVal);
-                ret[key] = [];
-                // Iterate over collections like series, xAxis or yAxis and map
-                // the items by index.
-                for (var i = 0; i < Math.max(newerVal.length, older[key].length); i++) {
-                    // Item exists in current data (#6347)
-                    if (older[key][i]) {
-                        // If the item is missing from the new data, we need to
-                        // save the whole config structure. Like when
-                        // responsively updating from a dual axis layout to a
-                        // single axis and back (#13544).
-                        if (newerVal[i] === void 0) {
-                            ret[key][i] = older[key][i];
-                            // Otherwise, proceed
-                        }
-                        else {
-                            ret[key][i] = {};
-                            diff(newerVal[i], older[key][i], ret[key][i], depth + 1);
-                        }
-                    }
-                }
-            }
-            else if (isObject(newerVal, true) &&
-                !newerVal.nodeType // #10044
-            ) {
-                ret[key] = isArray(newerVal) ? [] : {};
-                diff(newerVal, older[key] || {}, ret[key], depth + 1);
-                // Delete empty nested objects
-                if (Object.keys(ret[key]).length === 0 &&
-                    // Except colorAxis which is a special case where the empty
-                    // object means it is enabled. Which is unfortunate and we
-                    // should try to find a better way.
-                    !(key === 'colorAxis' && depth === 0)) {
-                    delete ret[key];
-                }
-            }
-            else if (newer[key] !== older[key] ||
-                // If the newer key is explicitly undefined, keep it (#10525)
-                (key in newer && !(key in older))) {
-                if (key !== '__proto__' && key !== 'constructor') {
-                    ret[key] = keeper[key];
-                }
-            }
-        });
-    }
-    diff(newer, older, ret, 0);
-    return ret;
-}
-/**
- * Remove the last occurrence of an item from an array.
- *
- * @function Highcharts.erase
- *
- * @param {Array<*>} arr
- *        The array.
- *
- * @param {*} item
- *        The item to remove.
- *
- * @return {void}
- */
-function erase(arr, item) {
-    var i = arr.length;
-    while (i--) {
-        if (arr[i] === item) {
-            arr.splice(i, 1);
-            break;
-        }
-    }
-}
-/**
- * Utility function to extend an object with the members of another.
- *
- * @function Highcharts.extend<T>
- *
- * @param {T|undefined} a
- *        The object to be extended.
- *
- * @param {Partial<T>} b
- *        The object to add to the first one.
- *
- * @return {T}
- *         Object a, the original object.
- */
-function extend(a, b) {
-    var n;
-    if (!a) {
-        a = {};
-    }
-    for (n in b) { // eslint-disable-line guard-for-in
-        a[n] = b[n];
-    }
-    return a;
-}
-// eslint-disable-next-line valid-jsdoc
-/**
- * Extend a prototyped class by new members.
- *
- * @deprecated
- * @function Highcharts.extendClass<T>
- *
- * @param {Highcharts.Class<T>} parent
- *        The parent prototype to inherit.
- *
- * @param {Highcharts.Dictionary<*>} members
- *        A collection of prototype members to add or override compared to the
- *        parent prototype.
- *
- * @return {Highcharts.Class<T>}
- *         A new prototype.
- */
-function extendClass(parent, members) {
-    var obj = (function () { });
-    obj.prototype = new parent(); // eslint-disable-line new-cap
-    extend(obj.prototype, members);
-    return obj;
-}
-/**
- * Fire an event that was registered with {@link Highcharts#addEvent}.
- *
- * @function Highcharts.fireEvent<T>
- *
- * @param {T} el
- *        The object to fire the event on. It can be a {@link HTMLDOMElement},
- *        an {@link SVGElement} or any other object.
- *
- * @param {string} type
- *        The type of event.
- *
- * @param {Highcharts.Dictionary<*>|Event} [eventArguments]
- *        Custom event arguments that are passed on as an argument to the event
- *        handler.
- *
- * @param {Highcharts.EventCallbackFunction<T>|Function} [defaultFunction]
- *        The default function to execute if the other listeners haven't
- *        returned false.
- *
- * @return {void}
- */
-function fireEvent(el, type, eventArguments, defaultFunction) {
-    eventArguments = eventArguments || {};
-    if ((doc === null || doc === void 0 ? void 0 : doc.createEvent) &&
-        (el.dispatchEvent ||
-            (el.fireEvent &&
-                // Enable firing events on Highcharts instance.
-                el !== (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default())))) {
-        var e = doc.createEvent('Events');
-        e.initEvent(type, true, true);
-        eventArguments = extend(e, eventArguments);
-        if (el.dispatchEvent) {
-            el.dispatchEvent(eventArguments);
-        }
-        else {
-            el.fireEvent(type, eventArguments);
-        }
-    }
-    else if (el.hcEvents) {
-        if (!eventArguments.target) {
-            // We're running a custom event
-            extend(eventArguments, {
-                // Attach a simple preventDefault function to skip
-                // default handler if called. The built-in
-                // defaultPrevented property is not overwritable (#5112)
-                preventDefault: function () {
-                    eventArguments.defaultPrevented = true;
-                },
-                // Setting target to native events fails with clicking
-                // the zoom-out button in Chrome.
-                target: el,
-                // If the type is not set, we're running a custom event
-                // (#2297). If it is set, we're running a browser event.
-                type: type
-            });
-        }
-        var events = [];
-        var object = el;
-        var multilevel = false;
-        // Recurse up the inheritance chain and collect hcEvents set as own
-        // objects on the prototypes.
-        while (object.hcEvents) {
-            if (Object.hasOwnProperty.call(object, 'hcEvents') &&
-                object.hcEvents[type]) {
-                if (events.length) {
-                    multilevel = true;
-                }
-                events.unshift.apply(events, object.hcEvents[type]);
-            }
-            object = Object.getPrototypeOf(object);
-        }
-        // For performance reasons, only sort the event handlers in case we are
-        // dealing with multiple levels in the prototype chain. Otherwise, the
-        // events are already sorted in the addEvent function.
-        if (multilevel) {
-            // Order the calls
-            events.sort(function (a, b) { return a.order - b.order; });
-        }
-        // Call the collected event handlers
-        events.forEach(function (obj) {
-            // If the event handler returns false, prevent the default handler
-            // from executing
-            if (obj.fn.call(el, eventArguments, el) === false) {
-                eventArguments.preventDefault();
-            }
-        });
-    }
-    // Run the default if not prevented
-    if (defaultFunction && !eventArguments.defaultPrevented) {
-        defaultFunction.call(el, eventArguments);
-    }
-}
-/**
- * Convenience function to get the align factor, used several places for
- * computing positions
- * @internal
- */
-var getAlignFactor = function (align) {
-    if (align === void 0) { align = ''; }
-    return ({
-        center: 0.5,
-        right: 1,
-        middle: 0.5,
-        bottom: 1
-    }[align] || 0);
-};
-/**
- * Find the closest distance between two values of a two-dimensional array
- * @internal
- * @function Highcharts.getClosestDistance
- *
- * @param {Array<Array<number>>} arrays
- *          An array of arrays of numbers
- *
- * @return {number | undefined}
- *          The closest distance between values
- */
-function getClosestDistance(arrays, onError) {
-    var allowNegative = !onError;
-    var closest,
-        loopLength,
-        distance,
-        i;
-    arrays.forEach(function (xData) {
-        if (xData.length > 1) {
-            loopLength = xData.length - 1;
-            for (i = loopLength; i > 0; i--) {
-                distance = xData[i] - xData[i - 1];
-                if (distance < 0 && !allowNegative) {
-                    onError === null || onError === void 0 ? void 0 : onError();
-                    // Only one call
-                    onError = void 0;
-                }
-                else if (distance && (typeof closest === 'undefined' || distance < closest)) {
-                    closest = distance;
-                }
-            }
-        }
-    });
-    return closest;
-}
-/**
- * Get the magnitude of a number.
- *
- * @function Highcharts.getMagnitude
- *
- * @param {number} num
- *        The number.
- *
- * @return {number}
- *         The magnitude, where 1-9 are magnitude 1, 10-99 magnitude 2 etc.
- */
-function getMagnitude(num) {
-    return Math.pow(10, Math.floor(Math.log(num) / Math.LN10));
-}
-/**
- * Returns the value of a property path on a given object.
- *
- * @internal
- * @function getNestedProperty
- *
- * @param {string} path
- * Path to the property, for example `custom.myValue`.
- *
- * @param {unknown} parent
- * Instance containing the property on the specific path.
- *
- * @return {unknown}
- * The unknown property value.
- */
-function getNestedProperty(path, parent) {
-    var pathElements = path.split('.');
-    while (pathElements.length && defined(parent)) {
-        var pathElement = pathElements.shift();
-        // Filter on the key
-        if (typeof pathElement === 'undefined' ||
-            pathElement === '__proto__') {
-            return; // Undefined
-        }
-        if (pathElement === 'this') {
-            var thisProp = void 0;
-            if (isObject(parent)) {
-                thisProp = parent['@this'];
-            }
-            return thisProp !== null && thisProp !== void 0 ? thisProp : parent;
-        }
-        var child = parent[pathElement.replace(/[\\'"]/g, '')];
-        // Filter on the child
-        if (!defined(child) ||
-            typeof child === 'function' ||
-            typeof child.nodeType === 'number' ||
-            child === win) {
-            return; // Undefined
-        }
-        // Else, proceed
-        parent = child;
-    }
-    return parent;
-}
-/**
- * Get the computed CSS value for given element and property, only for numerical
- * properties. For width and height, the dimension of the inner box (excluding
- * padding) is returned. Used for fitting the chart within the container.
- *
- * @function Highcharts.getStyle
- *
- * @param {Highcharts.HTMLDOMElement} el
- * An HTML element.
- *
- * @param {string} prop
- * The property name.
- *
- * @param {boolean} [toInt=true]
- * Parse to integer.
- *
- * @return {number|string|undefined}
- * The style value.
- */
-function getStyle(el, prop, toInt) {
-    var _a;
-    var style;
-    // For width and height, return the actual inner pixel size (#4913)
-    if (prop === 'width') {
-        var offsetWidth = Math.min(el.offsetWidth,
-            el.scrollWidth);
-        // In flex boxes, we need to use getBoundingClientRect and floor it,
-        // because scrollWidth doesn't support subpixel precision (#6427) ...
-        var boundingClientRectWidth = (_a = el.getBoundingClientRect) === null || _a === void 0 ? void 0 : _a.call(el).width;
-        // ...unless if the containing div or its parents are transform-scaled
-        // down, in which case the boundingClientRect can't be used as it is
-        // also scaled down (#9871, #10498).
-        if (boundingClientRectWidth < offsetWidth &&
-            boundingClientRectWidth >= offsetWidth - 1) {
-            offsetWidth = Math.floor(boundingClientRectWidth);
-        }
-        return Math.max(0, // #8377
-        (offsetWidth -
-            (getStyle(el, 'padding-left', true) || 0) -
-            (getStyle(el, 'padding-right', true) || 0)));
-    }
-    if (prop === 'height') {
-        return Math.max(0, // #8377
-        (Math.min(el.offsetHeight, el.scrollHeight) -
-            (getStyle(el, 'padding-top', true) || 0) -
-            (getStyle(el, 'padding-bottom', true) || 0)));
-    }
-    // Otherwise, get the computed style
-    var css = win.getComputedStyle(el,
-        void 0); // eslint-disable-line no-undefined
-        if (css) {
-            style = css.getPropertyValue(prop);
-        if (pick(toInt, prop !== 'opacity')) {
-            style = pInt(style);
-        }
-    }
-    return style;
-}
-/**
- * Return the value of the first element in the array that satisfies the
- * provided testing function.
- *
- * @function Highcharts.find<T>
- *
- * @param {Array<T>} arr
- *        The array to test.
- *
- * @param {Function} callback
- *        The callback function. The function receives the item as the first
- *        argument. Return `true` if this item satisfies the condition.
- *
- * @return {T|undefined}
- *         The value of the element.
- */
-var find = Array.prototype.find ?
-    function (arr, callback) {
-        return arr.find(callback);
-    } :
-    // Legacy implementation. PhantomJS, IE <= 11 etc. #7223.
-    function (arr, callback) {
-        var i;
-        var length = arr.length;
-        for (i = 0; i < length; i++) {
-            if (callback(arr[i], i)) { // eslint-disable-line node/callback-return
-                return arr[i];
-            }
-        }
-    };
-/**
- * Internal clear timeout. The function checks that the `id` was not removed
- * (e.g. by `chart.destroy()`). For the details see
- * [issue #7901](https://github.com/highcharts/highcharts/issues/7901).
- *
- * @internal
- *
- * @function Highcharts.clearTimeout
- *
- * @param {number|undefined} id
- * Id of a timeout.
- */
-function internalClearTimeout(id) {
-    if (defined(id)) {
-        clearTimeout(id);
-    }
-}
-/**
- * Utility function to check if an Object is a HTML Element.
- *
- * @function Highcharts.isDOMElement
- *
- * @param {*} obj
- *        The item to check.
- *
- * @return {boolean}
- *         True if the argument is a HTML Element.
- */
-function isDOMElement(obj) {
-    return isObject(obj) && typeof obj.nodeType === 'number';
-}
-/**
- * Utility function to check if an Object is a class.
- *
- * @function Highcharts.isClass
- *
- * @param {object|undefined} obj
- *        The item to check.
- *
- * @return {boolean}
- *         True if the argument is a class.
- */
-function isClass(obj) {
-    var c = obj === null || obj === void 0 ? void 0 : obj.constructor;
-    return !!(isObject(obj, true) &&
-        !isDOMElement(obj) &&
-        ((c === null || c === void 0 ? void 0 : c.name) && c.name !== 'Object'));
-}
-/**
- * Utility function to check if an item is a number and it is finite (not NaN,
- * Infinity or -Infinity).
- *
- * @function Highcharts.isNumber
- *
- * @param {*} n
- *        The item to check.
- *
- * @return {boolean}
- *         True if the item is a finite number
- */
-function isNumber(n) {
-    return typeof n === 'number' && !isNaN(n) && n < Infinity && n > -Infinity;
-}
-/**
- * Utility function to check for string type.
- *
- * @function Highcharts.isString
- *
- * @param {*} s
- *        The item to check.
- *
- * @return {boolean}
- *         True if the argument is a string.
- */
-function isString(s) {
-    return typeof s === 'string';
-}
-/**
- * Utility function to check if an item is an array.
- *
- * @function Highcharts.isArray
- *
- * @param {*} obj
- *        The item to check.
- *
- * @return {boolean}
- *         True if the argument is an array.
- */
-function isArray(obj) {
-    var str = Object.prototype.toString.call(obj);
-    return str === '[object Array]' || str === '[object Array Iterator]';
-}
-/**
- * Utility function to check if object is a function.
- *
- * @function Highcharts.isFunction
- *
- * @param {*} obj
- *        The item to check.
- *
- * @return {boolean}
- *         True if the argument is a function.
- */
-function isFunction(obj) {
-    return typeof obj === 'function';
-}
-/**
- * Utility function to check if an item is of type object.
- *
- * @function Highcharts.isObject
- *
- * @param {*} obj
- *        The item to check.
- *
- * @param {boolean} [strict=false]
- *        Also checks that the object is not an array.
- *
- * @return {boolean}
- *         True if the argument is an object.
- */
-function isObject(obj, strict) {
-    return (!!obj &&
-        typeof obj === 'object' &&
-        (!strict || !isArray(obj))); // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-/**
- * Utility function to deep merge two or more objects and return a third object.
- * If the first argument is true, the contents of the second object is copied
- * into the first object. The merge function can also be used with a single
- * object argument to create a deep copy of an object.
- *
- * @function Highcharts.merge<T>
- *
- * @param {true | T} extendOrSource
- *        Whether to extend the left-side object,
- *        or the first object to merge as a deep copy.
- *
- * @param {...Array<object|undefined>} [sources]
- *        Object(s) to merge into the previous one.
- *
- * @return {T}
- *         The merged object. If the first argument is true, the return is the
- *         same as the second argument.
- */
-function merge(extendOrSource) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
-    }
-    var i,
-        args = __spreadArray([extendOrSource],
-        sources,
-        true),
-        ret = {};
-    var doCopy = function (copy,
-        original) {
-            // An object is replacing a primitive
-            if (typeof copy !== 'object') {
-                copy = {};
-        }
-        objectEach(original, function (value, key) {
-            // Prototype pollution (#14883)
-            if (key === '__proto__' || key === 'constructor') {
-                return;
-            }
-            // Copy the contents of objects, but not arrays or DOM nodes
-            if (isObject(value, true) &&
-                !isClass(value) &&
-                !isDOMElement(value)) {
-                copy[key] = doCopy(copy[key] || {}, value);
-                // Primitives and arrays are copied over directly
-            }
-            else {
-                copy[key] = original[key];
-            }
-        });
-        return copy;
-    };
-    // If first argument is true, copy into the existing object. Used in
-    // setOptions.
-    if (extendOrSource === true) {
-        ret = args[1];
-        args = Array.prototype.slice.call(args, 2);
-    }
-    // For each argument, extend the return
-    var len = args.length;
-    for (i = 0; i < len; i++) {
-        ret = doCopy(ret, args[i]);
-    }
-    return ret;
-}
-/**
- * Take an interval and normalize it to multiples of round numbers.
- *
- * @deprecated
- * @function Highcharts.normalizeTickInterval
- *
- * @param {number} interval
- *        The raw, un-rounded interval.
- *
- * @param {Array<*>} [multiples]
- *        Allowed multiples.
- *
- * @param {number} [magnitude]
- *        The magnitude of the number.
- *
- * @param {boolean} [allowDecimals]
- *        Whether to allow decimals.
- *
- * @param {boolean} [hasTickAmount]
- *        If it has tickAmount, avoid landing on tick intervals lower than
- *        original.
- *
- * @return {number}
- *         The normalized interval.
- *
- * @todo
- * Move this function to the Axis prototype. It is here only for historical
- * reasons.
- */
-function normalizeTickInterval(interval, multiples, magnitude, allowDecimals, hasTickAmount) {
-    var i,
-        retInterval = interval;
-    // Round to a tenfold of 1, 2, 2.5 or 5
-    magnitude = pick(magnitude, getMagnitude(interval));
-    var normalized = interval / magnitude;
-    // Multiples for a linear scale
-    if (!multiples) {
-        multiples = hasTickAmount ?
-            // Finer grained ticks when the tick amount is hard set, including
-            // when alignTicks is true on multiple axes (#4580).
-            [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10] :
-            // Else, let ticks fall on rounder numbers
-            [1, 2, 2.5, 5, 10];
-        // The allowDecimals option
-        if (allowDecimals === false) {
-            if (magnitude === 1) {
-                multiples = multiples.filter(function (num) {
-                    return num % 1 === 0;
-                });
-            }
-            else if (magnitude <= 0.1) {
-                multiples = [1 / magnitude];
-            }
-        }
-    }
-    // Normalize the interval to the nearest multiple
-    for (i = 0; i < multiples.length; i++) {
-        retInterval = multiples[i];
-        // Only allow tick amounts smaller than natural
-        if ((hasTickAmount &&
-            retInterval * magnitude >= interval) ||
-            (!hasTickAmount &&
-                (normalized <=
-                    (multiples[i] +
-                        (multiples[i + 1] || multiples[i])) / 2))) {
-            break;
-        }
-    }
-    // Multiply back to the correct magnitude. Correct floats to appropriate
-    // precision (#6085).
-    retInterval = correctFloat(retInterval * magnitude, -Math.round(Math.log(0.001) / Math.LN10));
-    return retInterval;
-}
-/**
- * Iterate over object key pairs in an object.
- *
- * @function Highcharts.objectEach<T>
- *
- * @param {*} obj
- *        The object to iterate over.
- *
- * @param {Highcharts.ObjectEachCallbackFunction<T>} fn
- *        The iterator callback. It passes three arguments:
- *        * value - The property value.
- *        * key - The property key.
- *        * obj - The object that objectEach is being applied to.
- *
- * @param {T} [ctx]
- *        The context.
- */
-function objectEach(obj, fn, ctx) {
-    for (var key in obj) {
-        if (Object.hasOwnProperty.call(obj, key)) {
-            fn.call(ctx || obj[key], obj[key], key, obj);
-        }
-    }
-}
-/**
- * Get the element's offset position, corrected for `overflow: auto`.
- *
- * @function Highcharts.offset
- *
- * @param {global.Element} el
- *        The DOM element.
- *
- * @return {Highcharts.OffsetObject}
- *         An object containing `left` and `top` properties for the position in
- *         the page.
- */
-function offset(el) {
-    var docElem = doc.documentElement,
-        box = (el.parentElement || el.parentNode) ?
-            el.getBoundingClientRect() :
-            { top: 0,
-        left: 0,
-        width: 0,
-        height: 0 };
-    return {
-        top: box.top + (win.pageYOffset || docElem.scrollTop) -
-            (docElem.clientTop || 0),
-        left: box.left + (win.pageXOffset || docElem.scrollLeft) -
-            (docElem.clientLeft || 0),
-        width: box.width,
-        height: box.height
-    };
-}
-/**
- * Left-pad a string to a given length by adding a character repetitively.
- *
- * @function Highcharts.pad
- *
- * @param {number} number
- *        The input string or number.
- *
- * @param {number} [length]
- *        The desired string length.
- *
- * @param {string} [padder=0]
- *        The character to pad with.
- *
- * @return {string}
- *         The padded string.
- */
-function pad(number, length, padder) {
-    return new Array((length || 2) +
-        1 -
-        String(number)
-            .replace('-', '')
-            .length).join(padder || '0') + number;
-}
-/* eslint-disable jsdoc/check-param-names */
-/**
- * Return the first value that is not null or undefined.
- *
- * @function Highcharts.pick<T>
- *
- * @param {...Array<T|null|undefined>} items
- *        Variable number of arguments to inspect.
- *
- * @return {T}
- *         The value of the first argument that is not null or undefined.
- */
-function pick() {
-    var args = arguments;
-    var length = args.length;
-    for (var i = 0; i < length; i++) {
-        var arg = args[i];
-        if (typeof arg !== 'undefined' && arg !== null) {
-            return arg;
-        }
-    }
-}
-/* eslint-enable jsdoc/check-param-names */
-/**
- * Shortcut for parseInt
- *
- * @internal
- * @function Highcharts.pInt
- *
- * @param {*} s
- *        any
- *
- * @param {number} [mag]
- *        Magnitude
- *
- * @return {number}
- *         number
- */
-function pInt(s, mag) {
-    return parseInt(s, mag || 10);
-}
-/**
- * Adds an item to an array, if it is not present in the array.
- *
- * @internal
- *
- * @function Highcharts.pushUnique
- *
- * @param {Array<unknown>} array
- * The array to add the item to.
- *
- * @param {unknown} item
- * The item to add.
- *
- * @return {boolean}
- * Returns true, if the item was not present and has been added.
- */
-function pushUnique(array, item) {
-    return array.indexOf(item) < 0 && !!array.push(item);
-}
-/**
- * Return a length based on either the integer value, or a percentage of a base.
- *
- * @function Highcharts.relativeLength
- *
- * @param {Highcharts.RelativeSize} value
- *        A percentage string or a number.
- *
- * @param {number} base
- *        The full length that represents 100%.
- *
- * @param {number} [offset=0]
- *        A pixel offset to apply for percentage values. Used internally in
- *        axis positioning.
- *
- * @return {number}
- *         The computed length.
- */
-function relativeLength(value, base, offset) {
-    return (/%$/).test(value) ?
-        (base * parseFloat(value) / 100) + (offset || 0) :
-        parseFloat(value);
-}
-/**
- * Replaces text in a string with a given replacement in a loop to catch nested
- * matches after previous replacements.
- *
- * @internal
- *
- * @function Highcharts.replaceNested
- *
- * @param {string} text
- * Text to search and modify.
- *
- * @param {...Array<(RegExp|string)>} replacements
- * One or multiple tuples with search pattern (`[0]: (string|RegExp)`) and
- * replacement (`[1]: string`) for matching text.
- *
- * @return {string}
- * Text with replacements.
- */
-function replaceNested(text) {
-    var replacements = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        replacements[_i - 1] = arguments[_i];
-    }
-    var previous,
-        replacement;
-    do {
-        previous = text;
-        for (var _a = 0, replacements_1 = replacements; _a < replacements_1.length; _a++) {
-            replacement = replacements_1[_a];
-            text = text.replace(replacement[0], replacement[1]);
-        }
-    } while (text !== previous);
-    return text;
-}
-/**
- * Remove an event that was added with {@link Highcharts#addEvent}.
- *
- * @function Highcharts.removeEvent<T>
- *
- * @param {Highcharts.Class<T>|T} el
- *        The element to remove events on.
- *
- * @param {string} [type]
- *        The type of events to remove. If undefined, all events are removed
- *        from the element.
- *
- * @param {Highcharts.EventCallbackFunction<T>} [fn]
- *        The specific callback to remove. If undefined, all events that match
- *        the element and optionally the type are removed.
- *
- * @return {void}
- */
-function removeEvent(el, type, fn) {
-    /** @internal */
-    function removeOneEvent(type, fn) {
-        var removeEventListener = el.removeEventListener;
-        if (removeEventListener) {
-            removeEventListener.call(el, type, fn, false);
-        }
-    }
-    /** @internal */
-    function removeAllEvents(eventCollection) {
-        var types,
-            len;
-        if (!el.nodeName) {
-            return; // Break on non-DOM events
-        }
-        if (type) {
-            types = {};
-            types[type] = true;
-        }
-        else {
-            types = eventCollection;
-        }
-        objectEach(types, function (_val, n) {
-            if (eventCollection[n]) {
-                len = eventCollection[n].length;
-                while (len--) {
-                    removeOneEvent(n, eventCollection[n][len].fn);
-                }
-            }
-        });
-    }
-    var owner = typeof el === 'function' && el.prototype || el;
-    if (Object.hasOwnProperty.call(owner, 'hcEvents')) {
-        var events = owner.hcEvents;
-        if (type) {
-            var typeEvents = (events[type] || []);
-            if (fn) {
-                events[type] = typeEvents.filter(function (obj) {
-                    return fn !== obj.fn;
-                });
-                removeOneEvent(type, fn);
-            }
-            else {
-                removeAllEvents(events);
-                events[type] = [];
-            }
-        }
-        else {
-            removeAllEvents(events);
-            delete owner.hcEvents;
-        }
-    }
-}
-/**
- * Check if an element is an array, and if not, make it into an array.
- *
- * @function Highcharts.splat
- *
- * @param {*} obj
- *        The object to splat.
- *
- * @return {Array}
- *         The produced or original array.
- */
-function splat(obj) {
-    return isArray(obj) ? obj : [obj];
-}
-/**
- * Sort an object array and keep the order of equal items. The ECMAScript
- * standard does not specify the behavior when items are equal.
- *
- * @function Highcharts.stableSort
- *
- * @param {Array<*>} arr
- *        The array to sort.
- *
- * @param {Function} sortFunction
- *        The function to sort it with, like with regular Array.prototype.sort.
- */
-function stableSort(arr, sortFunction) {
-    // @todo It seems like Chrome since v70 sorts in a stable way internally,
-    // plus all other browsers do it, so over time we may be able to remove this
-    // function
-    var length = arr.length;
-    var sortValue,
-        i;
-    // Add index to each item
-    for (i = 0; i < length; i++) {
-        arr[i].safeI = i; // Stable sort index
-    }
-    arr.sort(function (a, b) {
-        sortValue = sortFunction(a, b);
-        return sortValue === 0 ? a.safeI - b.safeI : sortValue;
-    });
-    // Remove index from items
-    for (i = 0; i < length; i++) {
-        delete arr[i].safeI; // Stable sort index
-    }
-}
-/**
- * Set a timeout if the delay is given, otherwise perform the function
- * synchronously.
- *
- * @function Highcharts.syncTimeout
- *
- * @param {Function} fn
- *        The function callback.
- *
- * @param {number} delay
- *        Delay in milliseconds.
- *
- * @param {*} [context]
- *        An optional context to send to the function callback.
- *
- * @return {number}
- *         An identifier for the timeout that can later be cleared with
- *         Highcharts.clearTimeout. Returns -1 if there is no timeout.
- */
-function syncTimeout(fn, delay, context) {
-    if (delay > 0) {
-        return setTimeout(fn, delay, context);
-    }
-    fn.call(0, context);
-    return -1;
-}
-/**
- * @internal
- */
-function ucfirst(s) {
-    return ((isString(s) ?
-        s.substring(0, 1).toUpperCase() + s.substring(1) :
-        String(s)));
-}
-/**
- * Wrap a method with extended functionality, preserving the original function.
- *
- * @function Highcharts.wrap
- *
- * @param {*} obj
- *        The context object that the method belongs to. In real cases, this is
- *        often a prototype.
- *
- * @param {string} method
- *        The name of the method to extend.
- *
- * @param {Highcharts.WrapProceedFunction} func
- *        A wrapper function callback. This function is called with the same
- *        arguments as the original function, except that the original function
- *        is unshifted and passed as the first argument.
- */
-function wrap(obj, method, func) {
-    var proceed = obj[method];
-    obj[method] = function () {
-        var outerArgs = arguments,
-            scope = this;
-        return func.apply(this, [
-            function () {
-                return proceed.apply(scope, arguments.length ? arguments : outerArgs);
-            }
-        ].concat([].slice.call(arguments)));
-    };
-}
-
 ;// ./code/es5/es-modules/Data/Modifiers/DataModifier.js
 /* *
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -1591,7 +181,8 @@ var DataModifier = /** @class */ (function () {
         var defaultOptions = {
                 iterations: 1
             };
-        var iterations = merge(defaultOptions,
+        var iterations = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(defaultOptions,
             options).iterations;
         modifier.on('afterBenchmarkIteration', function () {
             if (results.length === iterations) {
@@ -1627,7 +218,7 @@ var DataModifier = /** @class */ (function () {
      * Event object containing additional event information.
      */
     DataModifier.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Modifies the given table and sets its `modified` property as a reference
@@ -1675,7 +266,7 @@ var DataModifier = /** @class */ (function () {
      * Function to unregister callback from the modifier event.
      */
     DataModifier.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /* *
      *
@@ -1701,15 +292,16 @@ var DataModifier = /** @class */ (function () {
  *
  *  (c) 2020-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
  *  - Dawid Draguła
  *
  * */
-var ColumnUtils_spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
             if (!ar) ar = Array.prototype.slice.call(from, 0, i);
@@ -1783,7 +375,7 @@ function splice(column, start, deleteCount, removedAsSubarray, items) {
             items = Array.from(items);
         }
         return {
-            removed: column.splice.apply(column, ColumnUtils_spreadArray([start, deleteCount], items, false)),
+            removed: column.splice.apply(column, __spreadArray([start, deleteCount], items, false)),
             array: column
         };
     }
@@ -1844,8 +436,9 @@ var ColumnUtils = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -1869,51 +462,44 @@ var DataTableCore_setLength = Data_ColumnUtils.setLength, DataTableCore_splice =
  * to add, remove, and manipulate columns and rows, as well as to retrieve data
  * from specific cells.
  *
+ * Highcharts allows passing a `DataTable` or a configuration object for a data
+ * table in the `dataTable` property, either chart-level
+ * [dataTable](https://api.highcharts.com/highcharts/dataTable) or as
+ * [series.dataTable](https://api.highcharts.com/highcharts/series.dataTable).
+ * The `DataTable` is then used as a source for the series data points, mapped
+ * by the `series.dataMapping` option.
+ *
+ * After chart instantiation, the data table can be accessed from the series as
+ * `series.dataTable`. CRUD operations on the data table will be reflected in
+ * the chart.
+ *
+ * @example
+ * const dataTable = new Highcharts.DataTable({
+ *   columns: {
+ *     year: [2020, 2021, 2022, 2023],
+ *     cost: [11, 13, 12, 14],
+ *     revenue: [12, 15, 14, 18]
+ *   }
+ * });
+ *
  * @class
  * @name Highcharts.DataTable
  *
- * @param {Highcharts.DataTableOptions} [options]
+ * @param {Highcharts.DataTableOptionsObject} [options]
  * Options to initialize the new DataTable instance.
  */
 var DataTableCore = /** @class */ (function () {
-    /**
-     * Constructs an instance of the DataTable class.
-     *
-     * @example
-     * const dataTable = new Highcharts.DataTableCore({
-     *   columns: {
-     *     year: [2020, 2021, 2022, 2023],
-     *     cost: [11, 13, 12, 14],
-     *     revenue: [12, 15, 14, 18]
-     *   }
-     * });
-
-     *
-     * @param {Highcharts.DataTableOptions} [options]
-     * Options to initialize the new DataTable instance.
-     */
     function DataTableCore(options) {
         if (options === void 0) { options = {}; }
         var _this = this;
-        /**
-         * Whether the ID was automatic generated or given in the constructor.
-         *
-         * @name Highcharts.DataTable#autoId
-         * @type {boolean}
-         */
+        this.isDataTable = true;
         this.autoId = !options.id;
         this.columns = {};
-        /**
-         * ID of the table for identification purposes.
-         *
-         * @name Highcharts.DataTable#id
-         * @type {string}
-         */
         this.id = (options.id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
         this.rowCount = 0;
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         var rowCount = 0;
-        objectEach(options.columns || {}, function (column, columnId) {
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options.columns || {}, function (column, columnId) {
             _this.columns[columnId] = column.slice();
             rowCount = Math.max(rowCount, column.length);
         });
@@ -1934,7 +520,7 @@ var DataTableCore = /** @class */ (function () {
     DataTableCore.prototype.applyRowCount = function (rowCount) {
         var _this = this;
         this.rowCount = rowCount;
-        objectEach(this.columns, function (column, columnId) {
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(this.columns, function (column, columnId) {
             if (column.length !== rowCount) {
                 _this.columns[columnId] = DataTableCore_setLength(column, rowCount);
             }
@@ -1943,6 +529,13 @@ var DataTableCore = /** @class */ (function () {
     /**
      * Delete rows. Simplified version of the full
      * `DataTable.deleteRows` method.
+     *
+     * @sample highcharts/datatable/live-chart/
+     *       Add and delete rows in a live chart
+     * @sample highcharts/datatable/shared-with-grid/
+     *       Chart with data table CRUD operations
+     *
+     * @function Highcharts.DataTable#deleteRows
      *
      * @param {number} rowIndex
      * The start row index
@@ -1959,22 +552,24 @@ var DataTableCore = /** @class */ (function () {
         if (rowCount === void 0) { rowCount = 1; }
         if (rowCount > 0 && rowIndex < this.rowCount) {
             var length_1 = 0;
-            objectEach(this.columns, function (column, columnId) {
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(this.columns, function (column, columnId) {
                 _this.columns[columnId] =
                     DataTableCore_splice(column, rowIndex, rowCount).array;
                 length_1 = column.length;
             });
             this.rowCount = length_1;
         }
-        fireEvent(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
     };
     /**
-     * Fetches the given column by the canonical column name. Simplified version
+     * Fetches the given column by the canonical column ID. Simplified version
      * of the full `DataTable.getRow` method, always returning by reference.
      *
+     * @function Highcharts.DataTable#setColumn
+     *
      * @param {string} columnId
-     * Name of the column to get.
+     * ID of the column to get.
      *
      * @return {Highcharts.DataTableColumn|undefined}
      * A copy of the column, or `undefined` if not found.
@@ -1987,6 +582,8 @@ var DataTableCore = /** @class */ (function () {
     /**
      * Retrieves all or the given columns. Simplified version of the full
      * `DataTable.getColumns` method, always returning by reference.
+     *
+     * @function Highcharts.DataTable#getColumns
      *
      * @param {Array<string>} [columnIds]
      * Column ids to retrieve.
@@ -2007,21 +604,32 @@ var DataTableCore = /** @class */ (function () {
     /**
      * Retrieves the row at a given index.
      *
+     * @function Highcharts.DataTable#getRowObject
+     *
      * @param {number} rowIndex
      * Row index to retrieve. First row has index 0.
      *
-     * @param {Array<string>} [columnIds]
+     * @param {Array<string>} [columnNames]
      * Column names to retrieve.
      *
      * @return {Record<string, number|string|undefined>|undefined}
      * Returns the row values, or `undefined` if not found.
      */
-    DataTableCore.prototype.getRow = function (rowIndex, columnIds) {
-        var _this = this;
-        return (columnIds || Object.keys(this.columns)).map(function (key) { var _a; return (_a = _this.columns[key]) === null || _a === void 0 ? void 0 : _a[rowIndex]; });
+    DataTableCore.prototype.getRowObject = function (rowIndex, columnNames) {
+        var _a;
+        var row = {},
+            columns = this.columns;
+        columnNames !== null && columnNames !== void 0 ? columnNames : (columnNames = Object.keys(this.columns));
+        for (var _i = 0, columnNames_1 = columnNames; _i < columnNames_1.length; _i++) {
+            var columnName = columnNames_1[_i];
+            row[columnName] = (_a = columns[columnName]) === null || _a === void 0 ? void 0 : _a[rowIndex];
+        }
+        return row;
     };
     /**
      * Sets cell values for a column. Will insert a new column, if not found.
+     *
+     * @function Highcharts.DataTable#setColumn
      *
      * @param {string} columnId
      * Column name to set.
@@ -2046,15 +654,20 @@ var DataTableCore = /** @class */ (function () {
     };
     /**
      * Sets cell values for multiple columns. Will insert new columns, if not
-     * found. Simplified version of the full `DataTableCore.setColumns`, limited
+     * found. Simplified version of the full `DataTable.setColumns`, limited
      * to full replacement of the columns (undefined `rowIndex`).
+     *
+     * @sample highcharts/datatable/shared-with-grid/
+     *       Chart with data table CRUD operations
+     *
+     * @function Highcharts.DataTable#setColumns
      *
      * @param {Highcharts.DataTableColumnCollection} columns
      * Columns as a collection, where the keys are the column names.
      *
      * @param {number} [rowIndex]
-     * Index of the first row to change. Ignored in the `DataTableCore`, as it
-     * always replaces the full column.
+     * Index of the first row to change. Ignored in the simplified `DataTable`,
+     * as it always replaces the full column.
      *
      * @param {Record<string, (boolean|number|string|null|undefined)>} [eventDetail]
      * Custom information for pending events.
@@ -2065,13 +678,13 @@ var DataTableCore = /** @class */ (function () {
     DataTableCore.prototype.setColumns = function (columns, rowIndex, eventDetail) {
         var _this = this;
         var rowCount = this.rowCount;
-        objectEach(columns, function (column, columnId) {
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             _this.columns[columnId] = column.slice();
             rowCount = column.length;
         });
         this.applyRowCount(rowCount);
         if (!(eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.silent)) {
-            fireEvent(this, 'afterSetColumns');
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterSetColumns');
             this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         }
     };
@@ -2079,6 +692,15 @@ var DataTableCore = /** @class */ (function () {
      * Sets cell values of a row. Will insert a new row if no index was
      * provided, or if the index is higher than the total number of table rows.
      * A simplified version of the full `DateTable.setRow`, limited to objects.
+     *
+     * @sample highcharts/datatable/live-chart/
+     *       Add and delete rows in a live chart
+     * @sample stock/datatable/live-candlestick/
+     *       Live candlestick
+     * @sample highcharts/datatable/shared-with-grid/
+     *       Chart with data table CRUD operations
+     *
+     * @function Highcharts.DataTable#setRow
      *
      * @param {Record<string, number|string|undefined>} row
      * Cell values to set.
@@ -2095,39 +717,36 @@ var DataTableCore = /** @class */ (function () {
      * @emits #afterSetRows
      */
     DataTableCore.prototype.setRow = function (row, rowIndex, insert, eventDetail) {
+        var _a;
         if (rowIndex === void 0) { rowIndex = this.rowCount; }
         var columns = this.columns,
             indexRowCount = insert ? this.rowCount + 1 : rowIndex + 1,
             rowKeys = Object.keys(row);
         if ((eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
             for (var i = 0, iEnd = rowKeys.length; i < iEnd; i++) {
-                var key = rowKeys[i];
-                if (!columns[key]) {
-                    columns[key] = [];
-                }
+                columns[_a = rowKeys[i]] || (columns[_a] = new Array(this.rowCount));
             }
         }
-        objectEach(columns, function (column, columnId) {
-            var _a,
-                _b;
-            if (!column && (eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
-                column = new Array(indexRowCount);
-            }
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             if (column) {
                 if (insert) {
-                    column = DataTableCore_splice(column, rowIndex, 0, true, [(_a = row[columnId]) !== null && _a !== void 0 ? _a : null]).array;
+                    column = DataTableCore_splice(column, rowIndex, 0, true, [row[columnId]]).array;
                 }
                 else {
-                    column[rowIndex] = (_b = row[columnId]) !== null && _b !== void 0 ? _b : null;
+                    column[rowIndex] =
+                        // Preserve explicit null and undefined but fall back
+                        // to existing value if the new row does not have the
+                        // key
+                        columnId in row ?
+                            row[columnId] :
+                            column[rowIndex];
                 }
                 columns[columnId] = column;
             }
         });
-        if (indexRowCount > this.rowCount) {
-            this.applyRowCount(indexRowCount);
-        }
+        this.applyRowCount(Math.max(indexRowCount, this.rowCount));
         if (!(eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.silent)) {
-            fireEvent(this, 'afterSetRows');
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterSetRows', { rowIndex: rowIndex });
             this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         }
     };
@@ -2135,7 +754,7 @@ var DataTableCore = /** @class */ (function () {
      * Returns the modified (clone) or the original data table if the modified
      * one does not exist.
      *
-     * @return {Highcharts.DataTableCore}
+     * @return {Highcharts.DataTable}
      * The modified (clone) or the original data table.
      */
     DataTableCore.prototype.getModified = function () {
@@ -2155,30 +774,45 @@ var DataTableCore = /** @class */ (function () {
  *
  * */
 /**
+ * A collection of data table columns defined by a object where the key is the
+ * column ID and the value is an array of the column values. Typed arrays are
+ * supported.
+ *
+ * @type {Highcharts.DataTableColumnCollection|undefined}
+ * @apioption dataTable.columns
+ */
+/**
+ * Custom ID to identify the new DataTable instance.
+ *
+ * @type {string|undefined}
+ * @apioption dataTable.id
+ */
+/**
  * A typed array.
  * @typedef {Int8Array|Uint8Array|Uint8ClampedArray|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array} Highcharts.TypedArray
- * //**
- * A column of values in a data table.
- * @typedef {Array<boolean|null|number|string|undefined>|Highcharts.TypedArray} Highcharts.DataTableColumn
  */ /**
+* A column of values in a data table.
+* @typedef {Array<boolean|null|number|string|undefined>|Highcharts.TypedArray} Highcharts.DataTableColumn
+*/ /**
 * A collection of data table columns defined by a object where the key is the
-* column name and the value is an array of the column values.
+* column ID and the value is an array of the column values. Typed arrays are
+* supported.
 * @typedef {Record<string, Highcharts.DataTableColumn>} Highcharts.DataTableColumnCollection
 */
 /**
  * Options for the `DataTable` or `DataTableCore` classes.
- * @interface Highcharts.DataTableOptions
+ * @interface Highcharts.DataTableOptionsObject
  */ /**
 * The column options for the data table. The columns are defined by an object
 * where the key is the column ID and the value is an array of the column
 * values.
 *
-* @name Highcharts.DataTableOptions.columns
+* @name Highcharts.DataTableOptionsObject.columns
 * @type {Highcharts.DataTableColumnCollection|undefined}
 */ /**
 * Custom ID to identify the new DataTable instance.
 *
-* @name Highcharts.DataTableOptions.id
+* @name Highcharts.DataTableOptionsObject.id
 * @type {string|undefined}
 */
 (''); // Keeps doclets above in JS file
@@ -2188,8 +822,9 @@ var DataTableCore = /** @class */ (function () {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -2245,7 +880,7 @@ var DataTable_splice = Data_ColumnUtils.splice, DataTable_setLength = Data_Colum
  * @class
  * @name Highcharts.DataTable
  *
- * @param {Highcharts.DataTableOptions} [options]
+ * @param {Highcharts.DataTableOptionsObject} [options]
  * Options to initialize the new DataTable instance.
  */
 var DataTable = /** @class */ (function (_super) {
@@ -2407,7 +1042,7 @@ var DataTable = /** @class */ (function (_super) {
         var deletedRows = [];
         var indices;
         var actualRowCount;
-        if (!defined(rowIndex)) {
+        if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(rowIndex)) {
             // No index provided - delete all rows.
             indices = [0];
             actualRowCount = this.rowCount;
@@ -2499,7 +1134,7 @@ var DataTable = /** @class */ (function (_super) {
         ].includes(e.type)) {
             this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         }
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Fetches a single cell value.
@@ -2692,7 +1327,7 @@ var DataTable = /** @class */ (function (_super) {
                 // Normal array
                 rowIndex = column.indexOf(cellValue, rowIndexOffset);
             }
-            else if (isNumber(cellValue)) {
+            else if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(cellValue)) {
                 // Typed array
                 rowIndex = column.indexOf(cellValue, rowIndexOffset);
             }
@@ -2842,7 +1477,7 @@ var DataTable = /** @class */ (function (_super) {
             return (column.indexOf(cellValue) !== -1);
         }
         // Typed array
-        if (defined(cellValue) && Number.isFinite(cellValue)) {
+        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(cellValue) && Number.isFinite(cellValue)) {
             return (column.indexOf(+cellValue) !== -1);
         }
         return false;
@@ -2864,7 +1499,7 @@ var DataTable = /** @class */ (function (_super) {
      * Function to unregister callback from the event.
      */
     DataTable.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /**
      * Changes the ID of an existing column to a new ID, effectively renaming
@@ -2986,8 +1621,8 @@ var DataTable = /** @class */ (function (_super) {
             detail: eventDetail,
             rowIndex: rowIndex
         });
-        if (!defined(rowIndex) && !typeAsOriginal) {
-            _super.prototype.setColumns.call(this, columns, rowIndex, extend(eventDetail, { silent: true }));
+        if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(rowIndex) && !typeAsOriginal) {
+            _super.prototype.setColumns.call(this, columns, rowIndex, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)(eventDetail, { silent: true }));
         }
         else {
             for (var i = 0, iEnd = columnIds.length, column = void 0, tableColumn = void 0, columnId = void 0, ArrayConstructor = void 0; i < iEnd; ++i) {
@@ -3100,7 +1735,7 @@ var DataTable = /** @class */ (function (_super) {
         var modifiedIndexes = this.localRowIndexes = [];
         for (var i = 0, iEnd = originalRowIndexes.length, originalIndex = void 0; i < iEnd; ++i) {
             originalIndex = originalRowIndexes[i];
-            if (defined(originalIndex)) {
+            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(originalIndex)) {
                 modifiedIndexes[originalIndex] = i;
             }
         }
@@ -3225,8 +1860,9 @@ var DataTable = /** @class */ (function (_super) {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -3407,7 +2043,7 @@ var DataConnector = /** @class */ (function () {
     DataConnector.prototype.describeColumn = function (name, columnMeta) {
         var connector = this;
         var columns = connector.metadata.columns;
-        columns[name] = merge(columns[name] || {}, columnMeta);
+        columns[name] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(columns[name] || {}, columnMeta);
     };
     /**
      * Method for applying columns meta information to the whole DataConnector.
@@ -3434,7 +2070,7 @@ var DataConnector = /** @class */ (function () {
             columns = connector.metadata.columns,
             names = Object.keys(columns || {});
         if (names.length) {
-            return names.sort(function (a, b) { return (pick(columns[a].index, 0) - pick(columns[b].index, 0)); });
+            return names.sort(function (a, b) { return ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(columns[a].index, 0) - (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(columns[b].index, 0)); });
         }
     };
     /**
@@ -3476,7 +2112,7 @@ var DataConnector = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         this.emit({ type: 'beforeUpdate' });
-                        merge(true, this.options, newOptions);
+                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.options, newOptions);
                         options = this.options;
                         if ('enablePolling' in newOptions || 'dataRefreshRate' in newOptions) {
                             if ('enablePolling' in options && options.enablePolling) {
@@ -3541,6 +2177,9 @@ var DataConnector = /** @class */ (function () {
                                 switch (_h.label) {
                                     case 0:
                                         dataModifierOptions = (_e = (_d = tableOptionsArray === null || tableOptionsArray === void 0 ? void 0 : tableOptionsArray.find(function (dataTable) { return dataTable.key === key; })) === null || _d === void 0 ? void 0 : _d.dataModifier) !== null && _e !== void 0 ? _e : (_f = this_1.options) === null || _f === void 0 ? void 0 : _f.dataModifier;
+                                        if (!dataModifierOptions) {
+                                            return [2 /*return*/, "continue"];
+                                        }
                                         ModifierClass = (dataModifierOptions &&
                                             Modifiers_DataModifier.types[dataModifierOptions.type]);
                                         return [4 /*yield*/, table.setModifier(ModifierClass ?
@@ -3619,7 +2258,7 @@ var DataConnector = /** @class */ (function () {
      * Event object containing additional event information.
      */
     DataConnector.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Registers a callback for a specific connector event.
@@ -3634,7 +2273,7 @@ var DataConnector = /** @class */ (function () {
      * Function to unregister callback from the connector event.
      */
     DataConnector.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /**
      * Iterates over the dataTables and initiates the corresponding converters.
@@ -3692,8 +2331,9 @@ var DataConnector = /** @class */ (function () {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -3827,7 +2467,7 @@ function guessType(value, converter) {
         else {
             // Determine if a date string
             var dateValue = converter.parseDate(value);
-            result = isNumber(dateValue) ? 'Date' : 'string';
+            result = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(dateValue) ? 'Date' : 'string';
         }
     }
     if (typeof value === 'number') {
@@ -3901,8 +2541,9 @@ var DataConverterUtils = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -3999,7 +2640,8 @@ var DataConverter = /** @class */ (function () {
                 }
             }
         };
-        var mergedOptions = merge(DataConverter.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(DataConverter.defaultOptions,
             options);
         var regExpPoint = mergedOptions.decimalPoint;
         if (regExpPoint === '.' || regExpPoint === ',') {
@@ -4168,7 +2810,7 @@ var DataConverter = /** @class */ (function () {
      * Event object containing additional event data
      */
     DataConverter.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Registers a callback for a specific event.
@@ -4183,7 +2825,7 @@ var DataConverter = /** @class */ (function () {
      * Function to unregister callback from the modifier event.
      */
     DataConverter.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /**
      * Parse a date and return it as a number.
@@ -4277,8 +2919,9 @@ var DataConverter = /** @class */ (function () {
  *
  *  (c) 2020-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -4645,8 +3288,9 @@ function toRange(cursor, defaultRange) {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -4720,7 +3364,7 @@ var DataPool = /** @class */ (function () {
      *
      * */
     function DataPool(options) {
-        this.options = merge(DataPool.defaultOptions, options);
+        this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(DataPool.defaultOptions, options);
         this.connectors = {};
         this.waiting = {};
     }
@@ -4737,7 +3381,7 @@ var DataPool = /** @class */ (function () {
      * Event object with event information.
      */
     DataPool.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Loads the connector.
@@ -4898,7 +3542,7 @@ var DataPool = /** @class */ (function () {
      * Function to unregister callback from the event.
      */
     DataPool.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /**
      * Sets connector options under the specified `options.id`.
@@ -4979,8 +3623,9 @@ var DataPool = /** @class */ (function () {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -5281,7 +3926,7 @@ function negativeReference(formula) {
     var formulaLength = formula.length;
     var priorFormula = formula[formulaLength - 2];
     return (formula[formulaLength - 1] === '-' &&
-        isString(priorFormula) &&
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isString)(priorFormula) &&
         !!priorFormula.match(/\*|\/|\^/));
 }
 /**
@@ -5472,8 +4117,9 @@ var FormulaParser = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -5521,7 +4167,7 @@ function isFormula(item) {
  * @return {boolean}
  * `true`, if the item is a formula function.
  */
-function FormulaTypes_isFunction(item) {
+function isFunction(item) {
     return (typeof item === 'object' &&
         !(Array.isArray(item)) &&
         item.type === 'function');
@@ -5596,7 +4242,7 @@ function isValue(item) {
  * */
 var MathFormula = {
     isFormula: isFormula,
-    isFunction: FormulaTypes_isFunction,
+    isFunction: isFunction,
     isOperator: isOperator,
     isRange: isRange,
     isReference: isReference,
@@ -5609,8 +4255,9 @@ var MathFormula = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -5919,7 +4566,7 @@ function applyOperator(values, operators) {
     var secondValue = values.pop();
     var firstValue = values.pop();
     var operator = operators.pop();
-    if (!defined(secondValue) || !defined(firstValue) || !defined(operator)) {
+    if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(secondValue) || !(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(firstValue) || !(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(operator)) {
         values.push(NaN);
     }
     else {
@@ -6147,8 +4794,9 @@ var FormulaProcessor = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6217,8 +4865,9 @@ Formula_FormulaProcessor.registerProcessorFunction('ABS', ABS);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6278,8 +4927,9 @@ Formula_FormulaProcessor.registerProcessorFunction('AND', AND);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6356,8 +5006,9 @@ Formula_FormulaProcessor.registerProcessorFunction('AVERAGE', AVERAGE);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6449,8 +5100,9 @@ Formula_FormulaProcessor.registerProcessorFunction('AVERAGEA', AVERAGEA);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6517,8 +5169,9 @@ Formula_FormulaProcessor.registerProcessorFunction('COUNT', COUNT);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6591,8 +5244,9 @@ Formula_FormulaProcessor.registerProcessorFunction('COUNTA', COUNTA);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6647,8 +5301,9 @@ Formula_FormulaProcessor.registerProcessorFunction('IF', IF);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6702,8 +5357,9 @@ Formula_FormulaProcessor.registerProcessorFunction('ISNA', ISNA);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6774,8 +5430,9 @@ Formula_FormulaProcessor.registerProcessorFunction('MAX', MAX);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6856,8 +5513,9 @@ Formula_FormulaProcessor.registerProcessorFunction('MEDIAN', MEDIAN);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6928,8 +5586,9 @@ Formula_FormulaProcessor.registerProcessorFunction('MIN', MIN);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -6996,8 +5655,9 @@ Formula_FormulaProcessor.registerProcessorFunction('MOD', MOD);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7155,8 +5815,9 @@ var MODE = {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7218,8 +5879,9 @@ Formula_FormulaProcessor.registerProcessorFunction('NOT', NOT);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7282,8 +5944,9 @@ Formula_FormulaProcessor.registerProcessorFunction('OR', OR);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7354,8 +6017,9 @@ Formula_FormulaProcessor.registerProcessorFunction('PRODUCT', PRODUCT);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7422,8 +6086,9 @@ Formula_FormulaProcessor.registerProcessorFunction('SUM', SUM); // 🐝
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7505,8 +6170,9 @@ Formula_FormulaProcessor.registerProcessorFunction('XOR', XOR);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7568,8 +6234,9 @@ var Formula = Formula_assign(Formula_assign(Formula_assign({}, Formula_FormulaPa
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -7639,7 +6306,8 @@ var CSVConverter = /** @class */ (function (_super) {
      */
     function CSVConverter(options) {
         var _this = this;
-        var mergedOptions = merge(CSVConverter.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(CSVConverter.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         /* *
@@ -7675,7 +6343,8 @@ var CSVConverter = /** @class */ (function (_super) {
     CSVConverter.prototype.parse = function (options, eventDetail) {
         var converter = this,
             dataTypes = converter.dataTypes,
-            parserOptions = merge(this.options,
+            parserOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(this.options,
             options),
             beforeParse = parserOptions.beforeParse,
             lineDelimiter = parserOptions.lineDelimiter,
@@ -7994,8 +6663,9 @@ Converters_DataConverter.registerType('CSV', CSVConverter);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -8054,7 +6724,8 @@ var CSVConnector = /** @class */ (function (_super) {
      */
     function CSVConnector(options) {
         var _this = this;
-        var mergedOptions = merge(CSVConnector.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(CSVConnector.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.options = mergedOptions;
@@ -8076,7 +6747,7 @@ var CSVConnector = /** @class */ (function (_super) {
      * Event object containing additional event information.
      */
     CSVConnector.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Initiates the loading of the CSV source to the connector
@@ -8122,7 +6793,7 @@ var CSVConnector = /** @class */ (function (_super) {
                             firstRowAsNames: firstRowAsNames,
                             beforeParse: beforeParse
                         };
-                    return new Converters_CSVConverter(merge(options, converterOptions));
+                    return new Converters_CSVConverter((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(options, converterOptions));
                 }, function (converter, data) {
                     return converter.parse({ csv: data });
                 });
@@ -8179,8 +6850,9 @@ Connectors_DataConnector.registerType('CSV', CSVConnector);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -8248,7 +6920,8 @@ var JSONConverter = /** @class */ (function (_super) {
      */
     function JSONConverter(options) {
         var _this = this;
-        var mergedOptions = merge(JSONConverter.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(JSONConverter.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         /* *
@@ -8280,7 +6953,7 @@ var JSONConverter = /** @class */ (function (_super) {
      */
     JSONConverter.prototype.parse = function (options, eventDetail) {
         var converter = this;
-        options = merge(converter.options, options);
+        options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(converter.options, options);
         var beforeParse = options.beforeParse,
             orientation = options.orientation,
             firstRowAsNames = options.firstRowAsNames,
@@ -8383,7 +7056,7 @@ var JSONConverter = /** @class */ (function (_super) {
         }
         for (var rowIndex = 0, iEnd = data.length; rowIndex < iEnd; rowIndex++) {
             var row = data[rowIndex];
-            if (!isArray(row)) {
+            if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isArray)(row)) {
                 row = this.convertItemToRow(row, columnIds);
             }
             for (var columnIndex = 0, jEnd = row.length; columnIndex < jEnd; columnIndex++) {
@@ -8420,7 +7093,7 @@ var JSONConverter = /** @class */ (function (_super) {
         var converter = this;
         if (columnIds && !(Array.isArray(columnIds))) {
             var newRow_1 = [];
-            objectEach(columnIds, function (arrayWithPath, name) {
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columnIds, function (arrayWithPath, name) {
                 newRow_1.push(arrayWithPath.reduce(function (acc, key) {
                     return acc[key];
                 }, rowObj));
@@ -8457,8 +7130,9 @@ Converters_DataConverter.registerType('JSON', JSONConverter);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -8557,7 +7231,8 @@ var JSONConnector = /** @class */ (function (_super) {
      */
     function JSONConnector(options) {
         var _this = this;
-        var mergedOptions = merge(JSONConnector.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(JSONConnector.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.options = mergedOptions;
@@ -8579,7 +7254,7 @@ var JSONConnector = /** @class */ (function (_super) {
      * Event object containing additional event information.
      */
     JSONConnector.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
      * Initiates the loading of the JSON source to the connector
@@ -8697,8 +7372,9 @@ Connectors_DataConnector.registerType('JSON', JSONConnector);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -8769,7 +7445,8 @@ var GoogleSheetsConverter = /** @class */ (function (_super) {
      */
     function GoogleSheetsConverter(options) {
         var _this = this;
-        var mergedOptions = merge(GoogleSheetsConverter.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(GoogleSheetsConverter.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.header = [];
@@ -8796,7 +7473,8 @@ var GoogleSheetsConverter = /** @class */ (function (_super) {
     GoogleSheetsConverter.prototype.parse = function (options, eventDetail) {
         var _a;
         var converter = this,
-            parseOptions = merge(converter.options,
+            parseOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(converter.options,
             options);
         var columnsArray = (((_a = parseOptions.json) === null || _a === void 0 ? void 0 : _a.values) || []).map(function (column) { return column.slice(); });
         if (columnsArray.length === 0) {
@@ -8871,8 +7549,9 @@ function isDateObject(value) {
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -8947,7 +7626,8 @@ var GoogleSheetsConnector = /** @class */ (function (_super) {
  */
     function GoogleSheetsConnector(options) {
         var _this = this;
-        var mergedOptions = merge(GoogleSheetsConnector.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(GoogleSheetsConnector.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.options = mergedOptions;
@@ -8966,7 +7646,7 @@ var GoogleSheetsConnector = /** @class */ (function (_super) {
  * Event object containing additional event information.
  */
     GoogleSheetsConnector.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     /**
  * Loads data from a Google Spreadsheet.
@@ -9105,7 +7785,7 @@ function buildQueryRange(options) {
     return googleSpreadsheetRange || ((alphabet[startColumn || 0] || 'A') +
         (Math.max((startRow || 0), 0) + 1) +
         ':' +
-        (alphabet[pick(endColumn, 25)] || 'Z') +
+        (alphabet[(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(endColumn, 25)] || 'Z') +
         (endRow ?
             Math.max(endRow, 0) :
             'Z'));
@@ -9128,8 +7808,9 @@ Connectors_DataConnector.registerType('GoogleSheets', GoogleSheetsConnector);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -9221,7 +7902,8 @@ var HTMLTableConverter = /** @class */ (function (_super) {
      */
     function HTMLTableConverter(options) {
         var _this = this;
-        var mergedOptions = merge(HTMLTableConverter.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(HTMLTableConverter.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.headers = [];
@@ -9438,7 +8120,8 @@ var HTMLTableConverter = /** @class */ (function (_super) {
         var converter = this,
             columnsArray = [],
             headers = [],
-            parseOptions = merge(converter.options,
+            parseOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(converter.options,
             options),
             endRow = parseOptions.endRow,
             startColumn = parseOptions.startColumn,
@@ -9552,8 +8235,9 @@ Converters_DataConverter.registerType('HTMLTable', HTMLTableConverter);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -9631,7 +8315,7 @@ var HTMLTableConnector_generator = (undefined && undefined.__generator) || funct
 
 
 
-var HTMLTableConnector_win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
+var win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
 /* *
  *
  *  Class
@@ -9657,7 +8341,8 @@ var HTMLTableConnector = /** @class */ (function (_super) {
      */
     function HTMLTableConnector(options) {
         var _this = this;
-        var mergedOptions = merge(HTMLTableConnector.defaultOptions,
+        var mergedOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(HTMLTableConnector.defaultOptions,
             options);
         _this = _super.call(this, mergedOptions) || this;
         _this.options = mergedOptions;
@@ -9698,7 +8383,7 @@ var HTMLTableConnector = /** @class */ (function (_super) {
                         });
                         if (typeof htmlTable === 'string') {
                             connector.tableID = htmlTable;
-                            tableElement = HTMLTableConnector_win.document.getElementById(htmlTable);
+                            tableElement = win.document.getElementById(htmlTable);
                         }
                         else {
                             tableElement = htmlTable;
@@ -9714,7 +8399,7 @@ var HTMLTableConnector = /** @class */ (function (_super) {
                             });
                             return [2 /*return*/, Promise.reject(new Error(error))];
                         }
-                        columns = converter.parse(merge({ tableElement: connector.tableElement }, options), eventDetail);
+                        columns = converter.parse((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)({ tableElement: connector.tableElement }, options), eventDetail);
                         // If already loaded, clear the current rows
                         table.deleteColumns();
                         table.setColumns(columns);
@@ -9755,8 +8440,9 @@ Connectors_DataConnector.registerType('HTMLTable', HTMLTableConnector);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -9861,7 +8547,7 @@ var ChainModifier = /** @class */ (function (_super) {
         }
         var _this = _super.call(this) || this;
         _this.chain = chain;
-        _this.options = merge(ChainModifier.defaultOptions, options);
+        _this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(ChainModifier.defaultOptions, options);
         var optionsChain = _this.options.chain || [];
         for (var i = 0, iEnd = optionsChain.length, modifierOptions = void 0, ModifierClass = void 0; i < iEnd; ++i) {
             modifierOptions = optionsChain[i];
@@ -10049,10 +8735,10 @@ var ChainModifier = /** @class */ (function (_super) {
         });
     };
     ChainModifier.prototype.emit = function (e) {
-        fireEvent(this, e.type, e);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, e.type, e);
     };
     ChainModifier.prototype.on = function (type, callback) {
-        return addEvent(this, type, callback);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(this, type, callback);
     };
     /* *
      *
@@ -10080,8 +8766,9 @@ Modifiers_DataModifier.registerType('Chain', ChainModifier);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -10136,7 +8823,7 @@ var InvertModifier = /** @class */ (function (_super) {
      */
     function InvertModifier(options) {
         var _this = _super.call(this) || this;
-        _this.options = merge(InvertModifier.defaultOptions, options);
+        _this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(InvertModifier.defaultOptions, options);
         return _this;
     }
     /* *
@@ -10221,8 +8908,9 @@ Modifiers_DataModifier.registerType('Invert', InvertModifier);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -10426,8 +9114,9 @@ Modifiers_DataModifier.registerType('Math', MathModifier);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -10480,7 +9169,7 @@ var RangeModifier = /** @class */ (function (_super) {
      */
     function RangeModifier(options) {
         var _this = _super.call(this) || this;
-        _this.options = merge(RangeModifier.defaultOptions, options);
+        _this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(RangeModifier.defaultOptions, options);
         return _this;
     }
     /* *
@@ -10547,8 +9236,9 @@ Modifiers_DataModifier.registerType('Range', RangeModifier);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -10602,7 +9292,7 @@ var SortModifier = /** @class */ (function (_super) {
      */
     function SortModifier(options) {
         var _this = _super.call(this) || this;
-        _this.options = merge(SortModifier.defaultOptions, options);
+        _this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(SortModifier.defaultOptions, options);
         return _this;
     }
     /* *
@@ -10752,8 +9442,9 @@ Modifiers_DataModifier.registerType('Sort', SortModifier);
  *
  *  (c) 2009-2026 Highsoft AS
  *
- *  A commercial license may be required depending on use.
- *  See www.highcharts.com/license
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
  *
  *
  *  Authors:
@@ -10805,7 +9496,7 @@ var FilterModifier = /** @class */ (function (_super) {
      */
     function FilterModifier(options) {
         var _this = _super.call(this) || this;
-        _this.options = merge(FilterModifier.defaultOptions, options);
+        _this.options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(FilterModifier.defaultOptions, options);
         return _this;
     }
     /* *
@@ -10821,7 +9512,7 @@ var FilterModifier = /** @class */ (function (_super) {
      */
     FilterModifier.compile = function (condition) {
         var _this = this;
-        if (isFunction(condition)) {
+        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isFunction)(condition)) {
             return condition;
         }
         var op = condition.operator;
