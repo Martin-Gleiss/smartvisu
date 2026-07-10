@@ -316,13 +316,9 @@
 		{% set seriesitem = item %}
 	{% endif %}
 	{% set label = id|default(' ') %}
-	{% set chartoptions = {chart:{backgroundColor: null, borderWidth: 0, margin: [2, 0, 2, 0], width: width, height: height, style: {overflow: 'visible'}, skipClone: true}, title: {text: ''},credits: {enabled: false},
-        xAxis: [{labels: {enabled: false}, title: {text: null}, startOnTick: false, endOnTick: false, tickPositions: [], type: 'datetime'}],
-        yAxis: [{endOnTick: false, startOnTick: false, labels: {enabled: false}, title: {text: null}, tickPositions: [0]}],
-        legend: {enabled: false}, tooltip: {hideDelay: 0, outside: true, shared: true},
-        plotOptions: {series: {animation: false, lineWidth: 1, shadow: false, states: {hover: {lineWidth: 1}}, marker: {radius: 1, states: {hover: {radius: 2}}}, fillOpacity: 0.25}}} %}
+	{% set chartoptions = {mode: 'sparkline', width: width, height: height} %}
 	{% if href is not empty %}<a href="{{ href }}"{% if rel is not empty %} data-rel="popup"{% endif %}>{% endif %}
-	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
+	<div{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} style="min-width: {{width}}px; min-height: {{height}}px;" data-widget="plot.period" data-mode="{{ mode }}" data-item="{{ seriesitem }}" data-tmin="{{ tmin }}" data-tmax="{{ tmax }}"
         {% if ymin is not empty %} data-ymin="{{ implode(ymin) }}" {% endif %} {% if ymax is not empty %} data-ymax="{{ implode(ymax) }}" {% endif %}
     	data-exposure="{{ exposure }}" data-unit="{{ unit }}" data-stacking="normal" data-chart-options="{{ chartoptions|json_encode()|escape('html_attr') }}" data-exportmenu="0" data-label="{{ label }}"
 		{% if config_timesource == 'server' %} data-servertime="yes" {% endif %}>
