@@ -6,6 +6,7 @@
 - status.customstyle has got a new option to compare elapsed time after a timestamp given by an item - e.g. to show timeouts on widgets which don't receive sensor updates any more
 - activity indicator in basic.select and basic stateswitch can now be limited to actions where the item value changes (e.g. blink 15 seconds if item changes: indicator = 'blink:15:change')
 - new widgets phone.data_updateinfo and phone.data_deviceinfo provide Fritz!Box data as "internal" items, e.g. "@phone.update.available"
+- plot.xyplot is now able to display x-axis units in the tooltip
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory

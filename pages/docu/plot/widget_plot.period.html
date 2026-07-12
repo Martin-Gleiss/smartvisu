@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-		<div class="block">
+	<div class="block">
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>a plot of 3 series</h3>
@@ -162,7 +162,8 @@
 			</div>
 		</div>
 		<br /><br />
-		More information on Highcharts: <a href="https://www.highcharts.com/">https://www.highcharts.com/</a>
+		{% if config_plot_library == 'highcharts' %} More information on Highcharts: <a href="https://www.highcharts.com/">https://www.highcharts.com/</a> {% endif %}
+        {% if config_plot_library == 'echarts' %} More information on Apache echarts: <a href="https://echarts.apache.org/en/">https://echarts.apache.org/en/</a> {% endif %}
 	</div>
 
 {% endblock %}

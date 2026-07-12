@@ -225,7 +225,23 @@ $.widget("sv.plot_period", $.sv.plot_highcharts, {
 
     _create: function() {
         this._super();
-
+        
+        // Prepare options for sparkline mode (will later be merged into the chart object and override the composition of the full plot)
+        if (this.options.chartOptions && this.options.chartOptions.hasOwnProperty('mode') && this.options.chartOptions.mode == 'sparkline'){
+            var width = this.options.chartOptions.width;
+            var height = this.options.chartOptions.height;
+            this.options.chartOptions = {
+                chart:{backgroundColor: null, borderWidth: 0, margin: [2, 0, 2, 0], width: width, height: height, style: {overflow: 'visible'}, skipClone: true}, 
+                title: {text: ''},
+                credits: {enabled: false},
+                xAxis: [{labels: {enabled: false}, title: {text: null}, startOnTick: false, endOnTick: false, tickPositions: []}],
+                yAxis: [{endOnTick: false, startOnTick: false, labels: {enabled: false}, title: {text: null}, tickPositions: [0]}],
+                legend: {enabled: false}, 
+                tooltip: {hideDelay: 0, outside: true, shared: true},
+                plotOptions: {series: {animation: false, lineWidth: 1, shadow: false, states: {hover: {lineWidth: 1}}, marker: {radius: 1, states: {hover: {radius: 2}}}, fillOpacity: 0.25}}
+            }
+        }
+        
         var ymin = this.options.ymin != undefined ? String(this.options.ymin).explode() : [];
         var ymax = this.options.ymax != undefined ? String(this.options.ymax).explode() : [];
 
@@ -1806,7 +1822,7 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
                 endOnTick: false,
                 startOnTick: false,
                 type: ytype[i] || 'linear',
-                svUnit: units[i] || 'float',
+                svUnit: units[i+1] || 'float',
                 minTickInterval: 1,
                 showLastLabel: true
             };
@@ -1827,7 +1843,8 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
                 min: xMin,
                 max: xMax,
                 ordinal: false,
-                title: { text: axis[0], align: 'high' }
+                title: { text: axis[0], align: 'high' },
+                svUnit: units[0] || 'float',
             },
             navigator: {
                 xAxis: {
@@ -1855,10 +1872,15 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
             tooltip: {
                 shared: true,
                 split: false,
-                pointFormatter: function() {
-                    var unit = this.series.yAxis.userOptions.svUnit;
-                    var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
-                    return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
+                formatter: function(hoveredPoint){
+                    var that = this;
+                    var content = parseFloat(this.x).transUnit(this.series.xAxis.userOptions.svUnit)  + "<br/>";
+                    this.points.forEach(function(hoveredPoint){
+                        var unit = hoveredPoint.series.yAxis.userOptions.svUnit;
+                        var value = (hoveredPoint.series.yAxis.categories) ? hoveredPoint.series.yAxis.categories[hoveredPoint.y] : parseFloat(hoveredPoint.y).transUnit(unit);
+                        content += '<span class="highcharts-color-' + hoveredPoint.colorIndex + '">\u25CF</span> ' + hoveredPoint.series.name + ': <b>' + value + '</b><br/>';
+                    });                
+                    return content;
                 }
             },
             navigation: {    // options for export context menu
