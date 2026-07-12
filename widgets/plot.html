@@ -414,8 +414,8 @@
 * @param {value[]=} y-axes setup for left '0' and right '1' hand in array form (optional)
 * @param {color[?]=} y-axes color; multiples in array form (optional)
 * @param {text[?](linear,logarithmic,boolean)=linear} y-axes type, one of 'linear', 'logarithmic' or 'boolean'; multiples in array form (optional, default 'linear')
-* @param {format[?]=} unit(s) for the y-axis. Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. Multiples in array form. (optional)
-* @param {text[?]=} object with additional options for Highcharts, see https://api.highcharts.com/ (optional)
+* @param {format[]=} unit(s) for the x- and y-axis in array form [x,y...] Either a unit of the language file, an individual format string (PHP sprintf like) or a simple string as suffix. (optional)
+* @param {text[?]=} object with additional options. See the "API" or "Options" section of the selected plot libraries documentation (for Highcharts: https://api.highcharts.com/) (optional)
 * @param {text[?](normal,percent)=normal} stacking of series for each stack (array for multiple stacks in ascending order): 'normal', 'percent' (optional, default=normal). 
 * @param {text[]=} assign stacked series to different stacks: '0', '1, '2'... or ''. Sequence must be same as item sequence (optional, default='')
 * @param {value=0} control for the export of plot data: 0 = none, 1 = images, 2 = images and data (e.g.csv) (optional)
@@ -436,7 +436,7 @@
 			{%- endif -%}
 		{%- endif -%}
 	{%- endif -%}
-	{%- set unit = (unit is iterable ? unit : [unit|default('')]) -%}
+	{%- set unit = (unit is iterable ? unit : ['', unit|default('')]) -%}
 	{%- set units = [] -%}
 	{%- for uniti in unit -%}
 		{%- set units = units|merge([uniti|replace({',' : ';'})]) -%}  /** hide comma before implode/explode to allow format strings, e.g. %01,02f% */

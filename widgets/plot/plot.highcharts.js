@@ -1822,7 +1822,7 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
                 endOnTick: false,
                 startOnTick: false,
                 type: ytype[i] || 'linear',
-                svUnit: units[i] || 'float',
+                svUnit: units[i+1] || 'float',
                 minTickInterval: 1,
                 showLastLabel: true
             };
@@ -1843,7 +1843,8 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
                 min: xMin,
                 max: xMax,
                 ordinal: false,
-                title: { text: axis[0], align: 'high' }
+                title: { text: axis[0], align: 'high' },
+                svUnit: units[0] || 'float',
             },
             navigator: {
                 xAxis: {
@@ -1871,10 +1872,15 @@ $.widget("sv.plot_xyplot", $.sv.plot_highcharts, {
             tooltip: {
                 shared: true,
                 split: false,
-                pointFormatter: function() {
-                    var unit = this.series.yAxis.userOptions.svUnit;
-                    var value = (this.series.yAxis.categories) ? this.series.yAxis.categories[this.y] : parseFloat(this.y).transUnit(unit);
-                    return '<span class="highcharts-color-' + this.colorIndex + '">\u25CF</span> ' + this.series.name + ': <b>' + value + '</b><br/>';
+                formatter: function(hoveredPoint){
+                    var that = this;
+                    var content = parseFloat(this.x).transUnit(this.series.xAxis.userOptions.svUnit)  + "<br/>";
+                    this.points.forEach(function(hoveredPoint){
+                        var unit = hoveredPoint.series.yAxis.userOptions.svUnit;
+                        var value = (hoveredPoint.series.yAxis.categories) ? hoveredPoint.series.yAxis.categories[hoveredPoint.y] : parseFloat(hoveredPoint.y).transUnit(unit);
+                        content += '<span class="highcharts-color-' + hoveredPoint.colorIndex + '">\u25CF</span> ' + hoveredPoint.series.name + ': <b>' + value + '</b><br/>';
+                    });                
+                    return content;
                 }
             },
             navigation: {    // options for export context menu
