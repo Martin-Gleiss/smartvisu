@@ -28,6 +28,7 @@
 - Language support for errors during init (driver, plot config)
 - item types datetime and timestamp are now available for widget assistant and template checker
 - smarthomeng and offline driver convert an item to a Date object if value is an ISO timedate string (starting with e.g. 2026-03-29T12:03)
+- offline driver allows shorter time increments for series and checks uniqueness of series in order to avoid duplicate updates
 
 ### Updated Libraries
 - ICS Parser v3.5.1
@@ -48,6 +49,7 @@
 - device.uzsugraph showed false interpolation simulation after sunrise/sunset was dragged in the graph
 - widget assistant did not display quad widgets in outline mode. Solved by extending template "quad_base" if a quad widget is present.
 - Fritz!box TR-064 service did not work on SSL-port 49443 due to a faulty stream context definition
+- series update cycles in offline driver have been fixed
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
