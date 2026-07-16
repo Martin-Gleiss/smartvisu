@@ -321,36 +321,29 @@ var io = {
      * Builds a series out of random float values
      */
     demoseries: function (tmin, tmax, min, max, cnt, val) {
-
         var ret = Array();
-
-        if (!min || isNaN(min)) {
+        if (!min || isNaN(min))
             min = 0;
-        }
-        if (!max) {
+        if (!max)
             max = 255;
-        }
-        else if (isNaN(max)) { // boolean plot
+        else if (isNaN(max)) // boolean plot
             max = 1;
+
+        if (cnt > 1) {
+            //synchronize timestamps for initial demoseries to 5 seconds in order to allow stacked plots
+            var actualTime = new Date()
+            var actualIntervall = Math.round(actualTime/5000) * 5000; 
+            tmin = new Date (actualIntervall) - new Date().duration(tmin);
+            tmax = new Date (actualIntervall) - new Date().duration(tmax);
+            var step = Math.max(Math.round((tmax - tmin) / (cnt-1)), 1);
+        } else {
+            step = 1000;
         }
-
-        //tmin = new Date().getTime() - new Date().duration(tmin);
-        //tmax = new Date().getTime() - new Date().duration(tmax);
-
-        //synchronize timestamps for demoseries to the minute in order to allow stacked plots
-        var actualTime = new Date()
-        var actualMinute = Math.round(actualTime/60000) * 60000; 
-        tmin = new Date (actualMinute) - new Date().duration(tmin);
-        tmax = new Date (actualMinute) - new Date().duration(tmax);
-
-        var step = Math.round((tmax - tmin) / (cnt-1));
-        if(step == 0)
-            step = 1;
 
         if(min == 0 && max == 1) { // boolean plot
             if(val === undefined)
                 val = 0;
-            while (tmin <= tmax) {
+            while (tmin <= tmax + 499) { // leave 499 ms space for rounding errors
                 val = (Math.random() < (0.2 + 0.6 * val)) ? 1 : 0; // make changes lazy
                 ret.push([tmin, val]);
                 tmin += step;
@@ -361,7 +354,7 @@ var io = {
             if(val === undefined)
                 val = (min * 1) + ((max - min) / 2);
 
-            while (tmin <= tmax) {
+            while (tmin <= tmax + 499) { // leave 499 ms space for rounding errors
                 var increment = Math.random() * (2 * delta) - delta;
                 if (val + increment >= max || val + increment <= min)
                     increment *= -1;
@@ -422,19 +415,24 @@ var io = {
      * start all subscribed series of a single plot or of all plots on the page
      */
     startseries: function(plotwidget){
-        var repeatSeries = function(item, tmin, tmax, ymin, ymax, cnt, step, startval) {
-            var series = io.demoseries(tmin, tmax, ymin, ymax, cnt, startval);
-            console.log('[io.offline] receiving series data ' + JSON.stringify(series) + ': '+ item, cnt)
-            widget.update(item, series);
+        var unique = Array();
+        var repeatSeries = function(item, tmin, tmax, ymin, ymax, count, step, startval) {
+            var series = io.demoseries(tmin, tmax, ymin, ymax, count, startval);
+            var length = series.length;
 
+            // use computed step from demoseries
             if(step == null)
-                step = Math.round((new Date().duration(tmin) - new Date().duration(tmax)) / cnt);
-            var nextTime = -(new Date().duration(tmax).getTime() - step)/1000;
-            var startval = series[series.length-1][1];
+                step = series[length-1][0] - series[length-2][0];
+            var startval = series[length-1][1];
+            var nextTime = series[length-1][0] + step - new Date().getTime();
+            tmax =  series[length-1][0] + step;
+
             io.seriesTimer[item] = setTimeout(function(){
-                //repeatSeries(item, tmax, nextTime+"s", ymin, ymax, 1, step, startval);
                 repeatSeries(item, tmax, tmax, ymin, ymax, 1, step, startval);
-            }, step);
+            }, nextTime);
+            
+            console.log('[io.offline] receiving series data ' + JSON.stringify(series) + ': '+ item, length)
+            widget.update(item, series);
         }
 
         if (plotwidget === undefined)
@@ -442,11 +440,11 @@ var io = {
         else
             plotWidgets = plotwidget;
 
-        plotWidgets.each(function (idx) {            
+        plotWidgets.each(function (idx) {
             var items = widget.explode($(this).attr('data-item'));
             for (var i = 0; i < items.length; i++) {
                 var item = items[i].split('.');
-                if ((plotwidget != undefined || widget.get(items[i]) == null) && widget.checkseries(items[i])) {
+                if ((plotwidget != undefined || widget.get(items[i]) == null) && widget.checkseries(items[i]) && !unique[items[i]]) {
 
                     var assign = ($(this).attr('data-assign') || "").explode();
                     var yAxis = (assign[i] ? assign[i] - 1 : 0)
@@ -456,8 +454,8 @@ var io = {
 
                     var ymax = [];
                     if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
-
                     repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
+                    unique[items[i]] = 1;
                 }
             }
         });

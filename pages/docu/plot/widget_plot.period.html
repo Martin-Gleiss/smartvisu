@@ -87,12 +87,12 @@
 	</div>	
 
 	<h5>Data Export</h5>
-	<br>
+
 	By setting the parameter 'export' to '1', export of graphics can be selected in a context menu. Setting the parameter to '2' enables 
 	data export additionally. See the examples below for details.
 	<br>
 	<h5>Stacking</h5>
-	<br>
+
 	Line, area and column graphs may be stacked by selecting the stacked 'exposure' type. Stacking mode is 'normal' (stack of actual values) or 
 	'percent' (share of the sum of all values in %). The 'stack' parameter allows grouping in different stacks. If multiple stacks are used,
 	the stacking mode needs to be set for each stack in array form. Note that series will be stacked only if time values on x-axis are synchronized 
@@ -101,7 +101,7 @@
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','percent','', 1) }}
 			
-			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 10, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
+			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
 			
 		{% endverbatim %}{% endfilter %}</code>
 	</div>
@@ -118,14 +118,14 @@
 			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 				<div data-role="collapsible" data-collapsed="false">
 					<h3>a plot of 2 stacked and a single column series</h3>
-					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 10, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
+					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<h5>Special functions</h5>
-	<br>
+
 	Not all features of Highcharts are accessible via widget parameters. To make charts even more flexible, the parameter 'chartoptions' is able to 
 	write additional options directly to Highcharts. The first example changes the scale on the first y-axis, disables lables on the second y-axis and 
 	places the legend below the graph. y-axis can be individually adressed by writing them in array-format.<br><br>
@@ -161,6 +161,13 @@
 				</div>
 			</div>
 		</div>
+
+        <h5>Unwanted Effects</h5>
+
+        The update method for series searches the page for widgets listening to a certain item. Due to limitations in the search method, it can not distinguish two series where one is entirely part of the other, 
+        e.g."bath_plot1.avg.1h.now.10" and "bath_plot1.avg.1h.now.100". This results in duplicate updates and may show unwanted points in either of the plots. So if you need to display series for the same item 
+        in two different plots on the same page, avoid the series parameters to be too similar. Use e.g. count = 12 instead of 10 or use tmin = 60m instead of 1h.
+        
 		<br /><br />
 		{% if config_plot_library == 'highcharts' %} More information on Highcharts: <a href="https://www.highcharts.com/">https://www.highcharts.com/</a> {% endif %}
         {% if config_plot_library == 'echarts' %} More information on Apache echarts: <a href="https://echarts.apache.org/en/">https://echarts.apache.org/en/</a> {% endif %}
