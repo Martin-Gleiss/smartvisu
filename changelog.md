@@ -56,7 +56,7 @@
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
 
 ### PHP Version tested
-- php 8.5.4
+- php 8.5.8
 
 
 ## v3.6.0 | 16.12.2025
