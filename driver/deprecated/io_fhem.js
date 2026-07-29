@@ -6,7 +6,7 @@
  * @copyright   2016 - 2024
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
- * @label       FHEM new
+ * @label       FHEM 
  * @hide        driver_tlsport
  * @hide        driver_autoreconnect
  * @hide		reverseproxy
@@ -17,6 +17,7 @@
  * @hide		driver_username
  * @hide		driver_password
  * @hide		driver_loopback
+ * @hide        driver_signalBusy
  * @hide		sv_hostname
  * @default     driver_port 2121
  *
@@ -152,7 +153,6 @@ var io = {
   rcTimer: null,
   addon: null,
   socketErrorNotification: null,
-  monitorTimer: null,
   
   /**
    * supported aggregate functions in the backends database
@@ -214,7 +214,6 @@ var io = {
         // }
         for (i = 0; i < data.items.length; i = i + 2) {
           widget.update(data.items[i], data.items[i + 1]);
-		  io.openItems.removeEntry(data.items[i]);
         }
         break;
       
@@ -222,7 +221,6 @@ var io = {
         for (i = 0; i < data.items.length; i++) {
           if(data.items[i]) {
             widget.update(data.items[i].item, data.items[i].plotdata);
-			io.openItems.removeEntry(data.items[i].item);
           }
         }
         break;
@@ -276,6 +274,7 @@ var io = {
               }
             }
           });
+          
         }
         break;
       
@@ -294,13 +293,8 @@ var io = {
       case 'log':
         for (i = 0; i < data.items.length; i = i + 2) {
           widget.update(data.items[i], data.items[i + 1]);
-  		  io.openItems.removeEntry(data.items[i]);
         }
         break;
-    }
-    if (io.monitorCompleted == false && io.openItems.length == 0){
-      io.monitorCompleted = true;
-      $('.smartvisu .visu').removeClass('blink');
     }
   },
   
@@ -380,7 +374,6 @@ var io = {
     io.fhemLogs = [];
     io.ownSeries = [];
     io.fhemSeries = [];
-	io.fhemSeriesItems = []
     
     if($.mobile.activePage != undefined) {
       var re = io.addon && io.addon.itemFilter ? new RegExp(io.addon.itemFilter) : null;
@@ -433,7 +426,6 @@ var io = {
                 io.ownSeries.push(plotInfo);
               } else {
                 io.fhemSeries.push(plotInfo);
-				io.fhemSeriesItems.push(list[i]);
               }
             }
           }
@@ -520,11 +512,9 @@ var io = {
   fhemItems: [],
   ownItems: [],
   fhemSeries: [],
-  fhemSeriesItems: [],
   ownSeries: [],
   fhemLogs: [],
   ownLogs: [],
-  openItems: [],
   monitor: function() {
     if (io.socket.readyState === 1) {
       io.splitItems();
@@ -550,18 +540,7 @@ var io = {
           'items': io.fhemLogs
         });
       }
-      io.monitorCompleted = false;
-      io.openItems = io.fhemItems.concat(io.fhemSeriesItems, io.fhemLogs.map(function (entry){return entry.item;}));
-      if (sv.config.driver.signalBusy)
-        $('.smartvisu .visu').addClass('blink');
-
-      // send error message to console if items are missing after 15 sec
-      io.monitorTimer = setTimeout(function(){
-          if (io.monitorCompleted == false)
-              console.debug('[io_smarthomeng]: waiting already 15 seconds for the following items: ', io.openItems);
-          clearTimeout(io.monitorTimer);
-      }, 15000);
-	  
+      
       if (io.addon) {
         io.addon.monitor(io.ownItems, io.ownSeries, io.ownLogs);
       }

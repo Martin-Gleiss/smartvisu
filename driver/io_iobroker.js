@@ -212,6 +212,7 @@ var io = {
 	aggregates: ['avg', 'average', 'min', 'max', 'total', 'on', 'count'],
 	monitorComplete: null,
 	openItems: [],
+    monitorTimer: null,
 
 
 	/**
@@ -398,6 +399,13 @@ var io = {
 			
 			if (sv.config.driver.signalBusy)
 				$('.smartvisu .visu').addClass('blink');
+            
+            // send error message to console if items are missing after 15 sec
+            io.monitorTimer = setTimeout(function(){
+                if (io.monitorCompleted == false)
+                    console.debug('[io_smarthomeng]: waiting already 15 seconds for the following items: ', io.openItems);
+                clearTimeout(io.monitorTimer);
+            }, 15000)
 		}
 	},
 
