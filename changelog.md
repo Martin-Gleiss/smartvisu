@@ -17,6 +17,7 @@
 - the widget "lib.sysinfo" shows the current settings of the options changeable with the request parameters and can be activated in the headline with 'svstatus="1"' (config.ini or request parameter)
 - Fritz!Box-TR064 Service has been extended with the "action" request parameter. Options: "update" (get user interface info incl. update notification) and "deviceinfo" (get device info).
 - new type of "internal" items starting with a "@" character. These items are provided by widgets (e.g. phone.data_updateinfo) and do not get requested from the backend.
+- fhem driver now supports activity indicator for the websocket (blink until all items received)
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
@@ -29,6 +30,7 @@
 - item types datetime and timestamp are now available for widget assistant and template checker
 - smarthomeng and offline driver convert an item to a Date object if value is an ISO timedate string (starting with e.g. 2026-03-29T12:03)
 - offline driver allows shorter time increments for series and checks uniqueness of series in order to avoid duplicate updates
+- smarthomeNG, fhem and ioBroker drivers send a debug warning to console naming the items missing from backend (io.openItems) after 15 seconds
 
 ### Updated Libraries
 - ICS Parser v3.5.1
