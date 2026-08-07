@@ -5,6 +5,10 @@
 * It is recommended to place the file - e.g. 'mydarkmode.css' - in ./dropins/designs. Then, the folder structure has to be considered 
 * in the @import statements, e.g. @import '../../designs/greenhornet.css', (prefers-color-scheme: dark);
 *
+* To make fulll use of the dark and light modes, the icons in the menu sections need to be embedded with the widget method as shoen in the example pages:  e.g.  {{ lib.svgimg ('', 'it_router.svg', 'icon0', '') }}
+* If menus still contain img-tags with fixed source pathes, e.g. source="{{ icon0 }}it_router.svg" make sure at least the default colors are defined: 
+* @default	design_icon0	icons/sw/
+* @default	design_icon1	icons/bl/
 */
 
 @import "darkblue.css";
