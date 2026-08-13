@@ -53,6 +53,7 @@
 - Fritz!box TR-064 service did not work on SSL-port 49443 due to a faulty stream context definition
 - series update cycles in offline driver have been fixed
 - fixed missing default icon colors in darkmode-blue design (necessary if icons in menus are still embedded with img tags)
+- multimedia.playpause widget did not update any more due to malformed data-item attribute in combination with selector change in smartVISU v3.3
 
 ### Known Bugs
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
