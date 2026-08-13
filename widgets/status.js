@@ -415,7 +415,7 @@ $.widget("sv.status_activelist", $.sv.widget, {
         var subtitle = this.options.subtitle;
         var content = this.options.content;
 
-        if (typeof data != Array) {
+        if (!$.isArray(data)) {
             data = [{}];
             data[0][level] = 'error';
             data[0][title] = sv_lang.status_event_format.error.invalid_data;
