@@ -111,6 +111,19 @@
             $.mobile.defaultPageTransition = '{{ config_transition }}';
 {% endif %}
             $.event.special.tap.emitTapOnTaphold = false;
+            
+            // strip the config override parameters from the URL 
+            if (location.href.indexOf('?') > -1){
+                var purePageUrl = $.mobile.path.getDocumentUrl(true).hrefNoSearch;
+                var query = location.search.slice(1).split('&');
+                for (var i = 0; i < query.length; i++){ 
+                    if (query[i].indexOf('page=') == 0 || query[i].indexOf('pages=') == 0 )
+                        purePageUrl += (i == 0 ? '?' : '&') + query[i];
+                }
+                //DEBUG: console.log('setting page to ' + purePageUrl)
+                $.mobile.path.documentUrl = $.mobile.path.parseUrl(purePageUrl);
+                $.mobile.path.documentBase = $.mobile.path.documentUrl;
+            }
         });
     </script>
 
