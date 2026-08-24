@@ -2,38 +2,40 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß, Wolfram v. Hülsen
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
 
 <div id="menu" class="menu">
 
-	<a id="{{ page }}_menu-rooms" class="icon1" href="index.php" onclick="linkAnimate(id)">
-		<img class="icon{% if page == 'index' %} icon1 menu-hide-smallphone{% else %} icon0{% endif %}" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
-		
-	{% if page != 'config' %}
-		<a id="{{ page }}_menu-info" class="icon1" href="index.php?page=infopage" onclick="linkAnimate(id)">
-			<img class="icon{% if page == 'infopage' %} icon1 {% else %} icon0{% endif %} menu-visible-phone {% if page != 'index' %} menu-hide-smallphone {% endif %} menu-hide-tablet" src="{{ icon0 }}info_info.svg" alt="category" /></a>
-	
-		<a id="{{ page }}_menu-category" class="icon1" href="index.php?page=category" onclick="linkAnimate(id)">
-			<img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
+    <a id="{{ page }}_menu-rooms" class="icon1" href="index.php" onclick="linkAnimate(id)">
+        <img class="icon{% if page == 'index' %} icon1 menu-hide-smallphone{% else %} icon0{% endif %}" src="{{ icon0 }}control_building_empty.svg" alt="home" /></a>
 
-		<a id="{{ page }}_menu-apps" class="icon1" href="index.php?page=apps" onclick="linkAnimate(id)">
-			<img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
-			
-	{% else%}	
-		<a id="{{ page }}_menu-docu" class="icon1" data-ajax="false" href="index.php?pages=docu&amp;page=index" onclick="linkAnimate(id)">
-			<img class="icon {{ pages == 'docu' ? ' icon1' : ' icon0' }}" src="{{ icon0 }}edit_copy.svg"/></a>
-	
-	{% endif %}
-		<a id="{{ page }}_menu-system" class="icon1" href="index.php?page=systempage" onclick="linkAnimate(id)">
-			<img class="icon{% if page == 'systempage' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}edit_settings.svg" alt="config" /></a>
+    {% if page != 'config' %}
+        <a id="{{ page }}_menu-info" class="icon1" href="index.php?page=infopage" onclick="linkAnimate(id)">
+            <img class="icon{% if page == 'infopage' %} icon1 {% else %} icon0{% endif %} menu-visible-phone {% if page != 'index' %} menu-hide-smallphone {% endif %} menu-hide-tablet" src="{{ icon0 }}info_info.svg" alt="category" /></a>
 
+        <a id="{{ page }}_menu-category" class="icon1" href="index.php?page=category" onclick="linkAnimate(id)">
+            <img class="icon{% if page == 'category' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}time_manual_mode.svg" alt="category" /></a>
+
+        <a id="{{ page }}_menu-apps" class="icon1" href="index.php?page=apps" onclick="linkAnimate(id)">
+            <img class="icon{% if page == 'apps' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}it_net.svg" alt="apps" /></a>
+
+    {% else%}
+        <a id="{{ page }}_menu-docu" class="icon1" data-ajax="false" href="index.php?pages=docu" onclick="linkAnimate(id)">
+            <img class="icon {{ pages == 'docu' ? ' icon1' : ' icon0' }}" src="{{ icon0 }}edit_copy.svg"/></a>
+
+    {% endif %}
+        <a id="{{ page }}_menu-system" class="icon1" href="index.php?page=systempage" onclick="linkAnimate(id)">
+            <img class="icon{% if page == 'systempage' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}edit_settings.svg" alt="config" /></a>
+
+        <a id="{{ page }}_menu-system" class="icon1" href="index.php?page=assistant" onclick="linkAnimate(id)">
+            <img class="icon{% if page == 'assistant' %} icon1{% else %} icon0{% endif %}" src="{{ icon0 }}jquery_action.svg" alt="config" /></a>
 </div>
 <script>
 function linkAnimate(id) {
-	// animate link icons to show activity on slow devices
-	$('#'+id).find('svg').fadeTo(250, 0.25).fadeTo(250, 1);
+    // animate link icons to show activity on slow devices
+    $('#'+id).find('svg').fadeTo(250, 0.25).fadeTo(250, 1);
 }
 </script>
