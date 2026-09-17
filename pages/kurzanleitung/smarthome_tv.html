@@ -167,7 +167,7 @@ tv:
 	<h4>3. In die html einbinden:</h4>
 	Hier muß man sich nun als erstes einige Senderlogos besorgen und diese z.B. in folgendem Verzeichnis abspeichern:
 	<div class="linux">
-		<code>/web/smartvisu/pics/station/</code>
+		<code>/var/www/html/smartvisu/pics/station/</code>
 	</div>	
 	<br>
 	Als Widget verwenden wir "multimedia.station". Ein Beispielcode sieht so aus:
@@ -268,24 +268,26 @@ tv:
 	<hr />
 	<h2>Steuerung über Blocks</h2>	
 	<br>
+    	Ein weiteres Beispiel, um die Steuerung von weiteren Funktionstasten wie lauter, leiser etc. in Blocks darzustellen, sieht wie folgt aus.
+	<br>
 	<div class="block">
     <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 	<div data-role="collapsible" data-collapsed="false">
             <h3>Steuerung I</h3>
 	<table width="100%">
-                {{ multimedia.station('ST1', 'tv.Source', 'pics/station/steuerung/source.png', 1, 'midi') }}
-                {{ multimedia.station('ST2', 'tv.Up', 'pics/station/steuerung/pfeil_hoch.png', 1, 'midi') }}
-                {{ multimedia.station('ST3', 'tv.TTX_MIX', 'pics/station/steuerung/text.png', 1, 'midi') }}
+                {{ multimedia.station('ST1', 'tv.Source', 'jquery_grid', 1, 'midi') }}
+                {{ multimedia.station('ST2', 'tv.Up', 'jquery_arrow-u', 1, 'midi') }}
+                {{ multimedia.station('ST3', 'tv.TTX_MIX', 'jquery_bullets', 1, 'midi') }}
 	</table>
 	<table width="100%">
-                {{ multimedia.station('ST4', 'tv.Left', 'pics/station/steuerung/pfeil_links.png', 1, 'midi') }}
-                {{ multimedia.station('ST5', 'tv.Enter', 'pics/station/steuerung/ok_sign.png', 1, 'midi') }}
-                {{ multimedia.station('ST6', 'tv.Right', 'pics/station/steuerung/pfeil_rechts.png', 1, 'midi') }}
+                {{ multimedia.station('ST4', 'tv.Left', 'jquery_arrow-l', 1, 'midi') }}
+                {{ multimedia.station('ST5', 'tv.Enter', 'jquery_check', 1, 'midi') }}
+                {{ multimedia.station('ST6', 'tv.Right', 'jquery_arrow-r', 1, 'midi') }}
 	</table>
 	<table width="100%">
-                {{ multimedia.station('ST7', 'tv.Return', 'pics/station/steuerung/return.png', 1, 'midi') }}
-                {{ multimedia.station('ST8', 'tv.Down', 'pics/station/steuerung/pfeil_runter.png', 1, 'midi') }}
-                {{ multimedia.station('ST9', 'tv.Exit', 'pics/station/steuerung/exit.png', 1, 'midi') }}
+                {{ multimedia.station('ST7', 'tv.Return', 'jquery_back', 1, 'midi') }}
+                {{ multimedia.station('ST8', 'tv.Down', 'jquery_arrow-d', 1, 'midi') }}
+                {{ multimedia.station('ST9', 'tv.Exit', 'jquery_action', 1, 'midi') }}
 	</table>
 	</div>
 
@@ -296,25 +298,25 @@ tv:
 	<div data-role="collapsible" data-collapsed="false">
             <h3>Steuerung II</h3>
 	<table width="100%">
-                {{ multimedia.station('ST10', 'tv.VolDown', 'pics/station/steuerung/volume_down.png', 1, 'midi') }}
-                {{ multimedia.station('ST11', 'tv.mute', 'pics/station/steuerung/mute.png', 1, 'midi') }}
-                {{ multimedia.station('ST12', 'tv.VolUP', 'pics/station/steuerung/volume_up.png', 1, 'midi') }}
+                {{ multimedia.station('ST10', 'tv.VolDown', 'jquery_plus', 1, 'midi') }}
+                {{ multimedia.station('ST11', 'tv.mute', 'audio_volume_mute', 1, 'midi') }}
+                {{ multimedia.station('ST12', 'tv.VolUP', 'jquery_minus', 1, 'midi') }}
 	</table>
 	<table width="100%">
-                {{ multimedia.station('ST13', 'tv.ChDOWN', 'pics/station/steuerung/chanel_down.png', 1, 'midi') }}
-                {{ multimedia.station('ST14', 'tv.INFO', 'pics/station/steuerung/info.png', 1, 'midi') }}
-                {{ multimedia.station('ST15', 'tv.ChUP', 'pics/station/steuerung/chanel_up.png', 1, 'midi') }}
+                {{ multimedia.station('ST13', 'tv.ChDOWN', 'jquery_arrow-d', 1, 'midi') }}
+                {{ multimedia.station('ST14', 'tv.INFO', 'jquery_info', 1, 'midi') }}
+                {{ multimedia.station('ST15', 'tv.ChUP', 'jquery_arrow-u', 1, 'midi') }}
 	</table>
 	<table width="100%">
-                {{ multimedia.station('ST17', 'tv.Internet', 'pics/station/steuerung/home.png', 1, 'midi') }}
+                {{ multimedia.station('ST17', 'tv.Internet', 'jquery_home', 1, 'midi') }}
 	</table>
 	</div>
 
     </div>
     </div>	
-	Ein weiteres Beispiel, um die Steuerung von weiteren Funktionstasten wie lauter, leiser etc. in Blocks darzustellen, sieht wie folgt aus.
-	<br>
-	Die in diesem Beispiel verwendeten Icons müssen als *.png in dem folgenden erstellten Verzeichnis liegen:
+
+	In diesem Beispiel werden Icons verwendet, die Bestandteil von smartVISU sind. Da diese im *.svg Format vorliegen, braucht man weder das Verzeichnis, noch das Datei-Suffix anzugeben. Man kann andere Icons im Format *.svg (schwarz und weiß) 
+    besorgen und in ./dropins/icons/sw und ./dropins/icons/ws ablegen, oder man legt Icons im Format *.png z.B. in dem folgenden Verzeichnis ab und muss diese dann im Widget mit dem vollen Pfadnamen und dem Suffix angeben.
 	<div class="linux">
 		<code>/var/www/html/smartvisu/pics/station/steuerung</code>
 	</div>
@@ -322,7 +324,8 @@ tv:
 	Die verwendeten Widgets sind ebenfalls wieder "multimedia.station". Beispiel:
 		<div class="linux">
 		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ multimedia.station('ST1', 'tv.Source', 'pics/station/steuerung/source.png', 1, 'midi') }}
+		{{ multimedia.station('ST1', 'tv.Source', 'jquery_grid', 1, 'midi') }}
+        {{ multimedia.station('ST1', 'tv.Source', 'pics/station/steuerung/meinIcon.png', 1, 'midi') }}
 		{% endverbatim %}{% endfilter %}
 		</code>
 	</div>	
@@ -575,19 +578,19 @@ tv:
 					&nbsp;&nbsp;&nbsp; &lt;div data-role="collapsible" data-collapsed="false"><br />
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3>Steuerung I&lt;/h3><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST1', 'tv.Source', 'pics/station/steuerung/Source.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST2', 'tv.Up', 'pics/station/steuerung/Pfeil_hoch.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST3', 'tv.TTX_MIX', 'pics/station/steuerung/Text.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST1', 'tv.Source', 'jquery_grid', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST2', 'tv.Up', 'jquery_arrow-u', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST3', 'tv.TTX_MIX', 'jquery_bullets', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST4', 'tv.Left', 'pics/station/steuerung/Pfeil_links.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST5', 'tv.Enter', 'pics/station/steuerung/Ok_sign.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST6', 'tv.Right', 'pics/station/steuerung/Pfeil_rechts.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST4', 'tv.Left', 'jquery_arrow-l', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST5', 'tv.Enter', 'jquery_check', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST6', 'tv.Right', 'jquery_arrow-r', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST7', 'tv.Return', 'pics/station/steuerung/Return.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST8', 'tv.Down', 'pics/station/steuerung/Pfeil_runter.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST9', 'tv.Exit', 'pics/station/steuerung/Exit.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST7', 'tv.Return', 'jquery_back', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST8', 'tv.Down', 'jquery_arrow-d', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST9', 'tv.Exit', 'jquery_action', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;/div><br />
 					<br />
@@ -598,17 +601,17 @@ tv:
 					&nbsp;&nbsp;&nbsp; &lt;div data-role="collapsible" data-collapsed="false"><br />
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;h3>Steuerung II&lt;/h3><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST10', 'tv.VolDown', 'pics/station/steuerung/Volume_down.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST11', 'tv.mute', 'pics/station/steuerung/Mute.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST12', 'tv.VolUP', 'pics/station/steuerung/Volume_up.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST10', 'tv.VolDown', 'jquery_plus', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST11', 'tv.mute', 'audio_volume_mute', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST12', 'tv.VolUP', 'jquery_minus', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST13', 'tv.ChDOWN', 'pics/station/steuerung/Chanel_down.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST14', 'tv.INFO', 'pics/station/steuerung/Info.png', 1, 'midi') }}<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST15', 'tv.ChUP', 'pics/station/steuerung/Chanel_up.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST13', 'tv.ChDOWN', 'jquery_arrow-d', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST14', 'tv.INFO', 'jquery_info', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST15', 'tv.ChUP', 'jquery_arrow-u', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;table width="100%"><br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST17', 'tv.Internet', 'pics/station/steuerung/Home.png', 1, 'midi') }}<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ multimedia.station('ST17', 'tv.Internet', 'jquery_home', 1, 'midi') }}<br />
 					&nbsp;&nbsp;&nbsp; &lt;/table><br />
 					&nbsp;&nbsp;&nbsp; &lt;/div><br />
 					<br />
