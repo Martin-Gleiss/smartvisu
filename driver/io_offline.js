@@ -337,6 +337,8 @@ var io = {
             tmax = new Date (actualIntervall) - new Date().duration(tmax);
             var step = Math.max(Math.round((tmax - tmin) / (cnt-1)), 1);
         } else {
+            tmin = new Date () - new Date().duration(tmin);
+            tmax = new Date () - new Date().duration(tmax);
             step = 1000;
         }
 
@@ -454,6 +456,7 @@ var io = {
 
                     var ymax = [];
                     if ($(this).attr('data-ymax')) { ymax = $(this).attr('data-ymax').explode(); }
+                    
                     repeatSeries(items[i], item[item.length - 3], item[item.length - 2], ymin[yAxis], ymax[yAxis], item[item.length - 1]);
                     unique[items[i]] = 1;
                 }
