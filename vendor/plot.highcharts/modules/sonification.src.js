@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/sonification
  * @requires highcharts
  *
@@ -14,29 +14,31 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		module.exports = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/sonification", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Templating"]);});
+		define("highcharts/modules/sonification", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/sonification"] = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		exports["highcharts/modules/sonification"] = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Templating"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__984__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -1357,12 +1356,11 @@ var Oscillator = /** @class */ (function () {
         }
     };
     Oscillator.prototype.setFreqAtTime = function (time, frequency, glideDuration) {
+        var _a;
         if (glideDuration === void 0) { glideDuration = 0; }
         var opts = this.options,
             f = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)((0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(opts.fixedFrequency,
-            frequency) *
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(((_a = opts.fixedFrequency) !== null && _a !== void 0 ? _a : frequency) *
                 (opts.freqMultiplier || 1), 0, 21000),
             oscTarget = this.getOscTarget(),
             timeConstant = glideDuration / 5000;
@@ -1456,6 +1454,7 @@ var Oscillator = /** @class */ (function () {
         }
     };
     Oscillator.prototype.createGain = function () {
+        var _a;
         var opts = this.options,
             needsGainNode = (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(opts.volume) ||
@@ -1463,7 +1462,7 @@ var Oscillator = /** @class */ (function () {
                 opts.releaseEnvelope && opts.releaseEnvelope.length;
         if (needsGainNode) {
             this.gainNode = new GainNode(this.audioContext, {
-                gain: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(opts.volume, 1)
+                gain: ((_a = opts.volume) !== null && _a !== void 0 ? _a : 1)
             });
         }
         // We always need VM gain, so make that
@@ -1739,7 +1738,7 @@ var SynthPatch = /** @class */ (function () {
 * @type {number|undefined}
 */
 /**
- * @typedef {Highcharts.Record<"t"|"vol",number>} Highcharts.SynthEnvelopePoint
+ * @typedef {Record<"t"|"vol",number>} Highcharts.SynthEnvelopePoint
  * @requires modules/sonification
  */
 /**
@@ -3161,7 +3160,6 @@ var SonificationInstrument = /** @class */ (function () {
  *
  * */
 
-
 /**
  * The SonificationSpeaker class. This class represents an announcer using
  * speech synthesis. It allows for scheduling speech announcements, as well
@@ -3199,6 +3197,8 @@ var SonificationSpeaker = /** @class */ (function () {
      * Optionally override speaker configuration.
      */
     SonificationSpeaker.prototype.say = function (message, options) {
+        var _a,
+            _b;
         if (this.synthesis) {
             this.synthesis.cancel();
             var utterance = new SpeechSynthesisUtterance(message);
@@ -3208,7 +3208,7 @@ var SonificationSpeaker = /** @class */ (function () {
             utterance.rate = options && options.rate || this.options.rate || 1;
             utterance.pitch = options && options.pitch ||
                 this.options.pitch || 1;
-            utterance.volume = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options && options.volume, this.options.volume, 1) * this.masterVolume;
+            utterance.volume = ((_b = (_a = (options && options.volume)) !== null && _a !== void 0 ? _a : this.options.volume) !== null && _b !== void 0 ? _b : 1) * this.masterVolume;
             this.synthesis.speak(utterance);
         }
     };
@@ -3442,7 +3442,6 @@ var TimelineChannel = /** @class */ (function () {
 /* eslint-disable no-multi-spaces */
 
 
-
 var freqToNote = function (f) { return Math.round(12 * Math.log(f) / Math.LN2 - 48.37632); }, b = function (byte, n) { return n >>> 8 * byte & 0xFF; }, getHeader = function (nTracks) { return [
     0x4D, 0x54, 0x68, 0x64, // HD_TYPE
     0, 0, 0, 6, // HD_SIZE
@@ -3479,11 +3478,10 @@ varLenEnc = function (n) {
         res.splice(ix + 1, 0, el);
     };
     events.forEach(function (e) {
+        var _a;
         var o = e.instrumentEventOptions || {},
             t = e.time,
-            dur = cachedDur = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(o.noteDuration,
-            cachedDur),
+            dur = cachedDur = ((_a = o.noteDuration) !== null && _a !== void 0 ? _a : cachedDur),
             tNOF = dur && e.time + dur,
             ctrl = [{
                     valMap: function (n) { return 64 + 63 * n & 0x7F; },
@@ -3509,7 +3507,7 @@ varLenEnc = function (n) {
                     0x4C: o.highpassResonance
                 }
             }], v = cachedVel = o.volume === void 0 ?
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(cachedVel, 127) : 127 * o.volume & 0x7F, freq = o.frequency, note = o.note || 0, noteVal = 12 + (freq ? freqToNote(freq) : // MIDI note #0 is C-1
+            (cachedVel !== null && cachedVel !== void 0 ? cachedVel : 127) : 127 * o.volume & 0x7F, freq = o.frequency, note = o.note || 0, noteVal = 12 + (freq ? freqToNote(freq) : // MIDI note #0 is C-1
             typeof note === 'string' ? Sonification_SonificationInstrument
                 .noteStringToC0Distance(note) : note) & 0x7F;
         // CTRL_CHANGE events
@@ -3594,6 +3592,7 @@ function toMIDI(channels) {
 /* harmony default export */ var MIDI = (toMIDI);
 
 ;// ./code/es5/es-modules/Shared/DownloadURL.js
+/* unused harmony import specifier */ var error;
 /* *
  *
  *  (c) 2015-2026 Highsoft AS
@@ -3743,7 +3742,7 @@ function getScript(scriptLocation) {
         // Reject in case of fail
         script.onerror = function () {
             var msg = "Error loading script ".concat(scriptLocation);
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.error)(msg);
+            error(msg);
             reject(new Error(msg));
         };
         // Append the newly created script
@@ -3791,12 +3790,12 @@ function getBlobFromContent(content, type) {
  *
  * */
 /** @internal */
-var DownloadURL = {
+var DownloadURL = (/* unused pure expression or super */ null && ({
     dataURLtoBlob: dataURLtoBlob,
     downloadURL: downloadURL,
     getBlobFromContent: getBlobFromContent,
     getScript: getScript
-};
+}));
 /** @internal */
 /* harmony default export */ var Shared_DownloadURL = ((/* unused pure expression or super */ null && (DownloadURL)));
 
@@ -4579,6 +4578,8 @@ function mapToVirtualAxis(value, valueExtremes, virtualAxisExtremes, invert, log
  * @internal
  */
 function getMappingParameterValue(context, propMetrics, useSeriesExtremes, defaultMapping, mappingOptions, contextValueProp) {
+    var _a,
+        _b;
     if (typeof mappingOptions === 'number') {
         return mappingOptions;
     }
@@ -4594,8 +4595,8 @@ function getMappingParameterValue(context, propMetrics, useSeriesExtremes, defau
     if (typeof mappingOptions === 'object') {
         mapTo = mappingOptions.mapTo;
         mapFunc = mappingOptions.mapFunction || mapFunc;
-        min = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(mappingOptions.min, min);
-        max = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(mappingOptions.max, max);
+        min = ((_a = mappingOptions.min) !== null && _a !== void 0 ? _a : min);
+        max = ((_b = mappingOptions.max) !== null && _b !== void 0 ? _b : max);
         within = mappingOptions.within || defaultMapping.within;
         scale = mappingOptions.scale;
     }
@@ -4673,9 +4674,10 @@ function getMappingParameterValue(context, propMetrics, useSeriesExtremes, defau
  * @internal
  */
 function getParamValWithDefault(context, propMetrics, useSeriesExtremes, mappingParamOptions, fallback, defaults, contextValueProp) {
-    return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(getMappingParameterValue(context, propMetrics, useSeriesExtremes, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)({
+    var _a;
+    return ((_a = getMappingParameterValue(context, propMetrics, useSeriesExtremes, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)({
         min: 0, max: 1, mapTo: 'y', mapFunction: 'linear', within: 'chart'
-    }, (defaults || {})), mappingParamOptions, contextValueProp), fallback);
+    }, (defaults || {})), mappingParamOptions, contextValueProp)) !== null && _a !== void 0 ? _a : fallback);
 }
 /**
  * Get time value for a point event.
@@ -4734,6 +4736,7 @@ function getAvailableDurationForSeries(series, totalDuration, propMetrics, after
  * @internal
  */
 function addTimelineChannelFromTrack(timeline, audioContext, destinationNode, options) {
+    var _a;
     var speechOpts = options,
         instrMappingOpts = (options.mapping || {}),
         engine = options.type === 'speech' ?
@@ -4752,7 +4755,7 @@ function addTimelineChannelFromTrack(timeline, audioContext, destinationNode, op
                 synthPatch: options.instrument,
                 midiTrackName: options.midiName
             });
-    return timeline.addChannel(options.type || 'instrument', engine, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.showPlayMarker, true));
+    return timeline.addChannel(options.type || 'instrument', engine, ((_a = options.showPlayMarker) !== null && _a !== void 0 ? _a : true));
 }
 /**
  * Add event from a point to a mapped instrument track.
@@ -4882,6 +4885,7 @@ function addMappedSpeechEvent(context, channel, mappingOptions, propMetrics, con
  * @internal
  */
 function addMappedEventForPoint(context, channel, trackOptions, propMetrics) {
+    var _a;
     var eventsAdded = [];
     if (trackOptions.type === 'speech' && trackOptions.mapping) {
         var eventAdded = addMappedSpeechEvent(context,
@@ -4893,8 +4897,8 @@ function addMappedEventForPoint(context, channel, trackOptions, propMetrics) {
         }
     }
     else if (trackOptions.mapping) {
-        eventsAdded = addMappedInstrumentEvent(context, channel, trackOptions.mapping, propMetrics, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(trackOptions
-            .roundToMusicalNotes, true));
+        eventsAdded = addMappedInstrumentEvent(context, channel, trackOptions.mapping, propMetrics, ((_a = trackOptions
+            .roundToMusicalNotes) !== null && _a !== void 0 ? _a : true));
     }
     return eventsAdded;
 }
@@ -4954,14 +4958,15 @@ function getGroupedPoints(pointGroupOpts, points) {
  * @internal
  */
 function isActive(context, activeWhen, lastPropValue) {
+    var _a,
+        _b,
+        _c;
     if (typeof activeWhen === 'function') {
         return activeWhen(context);
     }
     if (typeof activeWhen === 'object') {
         var prop = activeWhen.prop,
-            val = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(context.value,
-            context.point && getPointPropValue(context.point,
+            val = (_a = context.value) !== null && _a !== void 0 ? _a : (context.point && getPointPropValue(context.point,
             prop));
         if (typeof val !== 'number') {
             return false;
@@ -4981,11 +4986,8 @@ function isActive(context, activeWhen, lastPropValue) {
                 hasLastValue && lastPropValue > crossingDown &&
                     val <= crossingDown);
         }
-        var max = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(activeWhen.max,
-            Infinity),
-            min = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(activeWhen.min, -Infinity);
+        var max = ((_b = activeWhen.max) !== null && _b !== void 0 ? _b : Infinity),
+            min = ((_c = activeWhen.min) !== null && _c !== void 0 ? _c : -Infinity);
         return val <= max && val >= min && crossingOk;
     }
     return true;
@@ -5194,16 +5196,12 @@ function timelineFromChart(audioContext, destinationNode, chart) {
                         .seriesExtremes[seriesIx][valueProp],
                     addContextEvent = function (time,
                     value) {
-                        if (!mergedOpts.mapping ||
-                            !isActive({ time: time,
-                    value: value },
-                    typeof activeWhen === 'object' ?
-                                (0,
-                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)({ prop: valueProp },
-                    activeWhen) :
-                                activeWhen,
-                    lastPropValue_1)) {
-                            lastPropValue_1 = value;
+                        var _a;
+                    if (!mergedOpts.mapping ||
+                        !isActive({ time: time, value: value }, typeof activeWhen === 'object' ?
+                            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)({ prop: valueProp }, activeWhen) :
+                            activeWhen, lastPropValue_1)) {
+                        lastPropValue_1 = value;
                         return;
                     }
                     lastPropValue_1 = value;
@@ -5211,7 +5209,7 @@ function timelineFromChart(audioContext, destinationNode, chart) {
                         addMappedSpeechEvent({ time: time, value: value }, contextChannel, mergedOpts.mapping, propMetrics, valueProp);
                     }
                     else {
-                        addMappedInstrumentEvent({ time: time, value: value }, contextChannel, mergedOpts.mapping, propMetrics, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(mergedOpts.roundToMusicalNotes, true), valueProp);
+                        addMappedInstrumentEvent({ time: time, value: value }, contextChannel, mergedOpts.mapping, propMetrics, ((_a = mergedOpts.roundToMusicalNotes) !== null && _a !== void 0 ? _a : true), valueProp);
                     }
                 };
                 if (timeInterval) {
@@ -5522,7 +5520,7 @@ var Sonification = /** @class */ (function () {
         if (this.timeline) {
             this.timeline.cancel();
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'cancel');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'cancel');
     };
     /**
      * Start download of a MIDI file export of the timeline.
@@ -5618,6 +5616,7 @@ var Sonification = /** @class */ (function () {
      * @internal
      */
     Sonification.prototype.update = function () {
+        var _a;
         var sOpts = this.chart.options && this.chart.options.sonification;
         if (!this.ready(this.update.bind(this)) || !sOpts) {
             return;
@@ -5641,7 +5640,7 @@ var Sonification = /** @class */ (function () {
         if (this.audioContext && this.audioDestination) {
             this.timeline = TimelineFromChart(this.audioContext, this.audioDestination, this.chart);
             var sOpts_1 = this.chart.options.sonification;
-            this.timeline.setMasterVolume((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(sOpts_1 && sOpts_1.masterVolume, 1));
+            this.timeline.setMasterVolume(((_a = (sOpts_1 && sOpts_1.masterVolume)) !== null && _a !== void 0 ? _a : 1));
         }
         if (events.afterUpdate) {
             events.afterUpdate({ chart: this.chart, timeline: this.timeline });
@@ -6038,6 +6037,7 @@ G.sonification = {
 Sonification_Sonification.compose(G.Chart, G.Series, G.Point);
 /* harmony default export */ var sonification_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

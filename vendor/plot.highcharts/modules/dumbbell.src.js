@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/dumbbell
  * @requires highcharts
  *
@@ -12,35 +12,38 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGRenderer"]);
+		module.exports = factory(root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/dumbbell", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["SVGRenderer"]);});
+		define("highcharts/modules/dumbbell", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SVGRenderer"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/dumbbell"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGRenderer"]);
+		exports["highcharts/modules/dumbbell"] = factory(root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["SVGRenderer"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__540__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SVGRenderer"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -73,36 +76,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -297,6 +297,7 @@ var DumbbellPoint_extends = (undefined && undefined.__extends) || (function () {
  *  Class
  *
  * */
+/** @internal */
 var DumbbellPoint = /** @class */ (function (_super) {
     DumbbellPoint_extends(DumbbellPoint, _super);
     function DumbbellPoint() {
@@ -311,10 +312,19 @@ var DumbbellPoint = /** @class */ (function (_super) {
      * Set the point's state extended by have influence on the connector
      * (between low and high value).
      *
-     * @private
+     * @internal
      */
     DumbbellPoint.prototype.setState = function () {
-        var _a;
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f,
+            _g,
+            _h,
+            _j,
+            _k;
         var point = this,
             series = point.series,
             chart = series.chart,
@@ -324,23 +334,16 @@ var DumbbellPoint = /** @class */ (function (_super) {
             pointOptions = point.options,
             pointLowColor = pointOptions.lowColor,
             zoneColor = point.zone && point.zone.color,
-            lowerGraphicColor = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointLowColor,
-            seriesLowMarker === null || seriesLowMarker === void 0 ? void 0 : seriesLowMarker.fillColor,
-            seriesLowColor,
-            pointOptions.color,
-            zoneColor,
-            point.color,
-            series.color);
+            lowerGraphicColor = (_e = (_d = (_c = (_b = (_a = pointLowColor !== null && pointLowColor !== void 0 ? pointLowColor : seriesLowMarker === null || seriesLowMarker === void 0 ? void 0 : seriesLowMarker.fillColor) !== null && _a !== void 0 ? _a : seriesLowColor) !== null && _b !== void 0 ? _b : pointOptions.color) !== null && _c !== void 0 ? _c : zoneColor) !== null && _d !== void 0 ? _d : point.color) !== null && _e !== void 0 ? _e : series.color;
         var verb = 'attr',
             upperGraphicColor,
             origProps;
         this.pointSetState.apply(point, arguments);
         if (!point.state) {
             verb = 'animate';
-            var _b = point.graphics || [],
-                lowerGraphic = _b[0],
-                upperGraphic = _b[1];
+            var _l = point.graphics || [],
+                lowerGraphic = _l[0],
+                upperGraphic = _l[1];
             if (lowerGraphic && !chart.styledMode) {
                 lowerGraphic.attr({
                     fill: lowerGraphicColor
@@ -352,7 +355,8 @@ var DumbbellPoint = /** @class */ (function (_super) {
                     };
                     point.y = point.high;
                     point.zone = point.zone ? point.getZone() : void 0;
-                    upperGraphicColor = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.marker ? point.marker.fillColor : void 0, seriesMarker ? seriesMarker.fillColor : void 0, pointOptions.color, point.zone ? point.zone.color : void 0, point.color);
+                    upperGraphicColor =
+                        (_j = (_h = (_g = (_f = (point.marker ? point.marker.fillColor : void 0)) !== null && _f !== void 0 ? _f : (seriesMarker ? seriesMarker.fillColor : void 0)) !== null && _g !== void 0 ? _g : pointOptions.color) !== null && _h !== void 0 ? _h : (point.zone ? point.zone.color : void 0)) !== null && _j !== void 0 ? _j : point.color;
                     upperGraphic.attr({
                         fill: upperGraphicColor
                     });
@@ -360,16 +364,16 @@ var DumbbellPoint = /** @class */ (function (_super) {
                 }
             }
         }
-        (_a = point.connector) === null || _a === void 0 ? void 0 : _a[verb](series.getConnectorAttribs(point));
+        (_k = point.connector) === null || _k === void 0 ? void 0 : _k[verb](series.getConnectorAttribs(point));
     };
-    DumbbellPoint.prototype.destroy = function () {
+    DumbbellPoint.prototype.destroy = function (sync) {
         var point = this;
         // #15560
         if (!point.graphic) {
             point.graphic = point.connector;
             point.connector = void 0;
         }
-        return _super.prototype.destroy.call(this);
+        return _super.prototype.destroy.call(this, sync);
     };
     return DumbbellPoint;
 }(AreaRange_AreaRangePoint));
@@ -381,6 +385,7 @@ var DumbbellPoint = /** @class */ (function (_super) {
  *  Default export
  *
  * */
+/** @internal */
 /* harmony default export */ var Dumbbell_DumbbellPoint = (DumbbellPoint);
 
 ;// ./code/es5/es-modules/Series/Dumbbell/DumbbellSeriesDefaults.js
@@ -670,7 +675,7 @@ var DumbbellSeries_a = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegi
 /**
  * The dumbbell series type
  *
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.dumbbell
  *
@@ -689,45 +694,44 @@ var DumbbellSeries = /** @class */ (function (_super) {
     /**
      * Get connector line path and styles that connects dumbbell point's low and
      * high values.
-     * @private
+     * @internal
      *
      * @param {Highcharts.Point} point The point to inspect.
      *
      * @return {Highcharts.SVGAttributes} attribs The path and styles.
      */
     DumbbellSeries.prototype.getConnectorAttribs = function (point) {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f,
+            _g,
+            _h,
+            _j,
+            _k,
+            _l,
+            _m,
+            _o;
         var series = this,
             chart = series.chart,
             pointOptions = point.options,
             seriesOptions = series.options,
             xAxis = series.xAxis,
             yAxis = series.yAxis,
-            connectorWidthPlus = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.states &&
+            connectorWidthPlus = (_a = (seriesOptions.states &&
                 seriesOptions.states.hover &&
-                seriesOptions.states.hover.connectorWidthPlus, 1),
-            dashStyle = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.dashStyle,
-            seriesOptions.dashStyle),
+                seriesOptions.states.hover.connectorWidthPlus)) !== null && _a !== void 0 ? _a : 1,
+            dashStyle = ((_b = pointOptions.dashStyle) !== null && _b !== void 0 ? _b : seriesOptions.dashStyle),
             pxThreshold = yAxis.toPixels(seriesOptions.threshold || 0,
             true),
             pointHeight = chart.inverted ?
                 yAxis.len - pxThreshold : pxThreshold;
-        var connectorWidth = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.connectorWidth,
-            seriesOptions.connectorWidth),
-            connectorColor = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.connectorColor,
-            seriesOptions.connectorColor,
-            pointOptions.color,
-            point.zone ? point.zone.color : void 0,
-            point.color),
-            pointTop = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.plotLow,
-            point.plotY),
-            pointBottom = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.plotHigh,
-            pointHeight),
+        var connectorWidth = (_c = pointOptions.connectorWidth) !== null && _c !== void 0 ? _c : seriesOptions.connectorWidth,
+            connectorColor = (_g = (_f = (_e = (_d = pointOptions.connectorColor) !== null && _d !== void 0 ? _d : seriesOptions.connectorColor) !== null && _e !== void 0 ? _e : pointOptions.color) !== null && _f !== void 0 ? _f : (point.zone ? point.zone.color : void 0)) !== null && _g !== void 0 ? _g : point.color,
+            pointTop = ((_h = point.plotLow) !== null && _h !== void 0 ? _h : point.plotY),
+            pointBottom = ((_j = point.plotHigh) !== null && _j !== void 0 ? _j : pointHeight),
             origProps;
         if (typeof pointTop !== 'number') {
             return {};
@@ -758,7 +762,8 @@ var DumbbellSeries = /** @class */ (function (_super) {
             };
             point.y = point.high;
             point.zone = point.zone ? point.getZone() : void 0;
-            connectorColor = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.connectorColor, seriesOptions.connectorColor, pointOptions.color, point.zone ? point.zone.color : void 0, point.color);
+            connectorColor =
+                (_o = (_m = (_l = (_k = pointOptions.connectorColor) !== null && _k !== void 0 ? _k : seriesOptions.connectorColor) !== null && _l !== void 0 ? _l : pointOptions.color) !== null && _m !== void 0 ? _m : (point.zone ? point.zone.color : void 0)) !== null && _o !== void 0 ? _o : point.color;
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)(point, origProps);
         }
         var attribs = {
@@ -785,14 +790,14 @@ var DumbbellSeries = /** @class */ (function (_super) {
     };
     /**
      * Draw connector line that connects dumbbell point's low and high values.
-     * @private
+     * @internal
      * @param {Highcharts.Point} point
      *        The point to inspect.
      */
     DumbbellSeries.prototype.drawConnector = function (point) {
+        var _a;
         var series = this,
-            animationLimit = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.options.animationLimit, 250),
+            animationLimit = ((_a = series.options.animationLimit) !== null && _a !== void 0 ? _a : 250),
             verb = point.connector && series.chart.pointCount < animationLimit ?
                 'animate' : 'attr';
         if (!point.connector) {
@@ -808,7 +813,7 @@ var DumbbellSeries = /** @class */ (function (_super) {
     /**
      * Return the width and x offset of the dumbbell adjusted for grouping,
      * groupPadding, pointPadding, pointWidth etc.
-     * @private
+     * @internal
      */
     DumbbellSeries.prototype.getColumnMetrics = function () {
         var metrics = ColumnSeries.prototype
@@ -820,7 +825,7 @@ var DumbbellSeries = /** @class */ (function (_super) {
     /**
      * Translate each point to the plot area coordinate system and find
      * shape positions
-     * @private
+     * @internal
      */
     DumbbellSeries.prototype.translate = function () {
         var series = this,
@@ -852,9 +857,15 @@ var DumbbellSeries = /** @class */ (function (_super) {
     /**
      * Extend the arearange series' drawPoints method by applying a connector
      * and coloring markers.
-     * @private
+     * @internal
      */
     DumbbellSeries.prototype.drawPoints = function () {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f;
         var series = this,
             chart = series.chart,
             pointLength = series.points.length,
@@ -868,9 +879,9 @@ var DumbbellSeries = /** @class */ (function (_super) {
         // Draw connectors and color upper markers
         while (i < pointLength) {
             point = series.points[i];
-            var _a = point.graphics || [],
-                lowerGraphic = _a[0],
-                upperGraphic = _a[1];
+            var _g = point.graphics || [],
+                lowerGraphic = _g[0],
+                upperGraphic = _g[1];
             series.drawConnector(point);
             if (upperGraphic) {
                 upperGraphic.element.point = point;
@@ -881,7 +892,8 @@ var DumbbellSeries = /** @class */ (function (_super) {
             }
             if (lowerGraphic) {
                 zoneColor = point.zone && point.zone.color;
-                lowerGraphicColor = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.lowColor, seriesLowMarker === null || seriesLowMarker === void 0 ? void 0 : seriesLowMarker.fillColor, seriesLowColor, point.options.color, zoneColor, point.color, series.color);
+                lowerGraphicColor =
+                    (_f = (_e = (_d = (_c = (_b = (_a = point.options.lowColor) !== null && _a !== void 0 ? _a : seriesLowMarker === null || seriesLowMarker === void 0 ? void 0 : seriesLowMarker.fillColor) !== null && _b !== void 0 ? _b : seriesLowColor) !== null && _c !== void 0 ? _c : point.options.color) !== null && _d !== void 0 ? _d : zoneColor) !== null && _e !== void 0 ? _e : point.color) !== null && _f !== void 0 ? _f : series.color;
                 if (!chart.styledMode) {
                     lowerGraphic.attr({
                         fill: lowerGraphicColor
@@ -895,7 +907,7 @@ var DumbbellSeries = /** @class */ (function (_super) {
     /**
      * Get presentational attributes.
      *
-     * @private
+     * @internal
      * @function Highcharts.seriesTypes.column#pointAttribs
      *
      * @param {Highcharts.Point} point
@@ -917,7 +929,7 @@ var DumbbellSeries = /** @class */ (function (_super) {
     };
     /**
      * Set the shape arguments for dumbbells.
-     * @private
+     * @internal
      */
     DumbbellSeries.prototype.setShapeArgs = function () {
         ColumnSeries.prototype.translate.apply(this);
@@ -946,6 +958,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Dumbbell_DumbbellSeries = ((/* unused pure expression or super */ null && (DumbbellSeries)));
 
 ;// ./code/es5/es-modules/masters/modules/dumbbell.src.js
@@ -955,6 +968,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var dumbbell_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

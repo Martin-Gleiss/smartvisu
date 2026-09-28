@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/broken-axis
  * @requires highcharts
  *
@@ -12,21 +12,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["StackItem"]);
+		module.exports = factory(root["_Highcharts"]["StackItem"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/broken-axis", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["StackItem"]);});
+		define("highcharts/modules/broken-axis", ["highcharts/highcharts"], function (amd1) {return factory(amd1["StackItem"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/broken-axis"] = factory(root["_Highcharts"], root["_Highcharts"]["StackItem"]);
+		exports["highcharts/modules/broken-axis"] = factory(root["_Highcharts"]["StackItem"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["StackItem"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__184__) {
+		root["Highcharts"] = factory(root["Highcharts"]["StackItem"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__184__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 184:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__184__;
 
 /***/ }),
@@ -34,6 +35,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__184__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -66,36 +68,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -121,6 +120,8 @@ var highcharts_StackItem_commonjs_highcharts_StackItem_commonjs2_highcharts_Stac
  *
  * */
 
+
+var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed;
 
 
 /* *
@@ -149,8 +150,7 @@ var BrokenAxis;
      * @internal
      */
     function compose(AxisClass, SeriesClass) {
-        if (!AxisClass.keepProps.includes('brokenAxis')) {
-            AxisClass.keepProps.push('brokenAxis');
+        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'Axis.Broken')) {
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(AxisClass, 'init', onAxisInit);
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(AxisClass, 'afterInit', onAxisAfterInit);
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(AxisClass, 'afterSetTickPositions', onAxisAfterSetTickPositions);
@@ -238,8 +238,9 @@ var BrokenAxis;
     }
     /** @internal */
     function onSeriesAfterRender() {
+        var _a;
         this.drawBreaks(this.xAxis, ['x']);
-        this.drawBreaks(this.yAxis, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.pointArrayMap, ['y']));
+        this.drawBreaks(this.yAxis, ((_a = this.pointArrayMap) !== null && _a !== void 0 ? _a : ['y']));
     }
     /** @internal */
     function seriesDrawBreaks(axis, keys) {
@@ -252,10 +253,11 @@ var BrokenAxis;
         if ((_a = axis === null || axis === void 0 ? void 0 : axis.brokenAxis) === null || _a === void 0 ? void 0 : _a.hasBreaks) {
             var brokenAxis_1 = axis.brokenAxis;
             keys.forEach(function (key) {
+                var _a;
                 breaks = (brokenAxis_1 === null || brokenAxis_1 === void 0 ? void 0 : brokenAxis_1.breakArray) || [];
                 threshold = axis.isXAxis ?
                     axis.min :
-                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.options.threshold, axis.min);
+                    ((_a = series.options.threshold) !== null && _a !== void 0 ? _a : axis.min);
                 points.forEach(function (point) {
                     var _a;
                     y = (_a = point['stack' + key.toUpperCase()]) !== null && _a !== void 0 ? _a : point[key];
@@ -392,7 +394,7 @@ var BrokenAxis;
                     });
                     // For stacked chart generate empty stack items, #6546
                     if (yAxis.stacking && this.options.stacking) {
-                        stack = yAxis.stacking.stacks[this.stackKey][xRange] = new (highcharts_StackItem_commonjs_highcharts_StackItem_commonjs2_highcharts_StackItem_root_Highcharts_StackItem_default())(yAxis, yAxis.options.stackLabels, false, xRange, (_a = this.stack) !== null && _a !== void 0 ? _a : '');
+                        stack = yAxis.stacking.stacks[this.stackKey][xRange] = new (highcharts_StackItem_commonjs_highcharts_StackItem_commonjs2_highcharts_StackItem_root_Highcharts_StackItem_default())(yAxis, false, xRange, (_a = this.stack) !== null && _a !== void 0 ? _a : '');
                         stack.total = 0;
                     }
                 }
@@ -561,6 +563,7 @@ var BrokenAxis;
         };
         /** @internal */
         Additions.prototype.isInAnyBreak = function (val, testKeep) {
+            var _a;
             var brokenAxis = this,
                 axis = brokenAxis.axis,
                 breaks = axis.options.breaks || [];
@@ -573,7 +576,8 @@ var BrokenAxis;
                     if (Additions.isInBreak(breaks[i], val)) {
                         inbrk = true;
                         if (!keep) {
-                            keep = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(breaks[i].showPoints, !axis.isXAxis);
+                            keep =
+                                (_a = breaks[i].showPoints) !== null && _a !== void 0 ? _a : !axis.isXAxis;
                         }
                     }
                 }
@@ -784,7 +788,7 @@ var BrokenAxis;
                     }
                 };
             }
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+            if (redraw !== null && redraw !== void 0 ? redraw : true) {
                 axis.chart.redraw();
             }
         };
@@ -810,6 +814,7 @@ G.BrokenAxis = G.BrokenAxis || Axis_BrokenAxis;
 G.BrokenAxis.compose(G.Axis, G.Series);
 /* harmony default export */ var broken_axis_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

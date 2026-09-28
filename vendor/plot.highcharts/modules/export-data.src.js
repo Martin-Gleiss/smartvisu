@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/export-data
  * @requires highcharts
  * @requires highcharts/modules/exporting
@@ -15,36 +15,39 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		module.exports = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/export-data", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["AST"],amd1["Chart"]);});
+		define("highcharts/modules/export-data", ["highcharts/highcharts"], function (amd1) {return factory(amd1["AST"],amd1["Chart"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/export-data"] = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		exports["highcharts/modules/export-data"] = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["AST"], root["Highcharts"]["Chart"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__) {
+		root["Highcharts"] = factory(root["Highcharts"]["AST"], root["Highcharts"]["Chart"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 660:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ }),
 
 /***/ 960:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -76,36 +79,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -720,6 +720,7 @@ var getOptions = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highc
 
 var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed, ExportData_doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).doc, ExportData_win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
 
+
 /* *
  *
  *  Composition
@@ -763,7 +764,7 @@ var ExportData;
             return;
         }
         // Adding wrappers for the deprecated functions
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()).prototype, {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()).prototype, {
             downloadCSV: function () {
                 var _a;
                 return (_a = this.exporting) === null || _a === void 0 ? void 0 : _a.downloadCSV();
@@ -873,6 +874,10 @@ var ExportData;
      */
     function downloadCSV() {
         var _this = this;
+        if (!this.chart.series.some(isExportableSeries)) {
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.error)('Warning: No data to export', false, this.chart);
+            return;
+        }
         this.wrapLoading(function () {
             var csv = _this.getCSV(true);
             downloadURL(getBlobFromContent(csv, 'text/csv') ||
@@ -893,6 +898,10 @@ var ExportData;
      */
     function downloadXLS() {
         var _this = this;
+        if (!this.chart.series.some(isExportableSeries)) {
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.error)('Warning: No data to export', false, this.chart);
+            return;
+        }
         this.wrapLoading(function () {
             var uri = 'data:application/vnd.ms-excel;base64,', template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
                     'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
@@ -935,13 +944,15 @@ var ExportData;
      * @requires modules/export-data
      */
     function getCSV(useLocalDecimalPoint) {
-        var _a;
+        var _a,
+            _b,
+            _c;
         var csv = '';
-        var rows = this.getDataRows(), csvOptions = (_a = this.options) === null || _a === void 0 ? void 0 : _a.csv, decimalPoint = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.decimalPoint, (csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.itemDelimiter) !== ',' && useLocalDecimalPoint ?
+        var rows = this.getDataRows(), csvOptions = (_a = this.options) === null || _a === void 0 ? void 0 : _a.csv, decimalPoint = (_b = csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.decimalPoint) !== null && _b !== void 0 ? _b : ((csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.itemDelimiter) !== ',' && useLocalDecimalPoint ?
                 (1.1).toLocaleString()[1] :
                 '.'), 
             // Use ';' for direct to Excel
-            itemDelimiter = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.itemDelimiter, decimalPoint === ',' ? ';' : ','), 
+            itemDelimiter = (_c = csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.itemDelimiter) !== null && _c !== void 0 ? _c : (decimalPoint === ',' ? ';' : ','), 
             // '\n' isn't working with the js csv data extraction
             lineDelimiter = csvOptions === null || csvOptions === void 0 ? void 0 : csvOptions.lineDelimiter;
         // Transform the rows to CSV
@@ -1097,10 +1108,7 @@ var ExportData;
                 pointArrayMap),
                 mockSeries,
                 j;
-            if (series.options.includeInDataExport !== false &&
-                !series.options.isInternal &&
-                series.visible !== false // #55
-            ) {
+            if (isExportableSeries(series)) {
                 // Build a lookup for X axis index and the position of the first
                 // series that belongs to that X axis. Includes -1 for non-axis
                 // series types like pies.
@@ -1139,7 +1147,9 @@ var ExportData;
                         return series.dataTable.getRowObject(i);
                 }), xColumn_1 = series.getColumn('x');
                 (data || []).forEach(function eachData(options, pIdx) {
-                    var _a;
+                    var _a,
+                        _b,
+                        _c;
                     var mockPoint = { series: mockSeries };
                     var key,
                         prop,
@@ -1203,15 +1213,11 @@ var ExportData;
                         val =
                             series.pointClass.prototype.getNestedProperty.apply(mockPoint, [prop]);
                         // Allow values from nested properties (#20470)
-                        rows[key][i + j] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-                        // Y axis category if present
-                        categoryAndDatetimeMap.categoryMap[prop][val], 
-                        // Datetime yAxis
-                        categoryAndDatetimeMap.dateTimeValueAxisMap[prop] ?
-                            time.dateFormat(csvOptions.dateFormat, val) :
-                            null, 
-                        // Linear/log yAxis
-                        val);
+                        rows[key][i + j] =
+                            (_c = (_b = categoryAndDatetimeMap.categoryMap[prop][val]) !== null && _b !== void 0 ? _b : (categoryAndDatetimeMap
+                                .dateTimeValueAxisMap[prop] ?
+                                time.dateFormat(csvOptions.dateFormat, val) :
+                                null)) !== null && _c !== void 0 ? _c : val;
                         j++;
                     }
                 });
@@ -1250,6 +1256,8 @@ var ExportData;
             // Add the category column
             rowArr.forEach(function (// eslint-disable-line no-loop-func
             row) {
+                var _a,
+                    _b;
                 var category = row.name;
                 if (xAxis && !(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(category)) {
                     if (xAxis.dateTime) {
@@ -1259,7 +1267,8 @@ var ExportData;
                         category = time.dateFormat(csvOptions.dateFormat, row.x);
                     }
                     else if (xAxis.categories) {
-                        category = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(xAxis.names[row.x], xAxis.categories[row.x], row.x);
+                        category =
+                            (_b = (_a = xAxis.names[row.x]) !== null && _a !== void 0 ? _a : xAxis.categories[row.x]) !== null && _b !== void 0 ? _b : row.x;
                     }
                     else {
                         category = row.x;
@@ -1339,16 +1348,15 @@ var ExportData;
      * @requires modules/export-data
      */
     function getTableAST(useLocalDecimalPoint) {
-        var _a;
+        var _a,
+            _b;
         var rowLength = 0;
         var treeChildren = [],
             exporting = this,
             chart = exporting.chart,
             options = chart.options,
-            decimalPoint = useLocalDecimalPoint ? (1.1).toLocaleString()[1] : '.',
-            useMultiLevelHeaders = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(exporting.options.useMultiLevelHeaders,
-            true),
+            decimalPoint = useLocalDecimalPoint ? (1.1).toLocaleString()[1] : void 0,
+            useMultiLevelHeaders = (_a = exporting.options.useMultiLevelHeaders) !== null && _a !== void 0 ? _a : true,
             rows = exporting.getDataRows(useMultiLevelHeaders),
             topHeaders = useMultiLevelHeaders ? rows.shift() : null,
             subHeaders = rows.shift(), 
@@ -1371,7 +1379,7 @@ var ExportData;
         // Get table cell HTML from value
         getCellHTMLFromValue = function (tagName, classes, attributes, value) {
             var children = [];
-            var textContent = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(value, ''), className = 'highcharts-text' + (classes ? ' ' + classes : '');
+            var textContent = (value !== null && value !== void 0 ? value : ''), className = 'highcharts-text' + (classes ? ' ' + classes : '');
             // Convert to string if number
             if (typeof textContent === 'number') {
                 textContent = chart.numberFormatter(textContent, -1, decimalPoint, tagName === 'th' ? '' : void 0);
@@ -1502,7 +1510,7 @@ var ExportData;
                 },
                 textContent: typeof tableCaption === 'string' ?
                     tableCaption :
-                    ((_a = options.title) === null || _a === void 0 ? void 0 : _a.text) || options.lang.chartTitle
+                    ((_b = options.title) === null || _b === void 0 ? void 0 : _b.text) || options.lang.chartTitle
             });
         }
         // Find longest row
@@ -1554,6 +1562,20 @@ var ExportData;
         this.toggleDataTable(false);
     }
     /**
+     * Whether the series contributes columns to the exported data.
+     *
+     * @internal
+     *
+     * @requires modules/exporting
+     * @requires modules/export-data
+     */
+    function isExportableSeries(series) {
+        return (series.options.includeInDataExport !== false &&
+            !series.options.isInternal &&
+            series.visible !== false // #55
+        );
+    }
+    /**
      * Toggle showing data table.
      *
      * @internal
@@ -1569,8 +1591,7 @@ var ExportData;
         var _a;
         var chart = this.chart, 
             // Create the div
-            createContainer = (show = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(show, !this.isDataTableVisible)) &&
+            createContainer = (show = (show !== null && show !== void 0 ? show : !this.isDataTableVisible)) &&
                 !this.dataTableDiv;
         if (createContainer) {
             this.dataTableDiv = ExportData_doc.createElement('div');
@@ -1785,6 +1806,10 @@ var ExportData;
  *
  * */
 /**
+ * @class
+ * @name Highcharts.Exporting
+ */
+/**
  * Function callback to execute while data rows are processed for exporting.
  * This allows the modification of data rows before processed into the final
  * format.
@@ -1823,6 +1848,7 @@ G.downloadURL = G.downloadURL || Shared_DownloadURL.downloadURL;
 ExportData_ExportData.compose(G.Chart, G.Exporting, G.Series);
 /* harmony default export */ var export_data_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

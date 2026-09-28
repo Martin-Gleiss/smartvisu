@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/mouse-wheel-zoom
  * @requires highcharts
  *
@@ -23,12 +23,13 @@
 		root["Highcharts"] = factory(root["Highcharts"]);
 })(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -61,36 +62,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -156,19 +154,45 @@ var annotationsFieldsTypes = {
  */
 function getAssignedAxis(coords) {
     return coords.filter(function (coord) {
+        var _a;
         var extremes = coord.axis.getExtremes(),
             axisMin = extremes.min,
             axisMax = extremes.max, 
             // Correct axis edges when axis has series
             // with pointRange (like column)
-            minPointOffset = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coord.axis.minPointOffset, 0);
+            minPointOffset = ((_a = coord.axis.minPointOffset) !== null && _a !== void 0 ? _a : 0);
         return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMin) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMax) &&
             coord.value >= (axisMin - minPointOffset) &&
             coord.value <= (axisMax + minPointOffset) &&
             // Don't count navigator axis
             !coord.axis.options.isInternal;
     })[0]; // If the axes overlap, return the first axis that was found.
+}
+/**
+ * Resolve an axis from an annotation option that can reference it either by its
+ * index (number) or by its id (string).
+ *
+ * @internal
+ *
+ * @param {Highcharts.Chart} chart
+ *        The chart instance.
+ *
+ * @param {'xAxis'|'yAxis'} coll
+ *        The axis collection to look in.
+ *
+ * @param {number|string|undefined} idOrIndex
+ *        The axis index or id.
+ *
+ * @return {Highcharts.Axis|undefined}
+ *         The matching axis, or `undefined` if none was found.
+ */
+function getAxisFromOptions(chart, coll, idOrIndex) {
+    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(idOrIndex)) {
+        return chart[coll][idOrIndex];
+    }
+    return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(idOrIndex) ?
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.find)(chart[coll], function (axis) { return axis.options.id === idOrIndex; }) :
+        void 0;
 }
 /**
  * Get field type according to value
@@ -197,13 +221,14 @@ function getFieldType(key, value) {
  *
  * */
 /** @internal */
-var NavigationBindingUtilities = {
+var NavigationBindingsUtilities = {
     annotationsFieldsTypes: annotationsFieldsTypes,
     getAssignedAxis: getAssignedAxis,
+    getAxisFromOptions: getAxisFromOptions,
     getFieldType: getFieldType
 };
 /** @internal */
-/* harmony default export */ var NavigationBindingsUtilities = (NavigationBindingUtilities);
+/* harmony default export */ var Annotations_NavigationBindingsUtilities = (NavigationBindingsUtilities);
 
 ;// ./code/es5/es-modules/Extensions/MouseWheelZoom/MouseWheelZoom.js
 /* *
@@ -220,7 +245,7 @@ var NavigationBindingUtilities = {
 
 
 
-var MouseWheelZoom_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis;
+var MouseWheelZoom_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis;
 /* *
  *
  *  Constants
@@ -248,9 +273,9 @@ var optionsToObject = function (options) {
 };
 /** @internal */
 var zoomBy = function (chart, howMuch, xAxis, yAxis, mouseX, mouseY, options) {
-    var type = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.type,
-        chart.zooming.type, '');
+    var _a,
+        _b;
+    var type = ((_b = (_a = options.type) !== null && _a !== void 0 ? _a : chart.zooming.type) !== null && _b !== void 0 ? _b : '');
     var axes = [];
     if (type === 'x') {
         axes = xAxis;
@@ -438,6 +463,7 @@ G.MouseWheelZoom = G.MouseWheelZoom || MouseWheelZoom;
 G.MouseWheelZoom.compose(G.Chart);
 /* harmony default export */ var mouse_wheel_zoom_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

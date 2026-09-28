@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/dotplot
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/dotplot", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/dotplot", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/dotplot"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/dotplot"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -163,7 +162,7 @@ var highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highc
  *
  * */
 /**
- * @private
+ * @internal
  * @todo
  * - Check update, remove etc.
  * - Custom icons like persons, carts etc. Either as images, font icons or
@@ -196,7 +195,7 @@ var ColumnSeries = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry
  *
  * */
 /**
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.dotplot
  *
@@ -215,7 +214,8 @@ var DotPlotSeries = /** @class */ (function (_super) {
     DotPlotSeries.prototype.drawPoints = function () {
         var _a,
             _b,
-            _c;
+            _c,
+            _d;
         var series = this,
             options = series.options,
             renderer = series.chart.renderer,
@@ -241,20 +241,18 @@ var DotPlotSeries = /** @class */ (function (_super) {
             }
         }
         var height = (totalHeight * slotsPerBar) / total;
-        for (var _i = 0, _d = series.points; _i < _d.length; _i++) {
-            var point = _d[_i];
+        for (var _i = 0, _e = series.points; _i < _e.length; _i++) {
+            var point = _e[_i];
             var pointMarkerOptions = point.marker || {},
                 symbol = (pointMarkerOptions.symbol ||
                     seriesMarkerOptions.symbol),
-                radius = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointMarkerOptions.radius,
-                seriesMarkerOptions.radius),
+                radius = (_c = pointMarkerOptions.radius) !== null && _c !== void 0 ? _c : seriesMarkerOptions.radius,
                 isSquare = symbol !== 'rect',
                 width = isSquare ? height : slotWidth,
                 shapeArgs = point.shapeArgs || {},
                 startX = (shapeArgs.x || 0) + ((shapeArgs.width || 0) -
                     slotsPerBar * width) / 2,
-                positiveYValue = Math.abs((_c = point.y) !== null && _c !== void 0 ? _c : 0),
+                positiveYValue = Math.abs((_d = point.y) !== null && _d !== void 0 ? _d : 0),
                 shapeY = (shapeArgs.y || 0),
                 shapeHeight = (shapeArgs.height || 0);
             var graphics = void 0,
@@ -306,8 +304,8 @@ var DotPlotSeries = /** @class */ (function (_super) {
                 }
             }
             var i = -1;
-            for (var _e = 0, graphics_1 = graphics; _e < graphics_1.length; _e++) {
-                var graphic = graphics_1[_e];
+            for (var _f = 0, graphics_1 = graphics; _f < graphics_1.length; _f++) {
+                var graphic = graphics_1[_f];
                 ++i;
                 if (graphic) {
                     if (!graphic.isActive) {
@@ -338,6 +336,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var DotPlot_DotPlotSeries = ((/* unused pure expression or super */ null && (DotPlotSeries)));
 
 ;// ./code/es5/es-modules/masters/modules/dotplot.src.js
@@ -347,6 +346,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var dotplot_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

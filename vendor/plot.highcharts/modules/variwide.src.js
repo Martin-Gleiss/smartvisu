@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/variwide
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/variwide", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/variwide", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/variwide"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/variwide"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -188,16 +187,21 @@ function onTickAfterGetPosition(e) {
  * @private
  */
 function tickPostTranslate(xy, xOrY, index) {
+    var _a,
+        _b,
+        _c;
     var axis = this.axis;
-    var pos = xy[xOrY] - axis.pos;
-    if (!axis.horiz) {
-        pos = axis.len - pos;
+    if (axis.variwide) {
+        var pos = xy[xOrY] - axis.pos;
+        if (!axis.horiz) {
+            pos = axis.len - pos;
+        }
+        pos = (_c = (_b = (_a = axis.series[0]) === null || _a === void 0 ? void 0 : _a.postTranslate) === null || _b === void 0 ? void 0 : _b.call(_a, index, pos)) !== null && _c !== void 0 ? _c : pos;
+        if (!axis.horiz) {
+            pos = axis.len - pos;
+        }
+        xy[xOrY] = axis.pos + pos;
     }
-    pos = axis.series[0].postTranslate(index, pos);
-    if (!axis.horiz) {
-        pos = axis.len - pos;
-    }
-    xy[xOrY] = axis.pos + pos;
 }
 /**
  * @private
@@ -526,13 +530,15 @@ var VariwideSeries = /** @class */ (function (_super) {
      *         Distorted X position
      */
     VariwideSeries.prototype.postTranslate = function (index, x, point) {
+        var _a,
+            _b;
         var axis = this.xAxis, relZ = this.relZ, i = axis.reversed ? relZ.length - index : index, goRight = axis.reversed ? -1 : 1, minPx = axis.toPixels(axis.reversed ?
                 (axis.dataMax || 0) + axis.pointRange :
                 (axis.dataMin || 0)), maxPx = axis.toPixels(axis.reversed ?
                 (axis.dataMin || 0) :
                 (axis.dataMax || 0) + axis.pointRange), len = Math.abs(maxPx - minPx), totalZ = this.totalZ, left = this.chart.inverted ?
                 maxPx - (this.chart.plotTop - goRight * axis.minPixelPadding) :
-                minPx - this.chart.plotLeft - goRight * axis.minPixelPadding, linearSlotLeft = i / relZ.length * len, linearSlotRight = (i + goRight) / relZ.length * len, slotLeft = ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(relZ[i], totalZ) / totalZ) * len, slotRight = ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(relZ[i + goRight], totalZ) / totalZ) * len, xInsideLinearSlot = (x - (left + linearSlotLeft));
+                minPx - this.chart.plotLeft - goRight * axis.minPixelPadding, linearSlotLeft = i / relZ.length * len, linearSlotRight = (i + goRight) / relZ.length * len, slotLeft = (((_a = relZ[i]) !== null && _a !== void 0 ? _a : totalZ) / totalZ) * len, slotRight = (((_b = relZ[i + goRight]) !== null && _b !== void 0 ? _b : totalZ) / totalZ) * len, xInsideLinearSlot = (x - (left + linearSlotLeft));
         // Set crosshairWidth for every point (#8173)
         if (point) {
             point.crosshairWidth = slotRight - slotLeft;
@@ -675,6 +681,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 Variwide_VariwideSeries.compose(G.Axis, G.Tick);
 /* harmony default export */ var variwide_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

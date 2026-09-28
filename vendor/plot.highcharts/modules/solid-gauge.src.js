@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/solid-gauge
  * @requires highcharts
  * @requires highcharts/highcharts-more
@@ -15,35 +15,38 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Color"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/solid-gauge", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["Color"]);});
+		define("highcharts/modules/solid-gauge", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/solid-gauge"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Color"]);
+		exports["highcharts/modules/solid-gauge"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Color"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__620__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
 
 /***/ 620:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -76,36 +79,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -116,6 +116,10 @@ __webpack_require__.d(__webpack_exports__, {
 var highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_ = __webpack_require__(944);
 var highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default = /*#__PURE__*/__webpack_require__.n(highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_);
 ;// ./code/es5/es-modules/Extensions/BorderRadius.js
+/* unused harmony import specifier */ var relativeLength;
+/* unused harmony import specifier */ var isObject;
+/* unused harmony import specifier */ var extend;
+/* unused harmony import specifier */ var addEvent;
 /* *
  *
  *  Highcharts Border Radius module
@@ -276,7 +280,7 @@ function arc(x, y, w, h, options) {
     }
     var alpha = end - start,
         sinHalfAlpha = Math.sin(alpha / 2),
-        borderRadius = Math.max(Math.min(relativeLength(options.borderRadius || 0,
+        borderRadius = Math.max(Math.min(relativeLength(borderRadiusObject(options.borderRadius).radius,
         r - innerR), 
         // Cap to half the sector radius
         (r - innerR) / 2, 
@@ -309,7 +313,7 @@ function seriesOnAfterColumnTranslate() {
             yAxis = _c.yAxis,
             percent = options.stacking === 'percent',
             seriesDefault = (_b = (_a = defaultOptions.plotOptions) === null || _a === void 0 ? void 0 : _a[this.type]) === null || _b === void 0 ? void 0 : _b.borderRadius,
-            borderRadius = optionsToObject(options.borderRadius,
+            borderRadius = borderRadiusObject(options.borderRadius,
             isObject(seriesDefault) ? seriesDefault : {}),
             reversed = yAxis.options.reversed;
         for (var _i = 0, _d = this.points; _i < _d.length; _i++) {
@@ -405,8 +409,12 @@ function composeBorderRadius(SeriesClass, SVGElementClass, SVGRendererClass) {
         symbols.roundedRect = roundedRect;
     }
 }
-/** @internal */
-function optionsToObject(options, seriesBROptions) {
+/**
+ * Utility function to get the full border radius options object, from a simple
+ * number or a partial options object.
+ * @internal
+ */
+function borderRadiusObject(options, seriesBROptions) {
     if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(options)) {
         options = { radius: options || 0 };
     }
@@ -414,7 +422,7 @@ function optionsToObject(options, seriesBROptions) {
 }
 /** @internal */
 function pieSeriesOnAfterTranslate() {
-    var borderRadius = optionsToObject(this.options.borderRadius);
+    var borderRadius = borderRadiusObject(this.options.borderRadius);
     for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
         var point = _a[_i];
         var shapeArgs = point.shapeArgs;
@@ -553,7 +561,7 @@ function roundedRect(x, y, width, height, options) {
 *          Column and pie with rounded border
 *
 * @name Highcharts.BorderRadiusOptionsObject#radius
-* @type {string|number}
+* @type {string|number|undefined}
 */ /**
 * The scope of the rounding for column charts or plot bands. In a stacked
 * column chart, the value `point` means each single point will get rounded
@@ -568,8 +576,7 @@ function roundedRect(x, y, width, height, options) {
 *          Rounded columns
 *
 * @name Highcharts.BorderRadiusOptionsObject#scope
-* @validvalue ["individual", "point", "stack"]
-* @type {string}
+* @type {"individual"|"point"|"stack"|undefined}
 */ /**
 * For column charts, where in the point or stack to apply rounding. The `end`
 * value means only those corners at the point value will be rounded, leaving
@@ -580,8 +587,7 @@ function roundedRect(x, y, width, height, options) {
 *          Rounding on all corners
 *
 * @name Highcharts.BorderRadiusOptionsObject#where
-* @validvalue ["all", "end"]
-* @type {string}
+* @type {"all"|"end"|undefined}
 * @default end
 */
 (''); // Keeps doclets above in JS file
@@ -938,7 +944,7 @@ var SolidGaugeSeriesDefaults = {
  *
  * @extends   series,plotOptions.solidgauge
  * @excluding animationLimit, boostThreshold, connectEnds, connectNulls,
- *            cropThreshold, dashStyle, dataParser, dataURL, dial,
+ *            cropThreshold, dashStyle, dial,
  *            findNearestPointBy, getExtremesFromAll, marker, negativeColor,
  *            pointPlacement, pivot, shadow, softThreshold, stack, stacking,
  *            states, step, threshold, turboThreshold, wrap, zoneAxis, zones,
@@ -1112,7 +1118,7 @@ var SolidGaugeSeries = /** @class */ (function (_super) {
             renderer = series.chart.renderer,
             overshoot = options.overshoot,
             rounded = options.rounded,
-            borderRadius = optionsToObject(rounded ? '50%' : ((_a = options.borderRadius) !== null && _a !== void 0 ? _a : yAxis.pane.options.borderRadius)).radius,
+            borderRadius = borderRadiusObject(rounded ? '50%' : ((_a = options.borderRadius) !== null && _a !== void 0 ? _a : yAxis.pane.options.borderRadius)).radius,
             overshootVal = (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(overshoot) ?
                 overshoot / 180 * Math.PI :
@@ -1122,7 +1128,7 @@ var SolidGaugeSeries = /** @class */ (function (_super) {
         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(options.threshold)) {
             thresholdAngleRad = yAxis.startAngleRad + yAxis.translate(options.threshold, void 0, void 0, void 0, true);
         }
-        this.thresholdAngleRad = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(thresholdAngleRad, yAxis.startAngleRad);
+        this.thresholdAngleRad = (thresholdAngleRad !== null && thresholdAngleRad !== void 0 ? thresholdAngleRad : yAxis.startAngleRad);
         for (var _i = 0, _h = series.points; _i < _h.length; _i++) {
             var point = _h[_i];
             // #10630 null point should not be draw
@@ -1262,6 +1268,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var solid_gauge_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/sankey
  * @requires highcharts
  *
@@ -14,49 +14,54 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Point"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["Point"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/sankey", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["Point"],amd1["Color"],amd1["SVGElement"]);});
+		define("highcharts/modules/sankey", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["Point"],amd1["SVGElement"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/sankey"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Point"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"]);
+		exports["highcharts/modules/sankey"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["Point"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Point"], root["Highcharts"]["Color"], root["Highcharts"]["SVGElement"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__28__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["Point"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 28:
+/***/ 620:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
 
 /***/ }),
 
 /***/ 260:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
+
+/***/ }),
+
+/***/ 28:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 
 /***/ }),
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
-
-/***/ 620:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -89,36 +94,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -191,6 +193,9 @@ var NodesComposition;
      * @private
      */
     function createNode(id) {
+        var _a,
+            _b,
+            _c;
         var PointClass = this.pointClass,
             findById = function (nodes,
             id) { return (0,
@@ -258,13 +263,7 @@ var NodesComposition;
         // For use in formats
         node.name = node.name || node.options.id || '';
         // Mass is used in networkgraph:
-        node.mass = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-        // Node:
-        node.options.mass, node.options.marker && node.options.marker.radius, 
-        // Series:
-        this.options.marker && this.options.marker.radius, 
-        // Default:
-        4);
+        node.mass = ((_c = (_b = (_a = node.options.mass) !== null && _a !== void 0 ? _a : (node.options.marker && node.options.marker.radius)) !== null && _b !== void 0 ? _b : (this.options.marker && this.options.marker.radius)) !== null && _c !== void 0 ? _c : 4);
         return node;
     }
     NodesComposition.createNode = createNode;
@@ -301,6 +300,7 @@ var NodesComposition;
         });
         // Create the node list and set up links
         this.points.forEach(function (point) {
+            var _a;
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(point.from)) {
                 if (!nodeLookup[point.from]) {
                     nodeLookup[point.from] = _this.createNode(point.from);
@@ -309,7 +309,8 @@ var NodesComposition;
                 point.fromNode = nodeLookup[point.from];
                 // Point color defaults to the fromNode's color
                 if (chart.styledMode) {
-                    point.colorIndex = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.colorIndex, nodeLookup[point.from].colorIndex);
+                    point.colorIndex =
+                        (_a = point.options.colorIndex) !== null && _a !== void 0 ? _a : nodeLookup[point.from].colorIndex;
                 }
                 else {
                     point.color =
@@ -417,7 +418,7 @@ var NodesComposition;
             else {
                 this.series.options.nodes = [nodeConfig];
             }
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+            if (redraw !== null && redraw !== void 0 ? redraw : true) {
                 this.series.chart.redraw(animation);
             }
         }
@@ -588,7 +589,7 @@ var SankeyPoint = /** @class */ (function (_super) {
  * @extends      plotOptions.column
  * @since        6.0.0
  * @product      highcharts
- * @excluding    animationLimit, boostBlending, boostThreshold, borderRadius,
+ * @excluding    animationLimit, boostBlending, boostThreshold,
  *               crisp, cropThreshold, colorAxis, colorKey, dataSorting, depth,
  *               dragDrop, edgeColor, edgeWidth, findNearestPointBy, grouping,
  *               groupPadding, groupZPadding, legendSymbolColor, maxPointWidth,
@@ -909,13 +910,12 @@ var SankeySeriesDefaults = {
  *
  * @extends   series,plotOptions.sankey
  * @excluding animationLimit, boostBlending, boostThreshold, borderColor,
- *            borderRadius, borderWidth, crisp, cropThreshold, dataParser,
- *            dataURL, depth, dragDrop, edgeColor, edgeWidth,
- *            findNearestPointBy, getExtremesFromAll, grouping, groupPadding,
- *            groupZPadding, label, maxPointWidth, negativeColor, pointInterval,
- *            pointIntervalUnit, pointPadding, pointPlacement, pointRange,
- *            pointStart, pointWidth, shadow, softThreshold, stacking,
- *            threshold, zoneAxis, zones, dataSorting
+ *            borderWidth, crisp, cropThreshold, depth, dragDrop, edgeColor,
+ *            edgeWidth, findNearestPointBy, getExtremesFromAll, grouping,
+ *            groupPadding, groupZPadding, label, maxPointWidth, negativeColor,
+ *            pointInterval, pointIntervalUnit, pointPadding, pointPlacement,
+ *            pointRange, pointStart, pointWidth, shadow, softThreshold,
+ *            stacking, threshold, zoneAxis, zones, dataSorting
  * @product   highcharts
  * @requires  modules/sankey
  * @apioption series.sankey
@@ -1428,6 +1428,14 @@ var highcharts_Color_commonjs_highcharts_Color_commonjs2_highcharts_Color_root_H
  * @private
  */
 function getColor(node, options) {
+    var _a,
+        _b,
+        _c,
+        _d,
+        _e,
+        _f,
+        _g,
+        _h;
     var index = options.index,
         mapOptionsToLevel = options.mapOptionsToLevel,
         parentColor = options.parentColor,
@@ -1469,9 +1477,9 @@ function getColor(node, options) {
         }
         // Select either point color, level color or inherited color.
         if (!series.chart.styledMode) {
-            color = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point && point.options.color, level && level.color, colorByPoint, parentColor && variateColor(parentColor), series.color);
+            color = ((_d = (_c = (_b = (_a = (point && point.options.color)) !== null && _a !== void 0 ? _a : (level && level.color)) !== null && _b !== void 0 ? _b : colorByPoint) !== null && _c !== void 0 ? _c : (parentColor && variateColor(parentColor))) !== null && _d !== void 0 ? _d : series.color);
         }
-        colorIndex = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point && point.options.colorIndex, level && level.colorIndex, colorIndexByPoint, parentColorIndex, options.colorIndex);
+        colorIndex = ((_h = (_g = (_f = (_e = (point && point.options.colorIndex)) !== null && _e !== void 0 ? _e : (level && level.colorIndex)) !== null && _f !== void 0 ? _f : colorIndexByPoint) !== null && _g !== void 0 ? _g : parentColorIndex) !== null && _h !== void 0 ? _h : options.colorIndex);
     }
     return {
         color: color,
@@ -1510,12 +1518,14 @@ function getLevelOptions(params) {
         defaults = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(params.defaults) ? params.defaults : {};
         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isArray)(levels)) {
             converted = levels.reduce(function (obj, item) {
+                var _a;
                 var level,
                     levelIsConstant,
                     options;
                 if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(item) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(item.level)) {
                     options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)({}, item);
-                    levelIsConstant = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.levelIsConstant, defaults.levelIsConstant);
+                    levelIsConstant =
+                        (_a = options.levelIsConstant) !== null && _a !== void 0 ? _a : defaults.levelIsConstant;
                     // Delete redundant properties.
                     delete options.levelIsConstant;
                     delete options.level;
@@ -1544,6 +1554,8 @@ function getLevelOptions(params) {
  * @todo Remove logic from Treemap and make it utilize this mixin.
  */
 function setTreeValues(tree, options) {
+    var _a,
+        _b;
     var before = options.before,
         idRoot = options.idRoot,
         mapIdToNode = options.mapIdToNode,
@@ -1555,7 +1567,7 @@ function setTreeValues(tree, options) {
         children = [];
     var childrenTotal = 0;
     tree.levelDynamic = tree.level - (levelIsConstant ? 0 : nodeRoot.level);
-    tree.name = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point && point.name, '');
+    tree.name = ((_a = (point && point.name)) !== null && _a !== void 0 ? _a : '');
     tree.visible = (idRoot === tree.id ||
         options.visible === true);
     if (typeof before === 'function') {
@@ -1578,9 +1590,7 @@ function setTreeValues(tree, options) {
         }
     });
     // Set the values
-    var value = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(optionsPoint.value,
-        childrenTotal);
+    var value = ((_b = optionsPoint.value) !== null && _b !== void 0 ? _b : childrenTotal);
     tree.visible = value >= 0 && (childrenTotal > 0 || tree.visible);
     tree.children = children;
     tree.childrenTotal = childrenTotal;
@@ -1601,13 +1611,15 @@ function setTreeValues(tree, options) {
  * Returns the resulting rootId after update.
  */
 function updateRootId(series) {
+    var _a,
+        _b;
     var rootId,
         options;
     if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(series)) {
         // Get the series options.
         options = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(series.options) ? series.options : {};
         // Calculate the rootId.
-        rootId = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.rootNode, options.rootId, '');
+        rootId = ((_b = (_a = series.rootNode) !== null && _a !== void 0 ? _a : options.rootId) !== null && _b !== void 0 ? _b : '');
         // Set rootId on series.userOptions to pick it up in exporting.
         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(series.userOptions)) {
             series.userOptions.rootId = rootId;
@@ -2143,7 +2155,7 @@ var SankeySeries = /** @class */ (function (_super) {
                     this.order(node, 0);
                 }
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(this.nodes, function (a, b) { return (a.level - b.level); });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(this.nodes, function (a, b) { return (a.level - b.level); });
         }
     };
     /**
@@ -2180,6 +2192,8 @@ var SankeySeries = /** @class */ (function (_super) {
      * @private
      */
     SankeySeries.prototype.pointAttribs = function (point, state) {
+        var _a,
+            _b;
         if (!point) {
             return {};
         }
@@ -2196,13 +2210,13 @@ var SankeySeries = /** @class */ (function (_super) {
                 'opacity'
             ].reduce(function (obj,
             key) {
-                obj[key] = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions[key],
-            options[key],
-            levelOptions[key],
-            series.options[key]);
+                var _a,
+            _b,
+            _c;
+            obj[key] =
+                (_c = (_b = (_a = stateOptions[key]) !== null && _a !== void 0 ? _a : options[key]) !== null && _b !== void 0 ? _b : levelOptions[key]) !== null && _c !== void 0 ? _c : series.options[key];
             return obj;
-        }, {}), color = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.color, options.color, values.colorByPoint ? point.color : levelOptions.color);
+        }, {}), color = (_b = (_a = stateOptions.color) !== null && _a !== void 0 ? _a : options.color) !== null && _b !== void 0 ? _b : (values.colorByPoint ? point.color : levelOptions.color);
         // Node attributes
         if (point.isNode) {
             return {
@@ -2312,15 +2326,14 @@ var SankeySeries = /** @class */ (function (_super) {
      * @internal
      */
     SankeySeries.prototype.translateLink = function (point, linkToY) {
+        var _a;
         var fromNode = point.fromNode,
             toNode = point.toNode,
             chart = this.chart,
             inverted = chart.inverted,
             translationFactor = this.translationFactor,
             options = this.options,
-            linkColorMode = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.linkColorMode,
-            options.linkColorMode),
+            linkColorMode = ((_a = point.linkColorMode) !== null && _a !== void 0 ? _a : options.linkColorMode),
             curvy = ((chart.inverted ? -this.colDistance : this.colDistance) *
                 options.curveFactor),
             nodeLeft = fromNode.nodeX,
@@ -2470,12 +2483,13 @@ var SankeySeries = /** @class */ (function (_super) {
      * @internal
      */
     SankeySeries.prototype.translateNode = function (node, column) {
+        var _a;
         var translationFactor = this.translationFactor,
             chart = this.chart,
             options = this.options,
             borderRadius = options.borderRadius,
-            _a = options.borderWidth,
-            borderWidth = _a === void 0 ? 0 : _a,
+            _b = options.borderWidth,
+            borderWidth = _b === void 0 ? 0 : _b,
             sum = node.getSum(),
             nodeHeight = Math.max(Math.round(sum * translationFactor),
             this.options.minLinkWidth),
@@ -2483,8 +2497,7 @@ var SankeySeries = /** @class */ (function (_super) {
             nodeOffset = column.sankeyColumn.offset(node,
             translationFactor),
             fromNodeTop = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)((0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(nodeOffset.absoluteTop, (column.sankeyColumn.top(translationFactor) +
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)(((_a = nodeOffset.absoluteTop) !== null && _a !== void 0 ? _a : (column.sankeyColumn.top(translationFactor) +
                 nodeOffset.relativeTop)),
             borderWidth),
             left = (0,
@@ -2513,9 +2526,10 @@ var SankeySeries = /** @class */ (function (_super) {
             // #18956
             var r = (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)((0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.relativeLength)((typeof borderRadius === 'object' ?
+                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.relativeLength)(((0,
+                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(borderRadius) ?
                     borderRadius.radius :
-                    borderRadius || 0),
+                    borderRadius) || 0,
                 width), 0,
                 nodeHeight / 2);
             if (chart.inverted) {
@@ -2702,6 +2716,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var sankey_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

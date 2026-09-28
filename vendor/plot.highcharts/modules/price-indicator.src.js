@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highstock JS v13.0.0 (2026-06-11)
+ * @license Highstock JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/price-indicator
  * @requires highcharts
  * @requires highcharts/modules/stock
@@ -24,12 +24,13 @@
 		root["Highcharts"] = factory(root["Highcharts"]);
 })(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -62,36 +63,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -157,7 +155,9 @@ function onSeriesHide() {
  */
 function onSeriesAfterRender() {
     var _a,
-        _b;
+        _b,
+        _c,
+        _d;
     var series = this,
         seriesOptions = series.options,
         lastVisiblePrice = seriesOptions.lastVisiblePrice,
@@ -165,7 +165,7 @@ function onSeriesAfterRender() {
     if ((lastVisiblePrice || lastPrice) &&
         seriesOptions.id !== 'highcharts-navigator-series' &&
         series.visible) {
-        var points = series.points, xAxis = series.xAxis, yAxis = series.yAxis, cross = yAxis.cross, crosshair = yAxis.crosshair, crossLabel = yAxis.crossLabel, pLength = points.length, dataLength = series.dataTable.rowCount, x = series.getColumn('x')[dataLength - 1], y = (_a = series.getColumn('y')[dataLength - 1]) !== null && _a !== void 0 ? _a : series.getColumn('close')[dataLength - 1];
+        var points = series.points, xAxis = series.xAxis, yAxis = series.yAxis, cross = yAxis.cross, crosshair = yAxis.crosshair, crossLabel = yAxis.crossLabel, pLength = points.length, dataLength = series.dataTable.rowCount, x = series.getColumn('x')[dataLength - 1], y = (_a = series.getColumn('y')[dataLength - 1]) !== null && _a !== void 0 ? _a : series.getColumn('close')[dataLength - 1], modifiedY = (_c = (_b = series.dataModify) === null || _b === void 0 ? void 0 : _b.modifyValue(y)) !== null && _c !== void 0 ? _c : y;
         if (lastPrice === null || lastPrice === void 0 ? void 0 : lastPrice.enabled) {
             yAxis.crosshair = yAxis.options.crosshair = seriesOptions.lastPrice;
             if (!series.chart.styledMode &&
@@ -184,8 +184,9 @@ function onSeriesAfterRender() {
             yAxis.drawCrosshair(void 0, ({
                 x: x,
                 y: y,
-                plotX: xAxis.toPixels(x, true),
-                plotY: yAxis.toPixels(y, true)
+                series: series,
+                plotX: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(xAxis.toPixels(x, true), 0, xAxis.len),
+                plotY: yAxis.toPixels(modifiedY, true)
             }));
             // Save price
             if (series.yAxis.cross) {
@@ -203,7 +204,7 @@ function onSeriesAfterRender() {
             var lastPoint = points[pLength - 1].isInside ?
                     points[pLength - 1] :
                     points[pLength - 2];
-            (_b = series.lastVisiblePriceLabel) === null || _b === void 0 ? void 0 : _b.destroy();
+            (_d = series.lastVisiblePriceLabel) === null || _d === void 0 ? void 0 : _d.destroy();
             // Set to undefined to avoid collision with
             // the yAxis crosshair #11480
             // Delete the crossLabel each time the code is invoked, #13876.
@@ -509,6 +510,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 composePriceIndication(G.Series);
 /* harmony default export */ var price_indicator_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

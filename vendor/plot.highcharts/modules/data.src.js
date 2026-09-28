@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/data
  * @requires highcharts
  *
@@ -14,21 +14,38 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Time"]);
+		module.exports = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Time"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/data", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Axis"],amd1["Chart"],amd1["Point"],amd1["SeriesRegistry"],amd1["Time"]);});
+		define("highcharts/modules/data", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Axis"],amd1["Chart"],amd1["Point"],amd1["SeriesRegistry"],amd1["Time"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/data"] = factory(root["_Highcharts"], root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Time"]);
+		exports["highcharts/modules/data"] = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Time"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Axis"], root["Highcharts"]["Chart"], root["Highcharts"]["Point"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Time"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__532__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__792__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Axis"], root["Highcharts"]["Chart"], root["Highcharts"]["Point"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Time"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__532__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__792__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
+
+/***/ 532:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__532__;
+
+/***/ }),
+
+/***/ 960:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
+
+/***/ }),
 
 /***/ 260:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
 
 /***/ }),
@@ -36,20 +53,15 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
-
-/***/ 532:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__532__;
 
 /***/ }),
 
 /***/ 792:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__792__;
 
 /***/ }),
@@ -57,14 +69,8 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__792__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
-
-/***/ 960:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 
 /***/ })
 
@@ -96,36 +102,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -253,7 +256,7 @@ function ajax(settings) {
     if (!((_a = settings.headers) === null || _a === void 0 ? void 0 : _a['Content-Type'])) {
         r.setRequestHeader('Content-Type', headers[settings.dataType || 'json'] || headers.text);
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(settings.headers, function (val, key) {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(settings.headers, function (val, key) {
         r.setRequestHeader(key, val);
     });
     if (settings.responseType) {
@@ -628,13 +631,19 @@ var DataTableCore = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         var _this = this;
         this.isDataTable = true;
-        this.autoId = !options.id;
+        // Reject IDs that would pollute the prototype of ID-keyed maps.
+        var id = this.isPollutingKey(options.id) ? void 0 : options.id;
+        this.autoId = !id;
         this.columns = {};
-        this.id = (options.id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
+        this.id = (id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
         this.rowCount = 0;
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         var rowCount = 0;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options.columns || {}, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = Math.max(rowCount, column.length);
         });
@@ -645,6 +654,17 @@ var DataTableCore = /** @class */ (function () {
      *  Functions
      *
      * */
+    /**
+     * Checks whether a key would pollute the prototype if used to index a
+     * plain object (e.g. as a column ID or table ID).
+     *
+     * @private
+     * @param {string|undefined} key The key to check.
+     * @return {boolean} True if the key is unsafe to use.
+     */
+    DataTableCore.prototype.isPollutingKey = function (key) {
+        return key === '__proto__' || key === 'constructor';
+    };
     /**
      * Applies a row count to the table by setting the `rowCount` property and
      * adjusting the length of all columns.
@@ -694,14 +714,14 @@ var DataTableCore = /** @class */ (function () {
             });
             this.rowCount = length_1;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
     };
     /**
      * Fetches the given column by the canonical column ID. Simplified version
      * of the full `DataTable.getRow` method, always returning by reference.
      *
-     * @function Highcharts.DataTable#setColumn
+     * @function Highcharts.DataTable#getColumn
      *
      * @param {string} columnId
      * ID of the column to get.
@@ -814,6 +834,10 @@ var DataTableCore = /** @class */ (function () {
         var _this = this;
         var rowCount = this.rowCount;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = column.length;
         });
@@ -852,17 +876,20 @@ var DataTableCore = /** @class */ (function () {
      * @emits #afterSetRows
      */
     DataTableCore.prototype.setRow = function (row, rowIndex, insert, eventDetail) {
-        var _a;
         if (rowIndex === void 0) { rowIndex = this.rowCount; }
         var columns = this.columns,
             indexRowCount = insert ? this.rowCount + 1 : rowIndex + 1,
             rowKeys = Object.keys(row);
         if ((eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
             for (var i = 0, iEnd = rowKeys.length; i < iEnd; i++) {
-                columns[_a = rowKeys[i]] || (columns[_a] = new Array(this.rowCount));
+                var rowKey = rowKeys[i];
+                if (!this.isPollutingKey(rowKey) &&
+                    !Object.hasOwnProperty.call(columns, rowKey)) {
+                    columns[rowKey] = new Array(this.rowCount);
+                }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             if (column) {
                 if (insert) {
                     column = DataTableCore_splice(column, rowIndex, 0, true, [row[columnId]]).array;
@@ -1311,7 +1338,7 @@ var Data = /** @class */ (function () {
                 builder.addColumnReader(mapping.x, 'x');
             }
             // Add all column mappings
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(mapping, function (val, name) {
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(mapping, function (val, name) {
                 if (name !== 'x') {
                     builder.addColumnReader(val, name);
                 }
@@ -2540,7 +2567,7 @@ var Data = /** @class */ (function () {
     return Data;
 }());
 // Fire 1st xAxis properties modifier after the options are set.
-(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Axis_commonjs_highcharts_Axis_commonjs2_highcharts_Axis_root_Highcharts_Axis_default()), 'afterSetOptions', function () {
+(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Axis_commonjs_highcharts_Axis_commonjs2_highcharts_Axis_root_Highcharts_Axis_default()), 'afterSetType', function () {
     var _a;
     // Target first xAxis only
     if (this.isXAxis &&
@@ -2548,7 +2575,9 @@ var Data = /** @class */ (function () {
         (!this.chart.xAxis.length || this.chart.xAxis[0] === this)) {
         (_a = this.chart.data) === null || _a === void 0 ? void 0 : _a.xAxisUpdateHandler(this);
     }
-});
+}, 
+// Do this before the DataTimeAxis composition is added
+{ order: 0 });
 // Extend Chart.init so that the Chart constructor accepts a new configuration
 // option group, data.
 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'init', function (e) {
@@ -3289,6 +3318,7 @@ G.getJSON = G.HttpUtilities.getJSON;
 G.post = G.HttpUtilities.post;
 /* harmony default export */ var data_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

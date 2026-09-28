@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/xrange
  * @requires highcharts
  *
@@ -14,35 +14,38 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/xrange", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Color"],amd1["SeriesRegistry"]);});
+		define("highcharts/modules/xrange", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/xrange"] = factory(root["_Highcharts"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/xrange"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
 
 /***/ 620:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -560,20 +560,21 @@ var ColumnSeries = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry
  * @private
  */
 function onAxisAfterGetSeriesExtremes() {
+    var _a;
     var time = this.chart.time;
     var dataMax,
         modMax;
     if (this.isXAxis) {
-        dataMax = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.dataMax, -Number.MAX_VALUE);
-        for (var _i = 0, _a = this.series; _i < _a.length; _i++) {
-            var series = _a[_i];
+        dataMax = (_a = this.dataMax) !== null && _a !== void 0 ? _a : -Number.MAX_VALUE;
+        for (var _i = 0, _b = this.series; _i < _b.length; _i++) {
+            var series = _b[_i];
             var column = (series.dataTable.getColumn('x2',
                 true) ||
                     series.dataTable.getColumn('end',
                 true) ||
                     []);
-            for (var _b = 0, _c = column; _b < _c.length; _b++) {
-                var val = _c[_b];
+            for (var _c = 0, _d = column; _c < _d.length; _c++) {
+                var val = _d[_c];
                 if (typeof val === 'string') {
                     val = time.parse(val);
                 }
@@ -709,10 +710,11 @@ var XRangeSeries = /** @class */ (function (_super) {
     };
     XRangeSeries.prototype.alignDataLabel = function (point) {
         var _a,
-            _b;
+            _b,
+            _c;
         var oldPlotX = point.plotX;
-        point.plotX = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)((_a = point.dlBox) === null || _a === void 0 ? void 0 : _a.centerX, point.plotX);
-        if (point.dataLabel && ((_b = point.shapeArgs) === null || _b === void 0 ? void 0 : _b.width)) {
+        point.plotX = (_b = (_a = point.dlBox) === null || _a === void 0 ? void 0 : _a.centerX) !== null && _b !== void 0 ? _b : point.plotX;
+        if (point.dataLabel && ((_c = point.shapeArgs) === null || _c === void 0 ? void 0 : _c.width)) {
             point.dataLabel.css({
                 width: "" + point.shapeArgs.width + "px"
             });
@@ -727,7 +729,9 @@ var XRangeSeries = /** @class */ (function (_super) {
         var _a,
             _b,
             _c,
-            _d;
+            _d,
+            _e,
+            _f;
         var xAxis = this.xAxis,
             yAxis = this.yAxis,
             metrics = this.columnMetrics,
@@ -735,9 +739,7 @@ var XRangeSeries = /** @class */ (function (_super) {
             minPointLength = options.minPointLength || 0,
             oldColWidth = (((_a = point.shapeArgs) === null || _a === void 0 ? void 0 : _a.width) || 0) / 2,
             seriesXOffset = this.pointXOffset = metrics.offset,
-            posX = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.x2,
-            point.x + (point.len || 0)),
+            posX = (_b = point.x2) !== null && _b !== void 0 ? _b : (point.x + (point.len || 0)),
             borderRadius = options.borderRadius,
             plotTop = this.chart.plotTop,
             plotLeft = this.chart.plotLeft;
@@ -745,8 +747,7 @@ var XRangeSeries = /** @class */ (function (_super) {
             plotX2 = xAxis.translate(posX, 0, 0, 0, 1);
         var length = Math.abs(plotX2 - plotX),
             inverted = this.chart.inverted,
-            borderWidth = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.borderWidth, 1);
+            borderWidth = (_c = options.borderWidth) !== null && _c !== void 0 ? _c : 1;
         var widthDifference,
             partialFill,
             yOffset = metrics.offset,
@@ -845,7 +846,7 @@ var XRangeSeries = /** @class */ (function (_super) {
         }
         tooltipPos[yIndex] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(tooltipPos[yIndex] + ((inverted ? -1 : 1) * tooltipYOffset), yAxis.top - plotTop, yAxis.top + yAxis.len - plotTop - 1);
         // Add a partShapeArgs to the point, based on the shapeArgs property
-        partialFill = (_b = point.partialFill) !== null && _b !== void 0 ? _b : 0;
+        partialFill = (_d = point.partialFill) !== null && _d !== void 0 ? _d : 0;
         if (partialFill) {
             // Get the partial fill amount
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(partialFill)) {
@@ -871,7 +872,7 @@ var XRangeSeries = /** @class */ (function (_super) {
         // 'key' to ensure tooltip datetime formatting. Use 'name' only when
         // 'category' is undefined.
         point.key = point.category || point.name;
-        point.yCategory = (_c = yAxis.categories) === null || _c === void 0 ? void 0 : _c[(_d = point.y) !== null && _d !== void 0 ? _d : -1];
+        point.yCategory = (_e = yAxis.categories) === null || _e === void 0 ? void 0 : _e[(_f = point.y) !== null && _f !== void 0 ? _f : -1];
     };
     /**
      * @private
@@ -898,22 +899,10 @@ var XRangeSeries = /** @class */ (function (_super) {
      *        'animate' (animates changes) or 'attr' (sets options)
      */
     XRangeSeries.prototype.drawPoint = function (point, verb) {
-        var seriesOpts = this.options,
-            renderer = this.chart.renderer,
-            type = point.shapeType,
-            shapeArgs = point.shapeArgs,
-            partShapeArgs = point.partShapeArgs,
-            clipRectArgs = point.clipRectArgs,
-            pointState = point.state,
-            stateOpts = (seriesOpts.states[pointState || 'normal'] ||
-                {}),
-            pointStateVerb = typeof pointState === 'undefined' ?
-                'attr' : verb,
-            pointAttr = this.pointAttribs(point,
-            pointState),
-            animation = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.chart.options.chart.animation,
-            stateOpts.animation);
+        var _a,
+            _b;
+        var seriesOpts = this.options, renderer = this.chart.renderer, type = point.shapeType, shapeArgs = point.shapeArgs, partShapeArgs = point.partShapeArgs, clipRectArgs = point.clipRectArgs, pointState = point.state, stateOpts = ((_a = seriesOpts.states) === null || _a === void 0 ? void 0 : _a[pointState || 'normal']) || {}, pointStateVerb = typeof pointState === 'undefined' ?
+                'attr' : verb, pointAttr = this.pointAttribs(point, pointState), animation = ((_b = this.chart.options.chart.animation) !== null && _b !== void 0 ? _b : stateOpts.animation);
         var graphic = point.graphic,
             pfOptions = point.partialFill;
         if (!point.isNull && point.visible !== false) {
@@ -1052,6 +1041,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 XRange_XRangeSeries.compose(G.Axis);
 /* harmony default export */ var xrange_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

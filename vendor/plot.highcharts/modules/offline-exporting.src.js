@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/offline-exporting
  * @requires highcharts
  * @requires highcharts/modules/exporting
@@ -15,36 +15,39 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		module.exports = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/offline-exporting", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["AST"],amd1["Chart"]);});
+		define("highcharts/modules/offline-exporting", ["highcharts/highcharts"], function (amd1) {return factory(amd1["AST"],amd1["Chart"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/offline-exporting"] = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		exports["highcharts/modules/offline-exporting"] = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["AST"], root["Highcharts"]["Chart"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__) {
+		root["Highcharts"] = factory(root["Highcharts"]["AST"], root["Highcharts"]["Chart"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 660:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ }),
 
 /***/ 960:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -76,36 +79,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -592,7 +592,7 @@ var OfflineExporting;
         if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'OfflineExporting')) {
             return;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'load', function () {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'load', function () {
             var _a;
             // The load event also runs for server-export chart copies.
             // Skip warnings in that case.
@@ -914,17 +914,51 @@ var OfflineExporting;
             // nodes
             titleElements = el.getElementsByTagName('title');
             [].forEach.call(titleElements, function (titleElement) {
-                el.removeChild(titleElement);
+                titleElement.remove();
             });
             // Remove all .highcharts-text-outline elements, #17170
             outlineElements =
                 el.getElementsByClassName('highcharts-text-outline');
             while (outlineElements.length > 0) {
-                var outline = outlineElements[0];
-                if (outline.parentNode) {
-                    outline.parentNode.removeChild(outline);
+                outlineElements[0].remove();
+            }
+        });
+        // Work around jsPDF's missing support for color(srgb r g b) format
+        // (#25001)
+        var srgbColorRegex = /color\(\s*srgb\s+([\d.]+)[, ]+([\d.]+)[, ]+([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\)/; // eslint-disable-line max-len
+            var convertColorSRGBToRGB = function (srgbColor) {
+                if (srgbColor === null || srgbColor === void 0 ? void 0 : srgbColor.startsWith('color(srgb')) {
+                    var rgba = srgbColor.match(srgbColorRegex);
+                if (rgba) {
+                    var toChannel = function (value) {
+                            return Math.round(Math.max(0,
+                        Math.min(1,
+                        parseFloat(value))) *
+                                255);
+                    }, toAlpha = function (value) {
+                        return Math.max(0, Math.min(1, parseFloat(value)));
+                    }, r = toChannel(rgba[1]), g = toChannel(rgba[2]), b = toChannel(rgba[3]), alpha = rgba[4];
+                    if (alpha !== void 0) {
+                        return "rgba(".concat(r, ", ").concat(g, ", ").concat(b, ", ").concat(toAlpha(alpha), ")");
+                    }
+                    return "rgb(".concat(r, ", ").concat(g, ", ").concat(b, ")");
                 }
             }
+        };
+        Array.from(dummySVGContainer.querySelectorAll('*')).forEach(function (el) {
+            ['color', 'fill', 'stop-color', 'stroke'].forEach(function (prop) {
+                var _a;
+                // Handle attributes
+                var attrRGB = convertColorSRGBToRGB(el.getAttribute(prop));
+                if (attrRGB) {
+                    el.setAttribute(prop, attrRGB);
+                }
+                // Handle style properties
+                var styleRGB = convertColorSRGBToRGB((_a = el.style) === null || _a === void 0 ? void 0 : _a[prop]);
+                if (styleRGB) {
+                    el.style[prop] = styleRGB;
+                }
+            });
         });
         return dummySVGContainer.querySelector('svg');
     }
@@ -1030,6 +1064,7 @@ G.downloadURL = G.downloadURL || Shared_DownloadURL.downloadURL;
 OfflineExporting_OfflineExporting.compose(G.Exporting);
 /* harmony default export */ var offline_exporting_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

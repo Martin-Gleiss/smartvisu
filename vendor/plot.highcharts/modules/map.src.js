@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highmaps JS v13.0.0 (2026-06-11)
+ * @license Highmaps JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/map
  * @requires highcharts
  *
@@ -14,85 +14,95 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Axis"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["Chart"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Templating"], root["_Highcharts"]["Series"]["types"]["scatter"], root["_Highcharts"]["Point"]);
+		module.exports = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Color"], root["_Highcharts"]["Point"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"]["types"]["scatter"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/map", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Axis"],amd1["Color"],amd1["SeriesRegistry"],amd1["SVGElement"],amd1["Chart"],amd1["SVGRenderer"],amd1["Templating"],amd1["Series"],["types"],["scatter"],amd1["Point"]);});
+		define("highcharts/modules/map", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Axis"],amd1["Chart"],amd1["Color"],amd1["Point"],amd1["SVGElement"],amd1["SVGRenderer"],amd1["Series"],["types"],["scatter"],amd1["SeriesRegistry"],amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/map"] = factory(root["_Highcharts"], root["_Highcharts"]["Axis"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["Chart"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Templating"], root["_Highcharts"]["Series"]["types"]["scatter"], root["_Highcharts"]["Point"]);
+		exports["highcharts/modules/map"] = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]["Chart"], root["_Highcharts"]["Color"], root["_Highcharts"]["Point"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"]["types"]["scatter"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Axis"], root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["SVGElement"], root["Highcharts"]["Chart"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Templating"], root["Highcharts"]["Series"]["types"]["scatter"], root["Highcharts"]["Point"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__532__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__632__, __WEBPACK_EXTERNAL_MODULE__260__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Axis"], root["Highcharts"]["Chart"], root["Highcharts"]["Color"], root["Highcharts"]["Point"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Series"]["types"]["scatter"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__532__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__632__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 28:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
-
-/***/ }),
-
-/***/ 260:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
 
 /***/ 532:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__532__;
-
-/***/ }),
-
-/***/ 540:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
-
-/***/ }),
-
-/***/ 620:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
-
-/***/ }),
-
-/***/ 632:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__632__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ }),
 
 /***/ 960:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
+
+/***/ }),
+
+/***/ 620:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
+
+/***/ 260:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
+
+/***/ }),
+
+/***/ 28:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+
+/***/ }),
+
+/***/ 540:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
+
+/***/ }),
+
+/***/ 632:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__632__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -124,36 +134,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -466,6 +473,9 @@ var ColorAxisComposition;
                     }
                 });
             }
+            else {
+                colorAxis.destroyItems();
+            }
         });
         i = colorAxisItems.length;
         while (i--) {
@@ -567,6 +577,7 @@ var ColorAxisComposition;
     function wrapChartCreateAxis(ChartClass) {
         var superCreateAxis = ChartClass.prototype.createAxis;
         ChartClass.prototype.createAxis = function (type, options) {
+            var _a;
             var chart = this;
             if (type !== 'colorAxis') {
                 return superCreateAxis.apply(chart, arguments);
@@ -585,7 +596,7 @@ var ColorAxisComposition;
                 series.bindAxes();
                 series.isDirtyData = true;
             });
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.redraw, true)) {
+            if ((_a = options.redraw) !== null && _a !== void 0 ? _a : true) {
                 chart.redraw(options.animation);
             }
             return axis;
@@ -596,7 +607,7 @@ var ColorAxisComposition;
      * @internal
      */
     function wrapFxFillSetter() {
-        this.elem.attr('fill', ColorAxisComposition_color(this.start).tweenTo(ColorAxisComposition_color(this.end), this.pos), void 0, true);
+        (this.elem.attr)('fill', ColorAxisComposition_color(this.start).tweenTo(ColorAxisComposition_color(this.end), this.pos), void 0, true);
     }
     /**
      * Handle animation of the color attributes directly.
@@ -675,11 +686,13 @@ var ColorAxisComposition;
  *               Min color and max color
  *
  * @extends      xAxis
- * @excluding    alignTicks, allowDecimals, alternateGridColor, breaks,
- *               categories, crosshair, dateTimeLabelFormats, left,
+ * @excluding    alignTicks, allowDecimals, alternateGridColor, angle, breaks,
+ *               categories, crosshair, crossing, dateTimeLabelFormats, left,
  *               lineWidth, linkedTo, maxZoom, minRange, minTickInterval,
- *               offset, opposite, pane, plotBands, plotLines,
- *               reversedStacks, scrollbar, showEmpty, top, zoomEnabled
+ *               offset, opposite, pane, panningEnabled, plotBands, plotLines,
+ *               reversedStacks, scrollbar, showEmpty, startOfWeek,
+ *               tickPlacement, title, top, uniqueNames, units,
+ *               zoomEnabled
  * @product      highcharts highstock highmaps
  * @requires     modules/coloraxis
  * @type         {*|Array<*>}
@@ -1245,10 +1258,10 @@ var ColorAxis = /** @class */ (function (_super) {
             horiz = userOptions.layout ?
                 userOptions.layout !== 'vertical' :
                 legend.layout !== 'vertical';
-        axis.side = userOptions.side || horiz ? 2 : 1;
         axis.reversed = userOptions.reversed;
         axis.opposite = !horiz;
         _super.prototype.init.call(this, chart, userOptions, 'colorAxis');
+        axis.side = userOptions.side || horiz ? 2 : 1;
         // `super.init` saves the extended user options, now replace it with the
         // originals
         this.userOptions = userOptions;
@@ -1258,6 +1271,9 @@ var ColorAxis = /** @class */ (function (_super) {
         // Prepare data classes
         if (userOptions.dataClasses) {
             axis.initDataClasses(userOptions);
+        }
+        else {
+            delete axis.dataClasses;
         }
         axis.initStops();
         // Override original axis properties
@@ -1311,27 +1327,37 @@ var ColorAxis = /** @class */ (function (_super) {
                 visible: this.chart.options.legend.enabled &&
                     userOptions.visible !== false
             });
+        var marker = options.marker || {};
         _super.prototype.setOptions.call(this, options);
-        this.options.crosshair = this.options.marker;
+        // Translate marker options to crosshair options
+        this.options.crosshair = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(marker, {
+            color: marker.lineColor,
+            width: marker.lineWidth
+        });
     };
-    /** @internal */
+    /**
+     * Set the axis sizing properties based on the legend symbol
+     * @internal
+     */
     ColorAxis.prototype.setAxisSize = function () {
-        var _a;
+        var _a,
+            _b,
+            _c;
         var axis = this,
             chart = axis.chart,
-            symbol = (_a = axis.legendItem) === null || _a === void 0 ? void 0 : _a.symbol;
-        var _b = axis.getSize(),
-            width = _b.width,
-            height = _b.height;
-        if (symbol) {
-            this.left = +symbol.attr('x');
-            this.top = +symbol.attr('y');
-            this.width = width = +symbol.attr('width');
-            this.height = height = +symbol.attr('height');
-            this.right = chart.chartWidth - this.left - width;
-            this.bottom = chart.chartHeight - this.top - height;
-            this.pos = this.horiz ? this.left : this.top;
+            bBox = (_a = axis.legendItem) === null || _a === void 0 ? void 0 : _a.symbolBBox;
+        var _d = axis.getSize(),
+            width = _d.width,
+            height = _d.height;
+        if (bBox) {
+            this.left = bBox.x;
+            this.top = bBox.y;
         }
+        this.width = width = (_b = bBox === null || bBox === void 0 ? void 0 : bBox.width) !== null && _b !== void 0 ? _b : width;
+        this.height = height = (_c = bBox === null || bBox === void 0 ? void 0 : bBox.height) !== null && _c !== void 0 ? _c : height;
+        this.right = chart.chartWidth - this.left - width;
+        this.bottom = chart.chartHeight - this.top - height;
+        this.pos = this.horiz ? this.left : this.top;
         // Fake length for disabled legend to avoid tick issues
         // and such (#5205)
         this.len = (this.horiz ? width : height) ||
@@ -1376,6 +1402,22 @@ var ColorAxis = /** @class */ (function (_super) {
         }
     };
     /**
+     * @internal
+     */
+    ColorAxis.prototype.createGroups = function () {
+        var _a,
+            _b,
+            _c,
+            _d;
+        var axisParent = this.axisParent;
+        _super.prototype.createGroups.call(this);
+        if (((_a = this.axisGroup) === null || _a === void 0 ? void 0 : _a.parentGroup) !== axisParent) {
+            (_b = this.gridGroup) === null || _b === void 0 ? void 0 : _b.add(axisParent);
+            (_c = this.axisGroup) === null || _c === void 0 ? void 0 : _c.add(axisParent);
+            (_d = this.labelGroup) === null || _d === void 0 ? void 0 : _d.add(axisParent);
+        }
+    };
+    /**
      * Create the color gradient.
      * @internal
      */
@@ -1408,28 +1450,24 @@ var ColorAxis = /** @class */ (function (_super) {
             _b,
             _c,
             _d,
-            _e;
+            _e,
+            _f,
+            _g;
         var axis = this,
             legendItem = item.legendItem || {},
             padding = legend.padding,
             legendOptions = legend.options,
             labelOptions = axis.options.labels,
-            itemDistance = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(legendOptions.itemDistance, 10),
+            itemDistance = ((_a = legendOptions.itemDistance) !== null && _a !== void 0 ? _a : 10),
             horiz = axis.horiz,
-            _f = axis.getSize(),
-            width = _f.width,
-            height = _f.height,
-            labelPadding = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-            // @todo: This option is not documented, nor implemented when
-            // vertical
-            legendOptions.labelPadding,
-            horiz ? 16 : 30);
+            _h = axis.getSize(),
+            width = _h.width,
+            height = _h.height,
+            labelPadding = (_b = legendOptions.labelPadding) !== null && _b !== void 0 ? _b : (horiz ? 16 : 30);
         this.setLegendColor();
         var titleHeight = 0;
         var titleWidth = 0;
-        if (((_a = axis.options.title) === null || _a === void 0 ? void 0 : _a.text) && !axis.axisTitle) {
+        if (((_c = axis.options.title) === null || _c === void 0 ? void 0 : _c.text) && !axis.axisTitle) {
             if (!axis.axisGroup) {
                 axis.axisParent = legendItem.group;
                 axis.createGroups();
@@ -1460,23 +1498,25 @@ var ColorAxis = /** @class */ (function (_super) {
             titleHeight = titleBBox.height;
             titleWidth = titleBBox.width;
         }
-        var titleOptions = axis.options.title || {};
-        var titleMargin = axis.axisTitle ? ((_b = titleOptions.margin) !== null && _b !== void 0 ? _b : 0) : 0;
-        var yShift = horiz ? (titleHeight + titleMargin) : 0;
+        var titleOptions = axis.options.title || {},
+            titleMargin = axis.axisTitle ? ((_d = titleOptions.margin) !== null && _d !== void 0 ? _d : 0) : 0,
+            yShift = horiz ? (titleHeight + titleMargin) : 0,
+            verb = legendItem.symbol ? 'animate' : 'attr';
         // Create the gradient
         if (!legendItem.symbol) {
             legendItem.symbol = this.chart.renderer.symbol('roundedRect')
                 .attr({
-                r: (_c = legendOptions.symbolRadius) !== null && _c !== void 0 ? _c : 3,
+                r: (_e = legendOptions.symbolRadius) !== null && _e !== void 0 ? _e : 3,
                 zIndex: 1
             }).add(legendItem.group);
         }
-        legendItem.symbol.attr({
+        legendItem.symbolBBox = {
             x: 0,
             y: (legend.baseline || 0) - 11 + yShift,
             width: width,
             height: height
-        });
+        };
+        legendItem.symbol[verb](legendItem.symbolBBox);
         // Set how much space this legend item takes up
         if (horiz) {
             legendItem.labelWidth = Math.max(width + padding + itemDistance, titleWidth || 0);
@@ -1485,7 +1525,7 @@ var ColorAxis = /** @class */ (function (_super) {
         }
         else {
             legendItem.labelWidth = width + padding +
-                ((_e = (_d = labelOptions.x) !== null && _d !== void 0 ? _d : labelOptions.distance) !== null && _e !== void 0 ? _e : 0) +
+                ((_g = (_f = labelOptions.x) !== null && _f !== void 0 ? _f : labelOptions.distance) !== null && _g !== void 0 ? _g : 15) +
                 (this.maxLabelLength || 0) +
                 (titleWidth || 0) + titleMargin;
             legendItem.labelHeight = Math.max(height + padding, titleHeight || 0);
@@ -1530,6 +1570,10 @@ var ColorAxis = /** @class */ (function (_super) {
     };
     /** @internal */
     ColorAxis.prototype.getSeriesExtremes = function () {
+        var _a,
+            _b,
+            _c,
+            _d;
         var axis = this;
         var series = axis.series;
         var colorValArray,
@@ -1541,12 +1585,13 @@ var ColorAxis = /** @class */ (function (_super) {
         this.dataMax = -Infinity;
         while (i--) { // X, y, value, other
             cSeries = series[i];
-            colorKey = cSeries.colorKey = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(cSeries.options.colorKey, cSeries.colorKey, cSeries.pointValKey, cSeries.zoneAxis, 'y');
+            colorKey = cSeries.colorKey =
+                (_d = (_c = (_b = (_a = cSeries.options.colorKey) !== null && _a !== void 0 ? _a : cSeries.colorKey) !== null && _b !== void 0 ? _b : cSeries.pointValKey) !== null && _c !== void 0 ? _c : cSeries.zoneAxis) !== null && _d !== void 0 ? _d : 'y';
             calculatedExtremes = cSeries[colorKey + 'Min'] &&
                 cSeries[colorKey + 'Max'];
             // Find the first column that has values
-            for (var _i = 0, _a = [colorKey, 'value', 'y']; _i < _a.length; _i++) {
-                var key = _a[_i];
+            for (var _i = 0, _e = [colorKey, 'value', 'y']; _i < _e.length; _i++) {
+                var key = _e[_i];
                 colorValArray = cSeries.getColumn(key);
                 if (colorValArray.length) {
                     break;
@@ -1591,13 +1636,13 @@ var ColorAxis = /** @class */ (function (_super) {
      * @emits Highcharts.ColorAxis#event:drawCrosshair
      */
     ColorAxis.prototype.drawCrosshair = function (e, point) {
+        var _a;
         var axis = this,
             legendItem = axis.legendItem || {},
             plotX = point === null || point === void 0 ? void 0 : point.plotX,
             plotY = point === null || point === void 0 ? void 0 : point.plotY,
             axisPos = axis.pos,
-            axisLen = axis.len,
-            markerOptions = axis.options.marker || {};
+            axisLen = axis.len;
         var crossPos;
         if (point) {
             crossPos = axis.toPixels(point.getNestedProperty(point.series.colorKey));
@@ -1612,19 +1657,17 @@ var ColorAxis = /** @class */ (function (_super) {
             _super.prototype.drawCrosshair.call(this, e, point);
             point.plotX = plotX;
             point.plotY = plotY;
-            if (axis.cross &&
-                !axis.cross.addedToColorAxis &&
-                legendItem.group) {
-                axis.cross
-                    .addClass('highcharts-coloraxis-marker')
-                    .add(legendItem.group);
-                axis.cross.addedToColorAxis = true;
-                if (!axis.chart.styledMode &&
-                    typeof axis.crosshair === 'object') {
+            if (axis.cross && typeof axis.crosshair === 'object') {
+                if (!axis.cross.addedToColorAxis &&
+                    legendItem.group) {
+                    axis.cross
+                        .addClass('highcharts-coloraxis-marker')
+                        .add(legendItem.group);
+                    axis.cross.addedToColorAxis = true;
+                }
+                if (!axis.chart.styledMode) {
                     axis.cross.attr({
-                        fill: markerOptions.color,
-                        stroke: markerOptions.lineColor,
-                        'stroke-width': markerOptions.lineWidth
+                        fill: (_a = axis.options.marker) === null || _a === void 0 ? void 0 : _a.color
                     });
                 }
             }
@@ -1639,12 +1682,16 @@ var ColorAxis = /** @class */ (function (_super) {
             top = axis.top;
         // Crosshairs only
         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(pos)) {
-            var x = left,
-                w = axis.width,
-                y = pos - w / 2,
-                h = w;
             if (symbol) {
-                return this.chart.renderer.symbols[symbol](x, y, w, h);
+                var w = axis.height,
+                    x = pos - w / 2,
+                    y = top;
+                if (!axis.horiz) {
+                    w = axis.width;
+                    x = left;
+                    y = pos - w / 2;
+                }
+                return this.chart.renderer.symbols[symbol](x, y, w, w);
             }
             // Default to a triangle pointing to the value
             return (axis.horiz ? [
@@ -1678,7 +1725,8 @@ var ColorAxis = /** @class */ (function (_super) {
      * and call {@link Highcharts.Chart#redraw} after.
      */
     ColorAxis.prototype.update = function (newOptions, redraw) {
-        var _a;
+        var _a,
+            _b;
         var axis = this,
             chart = axis.chart,
             legend = chart.legend;
@@ -1691,8 +1739,9 @@ var ColorAxis = /** @class */ (function (_super) {
         if (newOptions.dataClasses && legend.allItems || axis.dataClasses) {
             axis.destroyItems();
         }
+        (_a = axis.legendItem) === null || _a === void 0 ? true : delete _a.symbolBBox;
         _super.prototype.update.call(this, newOptions, redraw);
-        if ((_a = axis.legendItem) === null || _a === void 0 ? void 0 : _a.label) {
+        if ((_b = axis.legendItem) === null || _b === void 0 ? void 0 : _b.label) {
             axis.setLegendColor();
             legend.colorizeItem(this, true);
         }
@@ -1702,19 +1751,22 @@ var ColorAxis = /** @class */ (function (_super) {
      * @internal
      */
     ColorAxis.prototype.destroyItems = function () {
-        var axis = this,
-            chart = axis.chart,
-            legendItem = axis.legendItem || {};
-        if (legendItem.label) {
-            chart.legend.destroyItem(axis);
-        }
-        else if (legendItem.labels) {
-            for (var _i = 0, _a = legendItem.labels; _i < _a.length; _i++) {
-                var item = _a[_i];
-                chart.legend.destroyItem(item);
+        var _a = this,
+            chart = _a.chart,
+            _b = _a.legendItem,
+            legendItem = _b === void 0 ? {} : _b;
+        if (chart) { // Means axis not destroyed yet
+            if (legendItem.label) {
+                chart.legend.destroyItem(this);
             }
+            else if (legendItem.labels) {
+                for (var _i = 0, _c = legendItem.labels; _i < _c.length; _i++) {
+                    var item = _c[_i];
+                    chart.legend.destroyItem(item);
+                }
+            }
+            chart.isDirtyLegend = true;
         }
-        chart.isDirtyLegend = true;
     };
     /**
      * Removing the whole axis (#14283)
@@ -1723,7 +1775,7 @@ var ColorAxis = /** @class */ (function (_super) {
     ColorAxis.prototype.destroy = function () {
         this.chart.isDirtyLegend = true;
         this.destroyItems();
-        _super.prototype.destroy.apply(this, [].slice.call(arguments));
+        _super.prototype.destroy.call(this);
     };
     /**
      * Removes the color axis and the related legend item.
@@ -1742,16 +1794,17 @@ var ColorAxis = /** @class */ (function (_super) {
      * @internal
      */
     ColorAxis.prototype.getDataClassLegendSymbols = function () {
+        var _a,
+            _b,
+            _c;
         var axis = this,
             chart = axis.chart,
             legendItems = (axis.legendItem &&
                 axis.legendItem.labels ||
                 []),
             legendOptions = chart.options.legend,
-            valueDecimals = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(legendOptions.valueDecimals, -1),
-            valueSuffix = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(legendOptions.valueSuffix, '');
+            valueDecimals = ((_a = legendOptions.valueDecimals) !== null && _a !== void 0 ? _a : -1),
+            valueSuffix = ((_b = legendOptions.valueSuffix) !== null && _b !== void 0 ? _b : '');
         var getPointsInDataClass = function (i) {
                 return axis.series.reduce(function (points,
             s) {
@@ -1764,7 +1817,7 @@ var ColorAxis = /** @class */ (function (_super) {
         };
         var name;
         if (!legendItems.length) {
-            axis.dataClasses.forEach(function (dataClass, i) {
+            (_c = axis.dataClasses) === null || _c === void 0 ? void 0 : _c.forEach(function (dataClass, i) {
                 var from = dataClass.from,
                     to = dataClass.to,
                     numberFormatter = chart.numberFormatter;
@@ -1831,29 +1884,27 @@ var ColorAxis = /** @class */ (function (_super) {
      * @internal
      */
     ColorAxis.prototype.getSize = function () {
+        var _a,
+            _b;
         var axis = this,
             chart = axis.chart,
             horiz = axis.horiz,
-            _a = axis.options,
-            colorAxisHeight = _a.height,
-            colorAxisWidth = _a.width,
+            _c = axis.options,
+            colorAxisHeight = _c.height,
+            colorAxisWidth = _c.width,
             legendOptions = chart.options.legend,
             width = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)((0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(colorAxisWidth) ?
                 (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.relativeLength)(colorAxisWidth,
-            chart.chartWidth) : void 0,
-            legendOptions === null || legendOptions === void 0 ? void 0 : legendOptions.symbolWidth,
-            horiz ? ColorAxis.defaultLegendLength : 12),
+            chart.chartWidth) :
+                ((_a = legendOptions === null || legendOptions === void 0 ? void 0 : legendOptions.symbolWidth) !== null && _a !== void 0 ? _a : (horiz ? ColorAxis.defaultLegendLength : 12)),
             height = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)((0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(colorAxisHeight) ?
                 (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.relativeLength)(colorAxisHeight,
-            chart.chartHeight) : void 0,
-            legendOptions === null || legendOptions === void 0 ? void 0 : legendOptions.symbolHeight,
-            horiz ? 12 : ColorAxis.defaultLegendLength);
+            chart.chartHeight) :
+                ((_b = legendOptions === null || legendOptions === void 0 ? void 0 : legendOptions.symbolHeight) !== null && _b !== void 0 ? _b : (horiz ? 12 : ColorAxis.defaultLegendLength));
         return {
             width: width,
             height: height
@@ -1866,20 +1917,9 @@ var ColorAxis = /** @class */ (function (_super) {
      * */
     /** @internal */
     ColorAxis.defaultLegendLength = 200;
-    /** @internal */
-    ColorAxis.keepProps = [
-        'legendItem'
-    ];
     return ColorAxis;
 }((highcharts_Axis_commonjs_highcharts_Axis_commonjs2_highcharts_Axis_root_Highcharts_Axis_default())));
 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)(ColorAxis.prototype, Color_ColorAxisBase);
-/* *
- *
- *  Registry
- *
- * */
-// Properties to preserve after destroy, for Axis.update (#5881, #6025).
-Array.prototype.push.apply((highcharts_Axis_commonjs_highcharts_Axis_commonjs2_highcharts_Axis_root_Highcharts_Axis_default()).keepProps, ColorAxis.keepProps);
 /* *
  *
  *  Default Export
@@ -1899,9 +1939,10 @@ Array.prototype.push.apply((highcharts_Axis_commonjs_highcharts_Axis_commonjs2_h
 ''; // Detach doclet above
 
 ;// ./code/es5/es-modules/masters/modules/coloraxis.src.js
+/* unused harmony import specifier */ var Highcharts;
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/color-axis
  * @requires highcharts
  *
@@ -2312,10 +2353,11 @@ var MapPointer;
      * @internal
      */
     function wrapZoomOption(proceed) {
+        var _a;
         var mapNavigation = this.chart.options.mapNavigation;
         // Pinch status
         if (mapNavigation &&
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(mapNavigation.enableTouchZoom, mapNavigation.enabled)) {
+            ((_a = mapNavigation.enableTouchZoom) !== null && _a !== void 0 ? _a : mapNavigation.enabled)) {
             this.chart.zooming.pinchType = 'xy';
         }
         proceed.apply(this, [].slice.call(arguments, 1));
@@ -2484,7 +2526,8 @@ var MapNavigation = /** @class */ (function () {
      *        New options for the map navigation.
      */
     MapNavigation.prototype.update = function (options) {
-        var _a;
+        var _a,
+            _b;
         var mapNav = this,
             chart = mapNav.chart,
             navButtons = mapNav.navButtons,
@@ -2505,7 +2548,7 @@ var MapNavigation = /** @class */ (function () {
             (_a = navButtons.pop()) === null || _a === void 0 ? void 0 : _a.destroy();
         }
         if (!chart.renderer.forExport &&
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(navOptions.enableButtons, navOptions.enabled)) {
+            ((_b = navOptions.enableButtons) !== null && _b !== void 0 ? _b : navOptions.enabled)) {
             if (!mapNav.navButtonsGroup) {
                 mapNav.navButtonsGroup = chart.renderer.g()
                     .attr({
@@ -2513,7 +2556,7 @@ var MapNavigation = /** @class */ (function () {
                 })
                     .add();
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(navOptions.buttons, function (buttonOptions, n) {
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(navOptions.buttons, function (buttonOptions, n) {
                 var _a;
                 buttonOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(navOptions.buttonOptions, buttonOptions);
                 var attr = {
@@ -2655,9 +2698,11 @@ var MapNavigation = /** @class */ (function () {
      *        Options for map navigation.
      */
     MapNavigation.prototype.updateEvents = function (options) {
+        var _a,
+            _b;
         var chart = this.chart;
         // Add the double click event
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.enableDoubleClickZoom, options.enabled) ||
+        if (((_a = options.enableDoubleClickZoom) !== null && _a !== void 0 ? _a : options.enabled) ||
             options.enableDoubleClickZoomTo) {
             this.unbindDblClick = this.unbindDblClick || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart.container, 'dblclick', function (e) {
                 chart.pointer.onContainerDblClick(e);
@@ -2668,7 +2713,7 @@ var MapNavigation = /** @class */ (function () {
             this.unbindDblClick = this.unbindDblClick();
         }
         // Add the mousewheel event
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.enableMouseWheelZoom, options.enabled)) {
+        if ((_b = options.enableMouseWheelZoom) !== null && _b !== void 0 ? _b : options.enabled) {
             this.unbindMouseWheel = this.unbindMouseWheel || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart.container, 'wheel', function (e) {
                 var _a,
                     _b;
@@ -2733,11 +2778,13 @@ var ColorMapComposition;
      *  Constants
      *
      * */
+    /** @internal */
     ColorMapComposition.pointMembers = {
         dataLabelOnNull: true,
         moveToTopOnHover: true,
         isValid: pointIsValid
     };
+    /** @internal */
     ColorMapComposition.seriesMembers = {
         colorKey: 'value',
         axisTypes: ['xAxis', 'yAxis', 'colorAxis'],
@@ -2753,7 +2800,7 @@ var ColorMapComposition;
      *
      * */
     /**
-     * @private
+     * @internal
      */
     function compose(SeriesClass) {
         var PointClass = SeriesClass.prototype.pointClass;
@@ -2763,7 +2810,7 @@ var ColorMapComposition;
     ColorMapComposition.compose = compose;
     /**
      * Move points to the top of the z-index order when hovered.
-     * @private
+     * @internal
      */
     function onPointAfterSetState(e) {
         var point = this,
@@ -2801,7 +2848,7 @@ var ColorMapComposition;
     /**
      * Color points have a value option that determines whether or not it is
      * a null point
-     * @private
+     * @internal
      */
     function pointIsValid() {
         return (this.value !== null &&
@@ -2812,7 +2859,7 @@ var ColorMapComposition;
     }
     /**
      * Get the color attributes to apply on the graphic
-     * @private
+     * @internal
      * @function Highcharts.colorMapSeriesMixin.colorAttribs
      * @param {Highcharts.Point} point
      * @return {Highcharts.SVGAttributes}
@@ -2833,6 +2880,7 @@ var ColorMapComposition;
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Series_ColorMapComposition = (ColorMapComposition);
 
 ;// ./code/es5/es-modules/Series/CenteredUtilities.js
@@ -2852,7 +2900,7 @@ var ColorMapComposition;
 var deg2rad = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).deg2rad;
 
 /**
- * @private
+ * @internal
  */
 var CenteredUtilities;
 (function (CenteredUtilities) {
@@ -2870,10 +2918,14 @@ var CenteredUtilities;
      * Get the center of the pie based on the size and center options relative
      * to the plot area. Borrowed by the polar and gauge series types.
      *
-     * @private
+     * @internal
      * @function Highcharts.CenteredSeriesMixin.getCenter
      */
     function getCenter() {
+        var _a,
+            _b,
+            _c,
+            _d;
         var options = this.options,
             chart = this.chart,
             slicingRoom = 2 * (options.slicedOffset || 0),
@@ -2895,15 +2947,13 @@ var CenteredUtilities;
             innerSize = parseFloat(innerSize);
         }
         var positions = [
-                (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(centerOption === null || centerOption === void 0 ? void 0 : centerOption[0], '50%'),
-                (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(centerOption === null || centerOption === void 0 ? void 0 : centerOption[1], '50%'),
+                ((_a = centerOption === null || centerOption === void 0 ? void 0 : centerOption[0]) !== null && _a !== void 0 ? _a : '50%'),
+                ((_b = centerOption === null || centerOption === void 0 ? void 0 : centerOption[1]) !== null && _b !== void 0 ? _b : '50%'),
                 // Prevent from negative values
-                (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(size && size < 0 ? void 0 : options.size, '100%'),
-                (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(innerSize && innerSize < 0 ? void 0 : options.innerSize || 0, '0%')
+                ((_c = (size && size < 0 ? void 0 : options.size)) !== null && _c !== void 0 ? _c : '100%'),
+                ((_d = (innerSize && innerSize < 0 ?
+                    void 0 :
+                    options.innerSize || 0)) !== null && _d !== void 0 ? _d : '0%')
             ];
         for (i = 0; i < 4; ++i) {
             value = positions[i];
@@ -2923,7 +2973,7 @@ var CenteredUtilities;
             thickness * 2 < positions[2] && thickness > 0) {
             positions[3] = positions[2] - thickness * 2;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterGetCenter', { positions: positions });
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterGetCenter', { positions: positions });
         return positions;
     }
     CenteredUtilities.getCenter = getCenter;
@@ -2931,7 +2981,7 @@ var CenteredUtilities;
      * GetStartAndEndRadians - Calculates start and end angles in radians.
      * Used in series types such as pie and sunburst.
      *
-     * @private
+     * @internal
      * @function Highcharts.CenteredSeriesMixin.getStartAndEndRadians
      *
      * @param {number} [start]
@@ -2966,6 +3016,7 @@ var CenteredUtilities;
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Series_CenteredUtilities = (CenteredUtilities);
 /* *
  *
@@ -2973,7 +3024,7 @@ var CenteredUtilities;
  *
  * */
 /**
- * @private
+ * @internal
  * @interface Highcharts.RadianAngles
  */ /**
 * @name Highcharts.RadianAngles#end
@@ -3190,13 +3241,19 @@ var DataTableCore = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         var _this = this;
         this.isDataTable = true;
-        this.autoId = !options.id;
+        // Reject IDs that would pollute the prototype of ID-keyed maps.
+        var id = this.isPollutingKey(options.id) ? void 0 : options.id;
+        this.autoId = !id;
         this.columns = {};
-        this.id = (options.id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
+        this.id = (id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
         this.rowCount = 0;
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         var rowCount = 0;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options.columns || {}, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = Math.max(rowCount, column.length);
         });
@@ -3207,6 +3264,17 @@ var DataTableCore = /** @class */ (function () {
      *  Functions
      *
      * */
+    /**
+     * Checks whether a key would pollute the prototype if used to index a
+     * plain object (e.g. as a column ID or table ID).
+     *
+     * @private
+     * @param {string|undefined} key The key to check.
+     * @return {boolean} True if the key is unsafe to use.
+     */
+    DataTableCore.prototype.isPollutingKey = function (key) {
+        return key === '__proto__' || key === 'constructor';
+    };
     /**
      * Applies a row count to the table by setting the `rowCount` property and
      * adjusting the length of all columns.
@@ -3256,14 +3324,14 @@ var DataTableCore = /** @class */ (function () {
             });
             this.rowCount = length_1;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
     };
     /**
      * Fetches the given column by the canonical column ID. Simplified version
      * of the full `DataTable.getRow` method, always returning by reference.
      *
-     * @function Highcharts.DataTable#setColumn
+     * @function Highcharts.DataTable#getColumn
      *
      * @param {string} columnId
      * ID of the column to get.
@@ -3376,6 +3444,10 @@ var DataTableCore = /** @class */ (function () {
         var _this = this;
         var rowCount = this.rowCount;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = column.length;
         });
@@ -3414,17 +3486,20 @@ var DataTableCore = /** @class */ (function () {
      * @emits #afterSetRows
      */
     DataTableCore.prototype.setRow = function (row, rowIndex, insert, eventDetail) {
-        var _a;
         if (rowIndex === void 0) { rowIndex = this.rowCount; }
         var columns = this.columns,
             indexRowCount = insert ? this.rowCount + 1 : rowIndex + 1,
             rowKeys = Object.keys(row);
         if ((eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
             for (var i = 0, iEnd = rowKeys.length; i < iEnd; i++) {
-                columns[_a = rowKeys[i]] || (columns[_a] = new Array(this.rowCount));
+                var rowKey = rowKeys[i];
+                if (!this.isPollutingKey(rowKey) &&
+                    !Object.hasOwnProperty.call(columns, rowKey)) {
+                    columns[rowKey] = new Array(this.rowCount);
+                }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             if (column) {
                 if (insert) {
                     column = DataTableCore_splice(column, rowIndex, 0, true, [row[columnId]]).array;
@@ -3610,6 +3685,8 @@ var MapChart = /** @class */ (function (_super) {
      * @emits Highcharts.MapChart#event:afterInit
      */
     MapChart.prototype.init = function (userOptions, callback) {
+        var _a,
+            _b;
         var defaultCreditsOptions = getOptions().credits;
         var options = (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)({
@@ -3621,11 +3698,9 @@ var MapChart = /** @class */ (function (_super) {
                     type: 'map'
                 },
                 credits: {
-                    mapText: (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(defaultCreditsOptions.mapText, ' \u00a9 <a href="{geojson.copyrightUrl}">' +
+                    mapText: ((_a = defaultCreditsOptions.mapText) !== null && _a !== void 0 ? _a : ' \u00a9 <a href="{geojson.copyrightUrl}">' +
                         '{geojson.copyrightShort}</a>'),
-                    mapTextFull: (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(defaultCreditsOptions.mapTextFull, '{geojson.copyright}')
+                    mapTextFull: (_b = defaultCreditsOptions.mapTextFull) !== null && _b !== void 0 ? _b : '{geojson.copyright}'
                 },
                 mapView: {}, // Required to enable Chart.mapView
                 tooltip: {
@@ -3683,11 +3758,6 @@ var MapChart = /** @class */ (function (_super) {
     /**
      * A wrapper for the chart's update function that will additionally run
      * recommendMapView on chart.map change.
-     *
-     * @function Highcharts.MapChart#update
-     *
-     * @param {Highcharts.Options} options
-     *        The chart options.
      */
     MapChart.prototype.update = function (options) {
         var _a;
@@ -3754,10 +3824,11 @@ var MapChart = /** @class */ (function (_super) {
      * The chart object.
      */
     function mapChart(a, b, c) {
+        var _a;
         var chart = new MapChart(a,
             b,
             c);
-        return chart.promise || chart;
+        return (_a = chart.promise) !== null && _a !== void 0 ? _a : chart;
     }
     MapChart.mapChart = mapChart;
     /* eslint-enable jsdoc/check-param-names */
@@ -3980,6 +4051,8 @@ var MapPoint = /** @class */ (function (_super) {
      * @private
      */
     MapPoint.prototype.getProjectedBounds = function (projection) {
+        var _a,
+            _b;
         var path = MapPoint.getProjectedPath(this,
             projection),
             bounds = MapPoint_boundsFromPath(path),
@@ -3997,9 +4070,8 @@ var MapPoint = /** @class */ (function (_super) {
             }
             else {
                 var propMiddleX = properties === null || properties === void 0 ? void 0 : properties['hc-middle-x'], propMiddleY = properties === null || properties === void 0 ? void 0 : properties['hc-middle-y'];
-                bounds.midX = (bounds.x1 + (bounds.x2 - bounds.x1) * (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.middleX, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(propMiddleX) ? propMiddleX : 0.5));
-                var middleYFraction = (0,
-                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.middleY, (0,
+                bounds.midX = (bounds.x1 + (bounds.x2 - bounds.x1) * ((_a = this.middleX) !== null && _a !== void 0 ? _a : ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(propMiddleX) ? propMiddleX : 0.5)));
+                var middleYFraction = (_b = this.middleY) !== null && _b !== void 0 ? _b : ((0,
                     highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(propMiddleY) ? propMiddleY : 0.5);
                 // No geographic geometry, only path given => flip
                 if (!this.geometry) {
@@ -4413,7 +4485,7 @@ var MapSeriesDefaults = {
  * is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.map
- * @excluding dataParser, dataURL, dragDrop, marker
+ * @excluding dragDrop, marker
  * @product   highmaps
  * @apioption series.map
  */
@@ -4495,6 +4567,16 @@ var MapSeriesDefaults = {
  * @apioption plotOptions.map.colors
  */
 /**
+ * Whether to apply a drop shadow to the map shapes. The shadow can be an
+ * object configuration containing `color`, `offsetX`, `offsetY`, `opacity`
+ * and `width`.
+ *
+ * @type      {boolean|Highcharts.ShadowOptionsObject}
+ * @default   false
+ * @product   highmaps
+ * @apioption plotOptions.map.shadow
+ */
+/**
  * Individual color for the point. By default the color is either used
  * to denote the value, or pulled from the global `colors` array.
  *
@@ -4570,7 +4652,7 @@ var MapSeriesDefaults = {
  * a two dimensional array of the same. The dimensionality must comply with the
  * `type`.
  *
- * @type      {Array<LonLatArray>|Array<Array<LonLatArray>>}
+ * @type      {Array<Highcharts.LonLatArray>|Array<Array<Highcharts.LonLatArray>>}
  * @since 9.3.0
  * @product   highmaps
  * @apioption series.map.data.geometry.coordinates
@@ -5592,7 +5674,20 @@ var GeoJSONComposition;
 * Second point's Y of the bounding box.
 * @name Highcharts.MapBounds#y2
 */
-''; // Detach doclets above
+/**
+ * A latitude/longitude object.
+ *
+ * @interface Highcharts.MapLonLatObject
+ */ /**
+* The latitude.
+* @name Highcharts.MapLonLatObject#lat
+* @type {number}
+*/ /**
+* The longitude.
+* @name Highcharts.MapLonLatObject#lon
+* @type {number}
+*/
+''; // Keep doclets above
 
 ;// ./code/es5/es-modules/Core/Geometry/GeometryUtilities.js
 /* *
@@ -7237,7 +7332,7 @@ var MapView = /** @class */ (function () {
          * The current center of the view in terms of `[longitude, latitude]`.
          * @name Highcharts.MapView#center
          * @readonly
-         * @type {LonLatArray}
+         * @type {Highcharts.LonLatArray}
          */
         this.center = o.center;
         this.options = o;
@@ -7380,9 +7475,7 @@ var MapView = /** @class */ (function () {
         if (redraw === void 0) { redraw = true; }
         var b = bounds || this.getProjectedBounds();
         if (b) {
-            var pad = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(padding,
-                bounds ? 0 : this.options.padding),
+            var pad = padding !== null && padding !== void 0 ? padding : (bounds ? 0 : this.options.padding),
                 fullField = this.getField(false),
                 padArr = (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isArray)(pad) ? pad : [pad,
@@ -7880,7 +7973,7 @@ var MapView = /** @class */ (function () {
             });
             this.render();
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterSetView');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterSetView');
         if (redraw) {
             this.redraw(animation);
         }
@@ -8408,7 +8501,6 @@ var MapSeries_spreadArray = (undefined && undefined.__spreadArray) || function (
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject, stop = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).stop;
 
 
 
@@ -8463,7 +8555,8 @@ var MapSeries = /** @class */ (function (_super) {
         var _a = this,
             chart = _a.chart,
             group = _a.group,
-            animation = animObject(this.options.animation);
+            animation = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(this.options.animation);
         // Initialize the animation
         if (init) {
             // Scale down the group and place it in the center
@@ -8591,17 +8684,16 @@ var MapSeries = /** @class */ (function (_super) {
                             (!point.visible && !point.isNull)) ? 'inherit' : 'hidden'
                     });
                     graphic.animate = function (params, options, complete) {
-                        var _a;
+                        var _a,
+                            _b;
                         var animateIn = ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(params['stroke-width']) &&
                                 !(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(graphic['stroke-width'])), animateOut = ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(graphic['stroke-width']) &&
                                 !(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(params['stroke-width']));
                         // When strokeWidth is animating
                         if (animateIn || animateOut) {
-                            var strokeWidth = (0,
-                                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.getStrokeWidth(series.options), 1 // Styled mode
-                                ),
+                            var strokeWidth = (_a = series.getStrokeWidth(series.options)) !== null && _a !== void 0 ? _a : 1,
                                 inheritedStrokeWidth = (strokeWidth /
-                                    (((_a = chart.mapView) === null || _a === void 0 ? void 0 : _a.getScale()) ||
+                                    (((_b = chart.mapView) === null || _b === void 0 ? void 0 : _b.getScale()) ||
                                         1));
                             // For animating from undefined, .attr() reads the
                             // property as the starting point
@@ -8632,11 +8724,10 @@ var MapSeries = /** @class */ (function (_super) {
         }
         // Apply the SVG transform
         transformGroups.forEach(function (transformGroup, i) {
+            var _a;
             var view = i === 0 ? mapView : mapView.insets[i - 1],
                 svgTransform = view.getSVGTransform(),
-                strokeWidth = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(_this.getStrokeWidth(_this.options), 1 // Styled mode
-                );
+                strokeWidth = ((_a = _this.getStrokeWidth(_this.options)) !== null && _a !== void 0 ? _a : 1);
             /*
             Animate or move to the new zoom level. In order to prevent
             flickering as the different transform components are set out of sync
@@ -8684,7 +8775,8 @@ var MapSeries = /** @class */ (function (_super) {
                     animatePoints(scaleStep); // #18166
                 };
                 var animOptions = (0,
-                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(animObject(renderer.globalAnimation)),
+                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)((0,
+                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(renderer.globalAnimation)),
                     userStep_1 = animOptions.step;
                 animOptions.step = function () {
                     if (userStep_1) {
@@ -8702,12 +8794,12 @@ var MapSeries = /** @class */ (function (_super) {
                             applyDrilldown: true
                         });
                     }
-                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'mapZoomComplete');
+                    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'mapZoomComplete');
                 }.bind(_this));
                 // When dragging or first rendering, animation is off
             }
             else {
-                stop(transformGroup);
+                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(transformGroup);
                 transformGroup.attr((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(svgTransform, { 'stroke-width': strokeWidth / scale }));
                 animatePoints(scale); // #18166
             }
@@ -8729,6 +8821,7 @@ var MapSeries = /** @class */ (function (_super) {
                 allBounds_1 = [];
             // Find the bounding box of each point
             (this.points || []).forEach(function (point) {
+                var _a;
                 if (point.path || point.geometry) {
                     // @todo Try to put these two conversions in
                     // MapPoint.applyOptions
@@ -8745,9 +8838,7 @@ var MapSeries = /** @class */ (function (_super) {
                     if (!point.bounds) {
                         var bounds = point.getProjectedBounds(projection_1);
                         if (bounds) {
-                            point.labelrank = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.labelrank, 
-                            // Bigger shape, higher rank
-                            ((bounds.x2 - bounds.x1) *
+                            point.labelrank = ((_a = point.labelrank) !== null && _a !== void 0 ? _a : ((bounds.x2 - bounds.x1) *
                                 (bounds.y2 - bounds.y1)));
                             var midX_1 = bounds.midX,
                                 midY_1 = bounds.midY;
@@ -9076,7 +9167,7 @@ var MapSeries = /** @class */ (function (_super) {
                 }
             });
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
     };
     MapSeries.prototype.update = function (options) {
         var _this = this;
@@ -9200,7 +9291,7 @@ var MapLineSeriesDefaults = {
  * not specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.mapline
- * @excluding dataParser, dataURL, dragDrop, marker
+ * @excluding dragDrop, marker
  * @product   highmaps
  * @apioption series.mapline
  */
@@ -9505,7 +9596,6 @@ var MapPointSeriesDefaults = {
  *
  *
  * @extends   series,plotOptions.mappoint
- * @excluding dataParser, dataURL
  * @product   highmaps
  * @apioption series.mappoint
  */
@@ -9815,7 +9905,7 @@ var MapPointSeries = /** @class */ (function (_super) {
                 p.zone = _this.zones.length ? p.getZone() : void 0;
             });
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterTranslate');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterTranslate');
     };
     MapPointSeries.defaultOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(MapPointSeries_ScatterSeries.defaultOptions, MapPoint_MapPointSeriesDefaults);
     return MapPointSeries;
@@ -10234,8 +10324,8 @@ var BubbleLegendItem = /** @class */ (function () {
      *        Legend instance
      */
     BubbleLegendItem.prototype.drawLegendSymbol = function (legend) {
-        var itemDistance = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(legend.options.itemDistance, 20),
+        var _a;
+        var itemDistance = ((_a = legend.options.itemDistance) !== null && _a !== void 0 ? _a : 20),
             legendItem = this.legendItem || {},
             options = this.options,
             ranges = options.ranges,
@@ -10248,7 +10338,7 @@ var BubbleLegendItem = /** @class */ (function () {
             return;
         }
         // Sort ranges to right render order
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(ranges, function (a, b) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(ranges, function (a, b) {
             return b.value - a.value;
         });
         this.ranges = ranges;
@@ -10294,14 +10384,20 @@ var BubbleLegendItem = /** @class */ (function () {
             styledMode = this.chart.styledMode;
         // Allow to parts of styles be used individually for range
         ranges.forEach(function (range, i) {
+            var _a,
+                _b,
+                _c,
+                _d;
             if (!styledMode) {
-                bubbleAttribs.stroke = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(range.borderColor, options.borderColor, series.color);
+                bubbleAttribs.stroke =
+                    (_b = (_a = range.borderColor) !== null && _a !== void 0 ? _a : options.borderColor) !== null && _b !== void 0 ? _b : series.color;
                 bubbleAttribs.fill = range.color || options.color;
                 if (!bubbleAttribs.fill) {
                     bubbleAttribs.fill = series.color;
                     bubbleAttribs['fill-opacity'] = fillOpacity !== null && fillOpacity !== void 0 ? fillOpacity : 1;
                 }
-                connectorAttribs.stroke = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(range.connectorColor, options.connectorColor, series.color);
+                connectorAttribs.stroke =
+                    (_d = (_c = range.connectorColor) !== null && _c !== void 0 ? _c : options.connectorColor) !== null && _d !== void 0 ? _d : series.color;
             }
             // Set options needed for rendering each range
             ranges[i].radius = this.getRangeRadius(range.value);
@@ -10513,14 +10609,16 @@ var BubbleLegendItem = /** @class */ (function () {
             minZ = Number.MAX_VALUE,
             maxZ = -Number.MAX_VALUE;
         series.forEach(function (s) {
+            var _a,
+                _b;
             // Find the min and max Z, like in bubble series
             if (s.isBubble && !s.ignoreSeries) {
                 zData = s.getColumn('z').filter(highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber);
                 if (zData.length) {
-                    minZ = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(s.options.zMin, Math.min(minZ, Math.max((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(zData), s.options.displayNegative === false ?
+                    minZ = ((_a = s.options.zMin) !== null && _a !== void 0 ? _a : Math.min(minZ, Math.max((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(zData), s.options.displayNegative === false ?
                         s.options.zThreshold :
                         -Number.MAX_VALUE)));
-                    maxZ = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(s.options.zMax, Math.max(maxZ, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMax)(zData)));
+                    maxZ = ((_b = s.options.zMax) !== null && _b !== void 0 ? _b : Math.max(maxZ, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMax)(zData)));
                 }
             }
         });
@@ -11146,7 +11244,8 @@ function onAxisFoundExtremes() {
             ['min', 'userMin', pxMin],
             ['max', 'userMax', pxMax]
         ].forEach(function (keys) {
-            if (typeof (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(_this.options[keys[0]], _this[keys[1]]) === 'undefined') {
+            var _a;
+            if (typeof ((_a = _this.options[keys[0]]) !== null && _a !== void 0 ? _a : _this[keys[1]]) === 'undefined') {
                 _this[keys[0]] += keys[2] / transA;
             }
         });
@@ -11266,10 +11365,10 @@ var BubbleSeries = /** @class */ (function (_super) {
                 if (otherSeries.bubblePadding && otherSeries.reserveSpace()) {
                     var zExtremes_1 = (otherSeries.onPoint || otherSeries).getZExtremes();
                     if (zExtremes_1) {
-                        // Changed '||' to 'pick' because min or max can be 0.
+                        // Use nullish coalescing because min or max can be 0.
                         // #17280
-                        zMin_1 = Math.min((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(zMin_1, zExtremes_1.zMin), zExtremes_1.zMin);
-                        zMax_1 = Math.max((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(zMax_1, zExtremes_1.zMax), zExtremes_1.zMax);
+                        zMin_1 = Math.min((zMin_1 !== null && zMin_1 !== void 0 ? zMin_1 : zExtremes_1.zMin), zExtremes_1.zMin);
+                        zMax_1 = Math.max((zMax_1 !== null && zMax_1 !== void 0 ? zMax_1 : zExtremes_1.zMax), zExtremes_1.zMax);
                         valid_1 = true;
                     }
                 }
@@ -11420,6 +11519,8 @@ var BubbleSeries = /** @class */ (function (_super) {
         });
     };
     BubbleSeries.prototype.getPxExtremes = function () {
+        var _a,
+            _b;
         var smallestSize = Math.min(this.chart.plotWidth,
             this.chart.plotHeight);
         var getPxSize = function (length) {
@@ -11430,29 +11531,27 @@ var BubbleSeries = /** @class */ (function (_super) {
             }
             return isPercent ? smallestSize * length / 100 : length;
         };
-        var minPxSize = getPxSize((0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.options.minSize, 8));
+        var minPxSize = getPxSize((_a = this.options.minSize) !== null && _a !== void 0 ? _a : 8);
         // Prioritize min size if conflict to make sure bubbles are
         // always visible. #5873
-        var maxPxSize = Math.max(getPxSize((0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.options.maxSize, '20%')),
+        var maxPxSize = Math.max(getPxSize((_b = this.options.maxSize) !== null && _b !== void 0 ? _b : '20%'),
             minPxSize);
         return { minPxSize: minPxSize, maxPxSize: maxPxSize };
     };
     BubbleSeries.prototype.getZExtremes = function () {
+        var _a,
+            _b;
         var options = this.options,
             zData = this.getColumn('z').filter(highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber);
         if (zData.length) {
-            var zMin = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.zMin, (0,
+            var zMin = ((_a = options.zMin) !== null && _a !== void 0 ? _a : (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)((0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(zData),
                 options.displayNegative === false ?
                     (options.zThreshold || 0) :
                     -Number.MAX_VALUE,
                 Number.MAX_VALUE));
-            var zMax = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.zMax, (0,
+            var zMax = ((_b = options.zMax) !== null && _b !== void 0 ? _b : (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMax)(zData));
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(zMin) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(zMax)) {
                 return { zMin: zMin, zMax: zMax };
@@ -11529,6 +11628,21 @@ var BubbleSeries = /** @class */ (function (_super) {
          * @since 6.1.0
          */
         animationLimit: 250,
+        /**
+         * When using automatic point colors pulled from the global
+         * [colors](colors) or series-specific
+         * [plotOptions.bubble.colors](series.colors) collections, this option
+         * determines whether the chart should receive one color per series or
+         * one color per point.
+         *
+         * In styled mode, the `colors` or `series.colors` arrays are not
+         * supported, and instead this option gives the points individual color
+         * class names on the form `highcharts-color-{n}`.
+         *
+         * @type      {boolean}
+         * @default   false
+         * @apioption plotOptions.bubble.colorByPoint
+         */
         /**
          * Whether to display negative sized bubbles. The threshold is given
          * by the [zThreshold](#plotOptions.bubble.zThreshold) option, and negative
@@ -11789,7 +11903,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  * not specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.bubble
- * @excluding dataParser, dataURL, legendSymbolColor, stack
+ * @excluding legendSymbolColor, stack
  * @product   highcharts highstock
  * @requires  highcharts-more
  * @apioption series.bubble
@@ -12232,7 +12346,6 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  * is not specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.mapbubble
- * @excluding dataParser, dataURL
  * @product   highmaps
  * @apioption series.mapbubble
  */
@@ -12342,7 +12455,7 @@ var HeatmapPoint = /** @class */ (function (_super) {
      *  Functions
      *
      * */
-    /** @private */
+    /** @internal */
     HeatmapPoint.prototype.applyOptions = function (options, x) {
         // #17970, if point is null remove its color, because it may be updated
         if (this.isNull || this.value === null) {
@@ -12353,10 +12466,12 @@ var HeatmapPoint = /** @class */ (function (_super) {
             'null' : 'point';
         return this;
     };
-    /** @private */
+    /** @internal */
     HeatmapPoint.prototype.getCellAttributes = function () {
+        var _a,
+            _b;
         var point = this, series = point.series, seriesOptions = series.options, xPad = (seriesOptions.colsize || 1) / 2, yPad = (seriesOptions.rowsize || 1) / 2, xAxis = series.xAxis, yAxis = series.yAxis, markerOptions = point.options.marker || series.options.marker, pointPlacement = series.pointPlacementToXValue(), // #7860
-            pointPadding = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.pointPadding, seriesOptions.pointPadding, 0), cellAttr = {
+            pointPadding = (_b = (_a = point.pointPadding) !== null && _a !== void 0 ? _a : seriesOptions.pointPadding) !== null && _b !== void 0 ? _b : 0, cellAttr = {
                 x1: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(Math.round(xAxis.len -
                     xAxis.translate(point.x - xPad, false, true, false, true, -pointPlacement)), -xAxis.len, 2 * xAxis.len),
                 x2: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(Math.round(xAxis.len -
@@ -12396,7 +12511,7 @@ var HeatmapPoint = /** @class */ (function (_super) {
         return cellAttr;
     };
     /**
-     * @private
+     * @internal
      */
     HeatmapPoint.prototype.haloPath = function (size) {
         if (!size) {
@@ -12422,7 +12537,7 @@ var HeatmapPoint = /** @class */ (function (_super) {
     /**
      * Color points have a value option that determines whether or not it is
      * a null point
-     * @private
+     * @internal
      */
     HeatmapPoint.prototype.isValid = function () {
         // Undefined is allowed
@@ -12757,7 +12872,7 @@ var HeatmapSeriesDefaults = {
  * @productdesc {highcharts}
  *
  * @extends   series,plotOptions.heatmap
- * @excluding cropThreshold, dataParser, dataURL, dragDrop ,pointRange, stack,
+ * @excluding cropThreshold, dragDrop, pointRange, stack
  * @product   highcharts highmaps
  * @requires  modules/heatmap
  * @apioption series.heatmap
@@ -13110,7 +13225,7 @@ var doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_d
 /**
  * Find color of point based on color axis.
  *
- * @function Highcharts.colorFromPoint
+ * @internal
  *
  * @param {number | null} value
  *        Value to find corresponding color on the color axis.
@@ -13122,14 +13237,15 @@ var doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_d
  *        Color in RGBa array.
  */
 function colorFromPoint(value, point) {
+    var _a;
     var colorAxis = point.series.colorAxis;
     if (colorAxis) {
         var rgba = (colorAxis.toColor(value || 0, point)
                 .split(')')[0]
                 .split('(')[1]
                 .split(',')
-                .map(function (s) { return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(parseFloat(s), parseInt(s, 10)); }));
-        rgba[3] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(rgba[3], 1.0) * 255;
+                .map(function (s) { var _a; return ((_a = parseFloat(s)) !== null && _a !== void 0 ? _a : parseInt(s, 10)); }));
+        rgba[3] = ((_a = rgba[3]) !== null && _a !== void 0 ? _a : 1.0) * 255;
         if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(value) || !point.visible) {
             rgba[3] = 0;
         }
@@ -13139,7 +13255,7 @@ function colorFromPoint(value, point) {
 }
 /**
  * Method responsible for creating a canvas for interpolation image.
- * @private
+ * @internal
  */
 function getContext(series) {
     var canvas = series.canvas,
@@ -13223,7 +13339,7 @@ var HeatmapSeries_colorFromPoint = Series_InterpolationUtilities.colorFromPoint,
  *
  * */
 /**
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.heatmap
  *
@@ -13250,7 +13366,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
      *
      * */
     /**
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.drawPoints = function () {
         var series = this,
@@ -13335,14 +13451,14 @@ var HeatmapSeries = /** @class */ (function (_super) {
     };
     /**
      * Override to use rectangle by default
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.getSymbol = function () {
         var _a;
         this.symbol = ((_a = this.options.marker) === null || _a === void 0 ? void 0 : _a.symbol) || 'rect';
     };
     /**
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.getExtremes = function () {
         // Get the extremes from the value data
@@ -13363,7 +13479,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
     /**
      * Override to also allow null points, used when building the k-d-tree for
      * tooltips in boost mode.
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.getValidPoints = function (points, insideOnly) {
         return HeatmapSeries_Series.prototype.getValidPoints.call(this, points, insideOnly, true);
@@ -13371,20 +13487,21 @@ var HeatmapSeries = /** @class */ (function (_super) {
     /**
      * Define hasData function for non-cartesian series. Returns true if the
      * series has points at all.
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.hasData = function () {
         return !!this.dataTable.rowCount;
     };
     /**
      * Override the init method to add point ranges on both axes.
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.init = function () {
+        var _a;
         _super.prototype.init.apply(this, arguments);
         var options = this.options;
         // #3758, prevent resetting in setData
-        options.pointRange = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.pointRange, options.colsize || 1);
+        options.pointRange = (_a = options.pointRange) !== null && _a !== void 0 ? _a : (options.colsize || 1);
         // General point range
         this.yAxis.axisPointRange = options.rowsize || 1;
         // Bind new symbol names
@@ -13407,7 +13524,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
         }
     };
     /**
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.markerAttribs = function (point, state) {
         var _a,
@@ -13446,7 +13563,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
         return shapeArgs;
     };
     /**
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.pointAttribs = function (point, state) {
         var _a,
@@ -13492,7 +13609,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
         return attr;
     };
     /**
-     * @private
+     * @internal
      */
     HeatmapSeries.prototype.translate = function () {
         var _a;
@@ -13528,7 +13645,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
                 d: HeatmapSeries_symbols[shape](x, y, width, height, { r: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(borderRadius) ? borderRadius : 0 })
             });
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
     };
     HeatmapSeries.defaultOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(HeatmapSeries_ScatterSeries.defaultOptions, Heatmap_HeatmapSeriesDefaults);
     return HeatmapSeries;
@@ -13552,7 +13669,7 @@ var HeatmapSeries = /** @class */ (function (_super) {
     specialGroup: 'group',
     trackerGroups: Series_ColorMapComposition.seriesMembers.trackerGroups,
     /**
-     * @private
+     * @internal
      */
     alignDataLabel: HeatmapSeries_ColumnSeries.prototype.alignDataLabel,
     colorAttribs: Series_ColorMapComposition.seriesMembers.colorAttribs
@@ -13631,6 +13748,7 @@ Maps_MapView.compose(Chart_MapChart);
 // Default Export
 /* harmony default export */ var map_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

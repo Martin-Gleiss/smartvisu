@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/parallel-coordinates
  * @requires highcharts
  *
@@ -14,29 +14,31 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		module.exports = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/parallel-coordinates", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Templating"]);});
+		define("highcharts/modules/parallel-coordinates", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/parallel-coordinates"] = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		exports["highcharts/modules/parallel-coordinates"] = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Templating"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__984__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -276,6 +275,8 @@ var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 
+var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed;
+
 
 /* *
  *
@@ -356,10 +357,8 @@ var ParallelAxis;
      * @internal
      */
     function compose(AxisClass) {
-        if (!AxisClass.keepProps.includes('parallel')) {
+        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'Axis.ParallelCoordinates')) {
             var axisCompo = AxisClass;
-            // On update, keep parallel additions.
-            AxisClass.keepProps.push('parallel');
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(axisCompo, 'init', onInit);
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(axisCompo, 'afterSetOptions', onAfterSetOptions);
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(axisCompo, 'getSeriesExtremes', onGetSeriesExtremes);
@@ -371,6 +370,7 @@ var ParallelAxis;
      * @internal
      */
     function onAfterSetOptions(e) {
+        var _a;
         var axis = this,
             chart = axis.chart,
             parallelCoordinates = axis.parallelCoordinates;
@@ -390,7 +390,7 @@ var ParallelAxis;
                     highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(axis.options,
                     axis.chart.options.chart.parallelAxes,
                     e.userOptions);
-                parallelCoordinates.position = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(parallelCoordinates.position, axisIndex >= 0 ? axisIndex : chart.yAxis.length);
+                parallelCoordinates.position = (_a = parallelCoordinates.position) !== null && _a !== void 0 ? _a : (axisIndex >= 0 ? axisIndex : chart.yAxis.length);
                 parallelCoordinates.setPosition(axisPosition, axis.options);
             }
         }
@@ -436,6 +436,7 @@ var ParallelAxis;
      */
     function onInit() {
         var axis = this;
+        delete this.type; // After Axis.update
         if (!axis.parallelCoordinates) {
             axis.parallelCoordinates = new ParallelAxisAdditions(axis);
         }
@@ -468,7 +469,7 @@ var highcharts_Templating_commonjs_highcharts_Templating_commonjs2_highcharts_Te
  * */
 
 
-var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed;
+var ParallelSeries_composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed;
 
 var format = (highcharts_Templating_commonjs_highcharts_Templating_commonjs2_highcharts_Templating_root_Highcharts_Templating_default()).format;
 
@@ -493,7 +494,7 @@ var ParallelSeries;
      * */
     /** @internal */
     function compose(SeriesClass) {
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'ParallelSeries')) {
+        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(ParallelSeries_composed, 'ParallelSeries')) {
             var CompoClass = SeriesClass;
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(CompoClass, 'afterTranslate', onSeriesAfterTranslate, { order: 1 });
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(CompoClass, 'bindAxes', onSeriesBindAxes);
@@ -769,7 +770,7 @@ var ParallelCoordinates;
                 typeof options.legend.enabled === 'undefined') {
                 options.legend.enabled = false;
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, options, 
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, options, 
             // Disable boost
             {
                 boost: {
@@ -793,6 +794,9 @@ var ParallelCoordinates;
     function onChartUpdate(e) {
         var chart = this,
             options = e.options;
+        if (e.hasChanged === false) {
+            return;
+        }
         if (options.chart) {
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(options.chart.parallelCoordinates)) {
                 chart.hasParallelCoordinates =
@@ -829,6 +833,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 ParallelCoordinates_ParallelCoordinates.compose(G.Axis, G.Chart, G.defaultOptions, G.Series);
 /* harmony default export */ var parallel_coordinates_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

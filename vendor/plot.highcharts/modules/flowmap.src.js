@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/flowmap
  * @requires highcharts
+ * @requires highcharts/modules/map
  *
  * (c) 2009-2026
  *
@@ -11,21 +12,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/flowmap", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/flowmap", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/flowmap"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/flowmap"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -33,6 +35,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -65,36 +68,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -161,9 +161,11 @@ var FlowMapPoint = /** @class */ (function (_super) {
         var valid = !!(this.options.to && this.options.from);
         [this.options.to, this.options.from]
             .forEach(function (toOrFrom) {
+            var _a,
+                _b;
             valid = !!(valid && (toOrFrom && ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isString)(toOrFrom) || ( // Point id or has lat/lon coords
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(toOrFrom[0], toOrFrom.lat)) &&
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(toOrFrom[1], toOrFrom.lon))))));
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)((_a = toOrFrom[0]) !== null && _a !== void 0 ? _a : toOrFrom.lat) &&
+                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)((_b = toOrFrom[1]) !== null && _b !== void 0 ? _b : toOrFrom.lon)))));
         });
         return valid;
     };
@@ -415,12 +417,23 @@ var FlowMapSeries = /** @class */ (function (_super) {
      * @private
      */
     FlowMapSeries.prototype.pointAttribs = function (point, state) {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f;
         var attrs = MapSeries.prototype.pointAttribs.call(this,
             point,
             state);
-        attrs.fill = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.fillColor, point.options.color, this.options.fillColor === 'none' ? null : this.options.fillColor, this.color);
-        attrs['fill-opacity'] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.fillOpacity, this.options.fillOpacity);
-        attrs['stroke-width'] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.lineWidth, this.options.lineWidth, 1);
+        attrs.fill =
+            (_c = (_b = (_a = point.options.fillColor) !== null && _a !== void 0 ? _a : point.options.color) !== null && _b !== void 0 ? _b : (this.options.fillColor === 'none' ?
+                void 0 :
+                this.options.fillColor)) !== null && _c !== void 0 ? _c : this.color;
+        attrs['fill-opacity'] =
+            (_d = point.options.fillOpacity) !== null && _d !== void 0 ? _d : this.options.fillOpacity;
+        attrs['stroke-width'] =
+            (_f = (_e = point.options.lineWidth) !== null && _e !== void 0 ? _e : this.options.lineWidth) !== null && _f !== void 0 ? _f : 1;
         if (point.options.opacity) {
             attrs.opacity = point.options.opacity;
         }
@@ -443,6 +456,8 @@ var FlowMapSeries = /** @class */ (function (_super) {
         var averageX = 0,
             averageY = 0;
         this.points.forEach(function (point) {
+            var _a,
+                _b;
             var chart = _this.chart,
                 mapView = chart.mapView,
                 options = point.options,
@@ -493,8 +508,8 @@ var FlowMapSeries = /** @class */ (function (_super) {
                 averageX += (fromPos.x + toPos.x) / 2;
                 averageY += (fromPos.y + toPos.y) / 2;
             }
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.weight, _this.options.weight)) {
-                weights.push((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.weight, _this.options.weight));
+            if ((_a = point.options.weight) !== null && _a !== void 0 ? _a : _this.options.weight) {
+                weights.push((_b = point.options.weight) !== null && _b !== void 0 ? _b : _this.options.weight);
             }
         });
         this.smallestWeight = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(weights);
@@ -504,6 +519,7 @@ var FlowMapSeries = /** @class */ (function (_super) {
             y: averageY / this.points.length
         };
         this.points.forEach(function (point) {
+            var _a;
             // Don't draw point if weight is not valid.
             if (!_this.getLinkWidth(point)) {
                 point.shapeArgs = {
@@ -520,11 +536,13 @@ var FlowMapSeries = /** @class */ (function (_super) {
             point.shapeArgs = _this.getPointShapeArgs(point);
             // When updating point from null to normal value, set a real color
             // (don't keep nullColor).
-            point.color = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.color, point.series.color);
+            point.color = ((_a = point.options.color) !== null && _a !== void 0 ? _a : point.series.color);
         });
     };
     FlowMapSeries.prototype.getPointShapeArgs = function (point) {
         var _a;
+        var _b,
+            _c;
         var fromPos = point.fromPos,
             toPos = point.toPos;
         if (!fromPos || !toPos) {
@@ -535,16 +553,12 @@ var FlowMapSeries = /** @class */ (function (_super) {
             markerEndOptions = (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(this.options.markerEnd,
             pointOptions.markerEnd),
-            growTowards = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.growTowards,
-            this.options.growTowards),
+            growTowards = (_b = pointOptions.growTowards) !== null && _b !== void 0 ? _b : this.options.growTowards,
             fromX = fromPos.x || 0,
             fromY = fromPos.y || 0;
         var toX = toPos.x || 0,
             toY = toPos.y || 0,
-            curveFactor = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.curveFactor,
-            this.options.curveFactor),
+            curveFactor = (_c = pointOptions.curveFactor) !== null && _c !== void 0 ? _c : this.options.curveFactor,
             offset = markerEndOptions && markerEndOptions.enabled &&
                 markerEndOptions.height || 0;
         if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(curveFactor)) { // Automate the curveFactor value.
@@ -571,10 +585,10 @@ var FlowMapSeries = /** @class */ (function (_super) {
             // Calculate the arc strength.
             var arcPointX_1 = (mX_1 + dX_1 * curveFactor),
                 arcPointY_1 = (mY_1 + dY_1 * curveFactor);
-            var _b = FlowMapSeries.normalize(arcPointX_1 - toX,
+            var _d = FlowMapSeries.normalize(arcPointX_1 - toX,
                 arcPointY_1 - toY),
-                offsetX = _b[0],
-                offsetY = _b[1];
+                offsetX = _d[0],
+                offsetY = _d[1];
             offsetX *= offset;
             offsetY *= offset;
             toX += offsetX;
@@ -595,10 +609,10 @@ var FlowMapSeries = /** @class */ (function (_super) {
         dX = dY;
         dY = -tmp;
         // Weight vector calculation for the middle of the curve.
-        var _c = FlowMapSeries.normalize(dX,
+        var _e = FlowMapSeries.normalize(dX,
             dY),
-            wX = _c[0],
-            wY = _c[1];
+            wX = _e[0],
+            wY = _e[1];
         // The `fineTune` prevents an obvious mismatch along the curve.
         var fineTune = 1 + Math.sqrt(curveFactor * curveFactor) * 0.25;
         wX *= finalWidth * fineTune;
@@ -607,20 +621,20 @@ var FlowMapSeries = /** @class */ (function (_super) {
         var arcPointX = (mX + dX * curveFactor),
             arcPointY = (mY + dY * curveFactor);
         // Calculate edge vectors in the from-point.
-        var _d = FlowMapSeries.normalize(arcPointX - fromX,
+        var _f = FlowMapSeries.normalize(arcPointX - fromX,
             arcPointY - fromY),
-            fromXToArc = _d[0],
-            fromYToArc = _d[1];
+            fromXToArc = _f[0],
+            fromYToArc = _f[1];
         tmp = fromXToArc;
         fromXToArc = fromYToArc;
         fromYToArc = -tmp;
         fromXToArc *= finalWidth;
         fromYToArc *= finalWidth;
         // Calculate edge vectors in the to-point.
-        var _e = FlowMapSeries.normalize(arcPointX - toX,
+        var _g = FlowMapSeries.normalize(arcPointX - toX,
             arcPointY - toY),
-            toXToArc = _e[0],
-            toYToArc = _e[1];
+            toXToArc = _g[0],
+            toYToArc = _g[1];
         tmp = toXToArc;
         toXToArc = -toYToArc;
         toYToArc = tmp;
@@ -1056,6 +1070,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var flowmap_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()
