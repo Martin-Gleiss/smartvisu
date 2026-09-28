@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/draggable-points
  * @requires highcharts
  *
@@ -21,12 +21,13 @@
 		root["Highcharts"] = factory(root["Highcharts"]);
 })(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -59,36 +60,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -624,7 +622,6 @@ var DragDropDefaults = {
  * */
 
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 
 var DraggableChart_addEvents = DraggablePoints_DragDropUtilities.addEvents, DraggableChart_countProps = DraggablePoints_DragDropUtilities.countProps, DraggableChart_getFirstProp = DraggablePoints_DragDropUtilities.getFirstProp, DraggableChart_getNormalizedEvent = DraggablePoints_DragDropUtilities.getNormalizedEvent;
 
@@ -1419,7 +1416,8 @@ function resizeRect(rect, updateSide, update) {
  */
 function updatePoints(chart, animation) {
     var newPoints = chart.dragDropData.newPoints,
-        animOptions = animObject(animation);
+        animOptions = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(animation);
     chart.isDragDropAnimating = true;
     var newPoint;
     // Update the points
@@ -1512,13 +1510,12 @@ var column = {
         resize: true,
         // Force guideBox start coordinates
         beforeResize: function (guideBox, pointVals, point) {
+            var _a;
             // We need to ensure that guideBox always starts at threshold.
             // We flip whether or not we update the top or bottom of the guide
             // box at threshold, but if we drag the mouse fast, the top has not
             // reached threshold before we cross over and update the bottom.
-            var plotThreshold = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.yBottom, // Added support for stacked series. (#18741)
-                point.series.translatedThreshold),
+            var plotThreshold = (_a = point.yBottom) !== null && _a !== void 0 ? _a : point.series.translatedThreshold,
                 plotY = guideBox.attr('y'),
                 threshold = (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(point.stackY) ? (point.stackY - (point.y || 0)) : point.series.options.threshold || 0,
@@ -2849,6 +2846,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 DraggablePoints_DraggablePoints.compose(G.Chart, G.Series);
 /* harmony default export */ var draggable_points_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

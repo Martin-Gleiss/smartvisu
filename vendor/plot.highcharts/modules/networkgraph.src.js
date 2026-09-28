@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/networkgraph
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/networkgraph", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SVGElement"],amd1["SeriesRegistry"]);});
+		define("highcharts/modules/networkgraph", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SVGElement"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/networkgraph"] = factory(root["_Highcharts"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/networkgraph"] = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 28:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -43,6 +45,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -141,7 +141,7 @@ var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcha
  *
  * */
 /**
- * @private
+ * @internal
  */
 function compose(ChartClass) {
     if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'DragNodes')) {
@@ -150,7 +150,7 @@ function compose(ChartClass) {
 }
 /**
  * Draggable mode:
- * @private
+ * @internal
  */
 function onChartLoad() {
     var chart = this;
@@ -185,14 +185,14 @@ function onChartLoad() {
             }
         });
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'destroy', function () {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'destroy', function () {
         mousedownUnbinder();
     });
 }
 /**
  * Mouse down action, initializing drag&drop mode.
  *
- * @private
+ * @internal
  * @param {Highcharts.Point} point
  *        The point that event occurred.
  * @param {Highcharts.PointerEventObject} event
@@ -217,7 +217,7 @@ function onMouseDown(point, event) {
 /**
  * Mouse move action during drag&drop.
  *
- * @private
+ * @internal
  *
  * @param {Highcharts.Point} point
  *        The point that event occurred.
@@ -254,7 +254,7 @@ function onMouseMove(point, event) {
 /**
  * Mouse up action, finalizing drag&drop.
  *
- * @private
+ * @internal
  * @param {Highcharts.Point} point
  *        The point that event occurred.
  */
@@ -277,14 +277,19 @@ function onMouseUp(point) {
 /**
  * Redraw halo on mousemove during the drag&drop action.
  *
- * @private
+ * @internal
  * @param {Highcharts.Point} point
  *        The point that should show halo.
  */
 function redrawHalo(point) {
+    var _a,
+        _b,
+        _c,
+        _d;
     if (point && this.halo) {
         this.halo.attr({
-            d: point.haloPath(this.options.states.hover.halo.size)
+            d: point.haloPath((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)((_b = (_a = this.options.states) === null || _a === void 0 ? void 0 : _a.hover) === null || _b === void 0 ? void 0 : _b.halo) &&
+                ((_d = (_c = this.options.states) === null || _c === void 0 ? void 0 : _c.hover) === null || _d === void 0 ? void 0 : _d.halo.size) || 0)
         });
     }
 }
@@ -293,6 +298,7 @@ function redrawHalo(point) {
  *  Default Export
  *
  * */
+/** @internal */
 var DragNodesComposition = {
     compose: compose,
     onMouseDown: onMouseDown,
@@ -300,6 +306,7 @@ var DragNodesComposition = {
     onMouseUp: onMouseUp,
     redrawHalo: redrawHalo
 };
+/** @internal */
 /* harmony default export */ var Series_DragNodesComposition = (DragNodesComposition);
 
 ;// ./code/es5/es-modules/Series/GraphLayoutComposition.js
@@ -318,7 +325,6 @@ var DragNodesComposition = {
  * */
 
 
-var setAnimation = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).setAnimation;
 
 var GraphLayoutComposition_composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed;
 
@@ -408,7 +414,7 @@ function onChartRender() {
     };
     // Don't animate layout when series is dragged
     if (this.graphLayoutsLookup && !((_a = this.pointer) === null || _a === void 0 ? void 0 : _a.hasDragged)) {
-        setAnimation(false, this);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.setAnimation)(false, this);
         // Start simulation
         this.graphLayoutsLookup.forEach(function (layout) { return layout.start(); });
         // Just one sync step, to run different layouts similar to
@@ -421,6 +427,7 @@ function onChartRender() {
             this.series.forEach(function (series) {
                 if (series && series.layout) {
                     series.render();
+                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterSimulation');
                 }
             });
         }
@@ -501,6 +508,9 @@ var NodesComposition;
      * @private
      */
     function createNode(id) {
+        var _a,
+            _b,
+            _c;
         var PointClass = this.pointClass,
             findById = function (nodes,
             id) { return (0,
@@ -568,13 +578,7 @@ var NodesComposition;
         // For use in formats
         node.name = node.name || node.options.id || '';
         // Mass is used in networkgraph:
-        node.mass = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-        // Node:
-        node.options.mass, node.options.marker && node.options.marker.radius, 
-        // Series:
-        this.options.marker && this.options.marker.radius, 
-        // Default:
-        4);
+        node.mass = ((_c = (_b = (_a = node.options.mass) !== null && _a !== void 0 ? _a : (node.options.marker && node.options.marker.radius)) !== null && _b !== void 0 ? _b : (this.options.marker && this.options.marker.radius)) !== null && _c !== void 0 ? _c : 4);
         return node;
     }
     NodesComposition.createNode = createNode;
@@ -611,6 +615,7 @@ var NodesComposition;
         });
         // Create the node list and set up links
         this.points.forEach(function (point) {
+            var _a;
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(point.from)) {
                 if (!nodeLookup[point.from]) {
                     nodeLookup[point.from] = _this.createNode(point.from);
@@ -619,7 +624,8 @@ var NodesComposition;
                 point.fromNode = nodeLookup[point.from];
                 // Point color defaults to the fromNode's color
                 if (chart.styledMode) {
-                    point.colorIndex = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.colorIndex, nodeLookup[point.from].colorIndex);
+                    point.colorIndex =
+                        (_a = point.options.colorIndex) !== null && _a !== void 0 ? _a : nodeLookup[point.from].colorIndex;
                 }
                 else {
                     point.color =
@@ -727,7 +733,7 @@ var NodesComposition;
             else {
                 this.series.options.nodes = [nodeConfig];
             }
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+            if (redraw !== null && redraw !== void 0 ? redraw : true) {
                 this.series.chart.redraw(animation);
             }
         }
@@ -843,13 +849,16 @@ var NetworkgraphPoint = /** @class */ (function (_super) {
      * @private
      */
     NetworkgraphPoint.prototype.getLinkAttributes = function () {
+        var _a,
+            _b,
+            _c;
         var linkOptions = this.series.options.link,
             pointOptions = this.options;
         return {
-            'stroke-width': (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.width, linkOptions.width),
+            'stroke-width': ((_a = pointOptions.width) !== null && _a !== void 0 ? _a : linkOptions.width),
             stroke: (pointOptions.color || linkOptions.color),
             dashstyle: (pointOptions.dashStyle || linkOptions.dashStyle),
-            opacity: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.opacity, linkOptions.opacity, 1)
+            opacity: ((_c = (_b = pointOptions.opacity) !== null && _b !== void 0 ? _b : linkOptions.opacity) !== null && _c !== void 0 ? _c : 1)
         };
     };
     /**
@@ -1129,9 +1138,21 @@ var NetworkgraphSeriesDefaults = {
          */
         inactive: {
             /**
+             * Deprecated. Use
+             * [link.opacity](#series.networkgraph.states.inactive.link.opacity)
+             * instead.
+             *
              * Opacity of inactive links.
+             *
+             * @deprecated 13.0.1
              */
             linkOpacity: 0.3,
+            /**
+             * @extends plotOptions.networkgraph.link
+             */
+            link: {
+                opacity: 0.3
+            },
             /**
              * Animation when not hovering over the node.
              *
@@ -2499,6 +2520,8 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
             ReingoldFruchtermanLayout;
     };
     ReingoldFruchtermanLayout.prototype.init = function (options) {
+        var _a,
+            _b;
         this.options = options;
         this.nodes = [];
         this.links = [];
@@ -2513,12 +2536,14 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
         this.integration =
             Series_GraphLayoutComposition.integrations[options.integration];
         this.enableSimulation = options.enableSimulation;
-        this.attractiveForce = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.attractiveForce, this.integration.attractiveForceFunction);
-        this.repulsiveForce = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.repulsiveForce, this.integration.repulsiveForceFunction);
+        this.attractiveForce =
+            (_a = options.attractiveForce) !== null && _a !== void 0 ? _a : this.integration.attractiveForceFunction;
+        this.repulsiveForce =
+            (_b = options.repulsiveForce) !== null && _b !== void 0 ? _b : this.integration.repulsiveForceFunction;
         this.approximation = options.approximation;
     };
     ReingoldFruchtermanLayout.prototype.updateSimulation = function (enable) {
-        this.enableSimulation = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(enable, this.options.enableSimulation);
+        this.enableSimulation = (enable !== null && enable !== void 0 ? enable : this.options.enableSimulation);
     };
     ReingoldFruchtermanLayout.prototype.start = function () {
         var layout = this,
@@ -2655,7 +2680,7 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
         }
     };
     ReingoldFruchtermanLayout.prototype.setMaxIterations = function (maxIterations) {
-        this.maxIterations = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(maxIterations, this.options.maxIterations);
+        this.maxIterations = (maxIterations !== null && maxIterations !== void 0 ? maxIterations : this.options.maxIterations);
     };
     ReingoldFruchtermanLayout.prototype.setTemperature = function () {
         this.temperature = this.startTemperature =
@@ -2696,6 +2721,8 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
         }
     };
     ReingoldFruchtermanLayout.prototype.setCircularPositions = function () {
+        var _a,
+            _b;
         var box = this.box,
             nodes = this.nodes,
             nodesLength = nodes.length + 1,
@@ -2704,11 +2731,11 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
                 return node.linksTo.length === 0;
         }), visitedNodes = {}, radius = this.options.initialPositionRadius, addToNodes = function (node) {
             for (var _i = 0, _a = node.linksFrom || []; _i < _a.length; _i++) {
-                var link = _a[_i];
-                if (!visitedNodes[link.toNode.id]) {
-                    visitedNodes[link.toNode.id] = true;
-                    sortedNodes.push(link.toNode);
-                    addToNodes(link.toNode);
+                var toNode = _a[_i].toNode;
+                if (toNode && !visitedNodes[toNode.id]) {
+                    visitedNodes[toNode.id] = true;
+                    sortedNodes.push(toNode);
+                    addToNodes(toNode);
                 }
             }
         };
@@ -2727,8 +2754,8 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
             // Dangling, cyclic trees
         }
         else {
-            for (var _a = 0, nodes_1 = nodes; _a < nodes_1.length; _a++) {
-                var node_1 = nodes_1[_a];
+            for (var _c = 0, nodes_1 = nodes; _c < nodes_1.length; _c++) {
+                var node_1 = nodes_1[_c];
                 if (sortedNodes.indexOf(node_1) === -1) {
                     sortedNodes.push(node_1);
                 }
@@ -2739,13 +2766,17 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
         // as a cluster in the middle
         for (var i = 0, iEnd = sortedNodes.length; i < iEnd; ++i) {
             node = sortedNodes[i];
-            node.plotX = node.prevX = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.plotX, box.width / 2 + radius * Math.cos(i * angle));
-            node.plotY = node.prevY = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.plotY, box.height / 2 + radius * Math.sin(i * angle));
+            node.plotX = node.prevX =
+                (_a = node.plotX) !== null && _a !== void 0 ? _a : box.width / 2 + radius * Math.cos(i * angle);
+            node.plotY = node.prevY =
+                (_b = node.plotY) !== null && _b !== void 0 ? _b : box.height / 2 + radius * Math.sin(i * angle);
             node.dispX = 0;
             node.dispY = 0;
         }
     };
     ReingoldFruchtermanLayout.prototype.setRandomPositions = function () {
+        var _a,
+            _b;
         var box = this.box,
             nodes = this.nodes,
             nodesLength = nodes.length + 1, 
@@ -2764,8 +2795,9 @@ var ReingoldFruchtermanLayout = /** @class */ (function () {
         // Initial positions:
         for (var i = 0, iEnd = nodes.length; i < iEnd; ++i) {
             node = nodes[i];
-            node.plotX = node.prevX = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.plotX, box.width * unrandom(i));
-            node.plotY = node.prevY = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.plotY, box.height * unrandom(nodesLength + i));
+            node.plotX = node.prevX = ((_a = node.plotX) !== null && _a !== void 0 ? _a : box.width * unrandom(i));
+            node.plotY = node.prevY =
+                (_b = node.plotY) !== null && _b !== void 0 ? _b : box.height * unrandom(nodesLength + i);
             node.dispX = 0;
             node.dispY = 0;
         }
@@ -3023,7 +3055,6 @@ var __assign = (undefined && undefined.__assign) || function () {
 };
 
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 /**
  * Create a setTimeout for the first drawDataLabels()
  * based on the dataLabels.animation.defer value
@@ -3045,7 +3076,7 @@ function initDataLabelsDefer() {
     else {
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.syncTimeout)(function () {
             _this.deferDataLabels = false;
-        }, dlOptions ? animObject(dlOptions.animation).defer : 0);
+        }, dlOptions ? (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(dlOptions.animation).defer : 0);
     }
 }
 /**
@@ -3568,6 +3599,8 @@ var NetworkgraphSeries = /** @class */ (function (_super) {
      * @private
      */
     NetworkgraphSeries.prototype.generatePoints = function () {
+        var _a,
+            _b;
         var node,
             i;
         Series_NodesComposition.generatePoints.apply(this, arguments);
@@ -3584,7 +3617,7 @@ var NetworkgraphSeries = /** @class */ (function (_super) {
         for (i = this.nodes.length - 1; i >= 0; i--) {
             node = this.nodes[i];
             node.degree = node.getDegree();
-            node.radius = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.marker && node.marker.radius, this.options.marker && this.options.marker.radius, 0);
+            node.radius = ((_b = (_a = (node.marker && node.marker.radius)) !== null && _a !== void 0 ? _a : (this.options.marker && this.options.marker.radius)) !== null && _b !== void 0 ? _b : 0);
             node.key = node.name;
             // If node exists, but it's not available in nodeLookup,
             // then it's leftover from previous runs (e.g. setData)
@@ -3668,22 +3701,30 @@ var NetworkgraphSeries = /** @class */ (function (_super) {
      * @private
      */
     NetworkgraphSeries.prototype.pointAttribs = function (point, state) {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f,
+            _g;
         // By default, only `selected` state is passed on
         var pointState = state || point && point.state || 'normal',
-            stateOptions = this.options.states[pointState];
+            stateOptions = (_a = this.options.states) === null || _a === void 0 ? void 0 : _a[pointState];
         var attribs = Series.prototype.pointAttribs.call(this,
             point,
             pointState);
         if (point && !point.isNode) {
             attribs = point.getLinkAttributes();
-            // For link, get prefixed names:
+            // For link, get nested names:
             if (stateOptions) {
                 attribs = {
-                    // TO DO: API?
-                    stroke: stateOptions.linkColor || attribs.stroke,
-                    dashstyle: (stateOptions.linkDashStyle || attribs.dashstyle),
-                    opacity: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.linkOpacity, attribs.opacity),
-                    'stroke-width': stateOptions.linkColor ||
+                    stroke: ((_b = stateOptions.link) === null || _b === void 0 ? void 0 : _b.color) || attribs.stroke,
+                    dashstyle: ((_c = stateOptions.link) === null || _c === void 0 ? void 0 : _c.dashStyle) ||
+                        attribs.dashstyle,
+                    // Deprecated linkOpacity, but keep for backwards compat.
+                    opacity: (_f = (_d = stateOptions.linkOpacity) !== null && _d !== void 0 ? _d : (_e = stateOptions.link) === null || _e === void 0 ? void 0 : _e.opacity) !== null && _f !== void 0 ? _f : attribs.opacity,
+                    'stroke-width': ((_g = stateOptions.link) === null || _g === void 0 ? void 0 : _g.width) ||
                         attribs['stroke-width']
                 };
             }
@@ -3818,6 +3859,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 Networkgraph_NetworkgraphSeries.compose(G.Chart);
 /* harmony default export */ var networkgraph_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

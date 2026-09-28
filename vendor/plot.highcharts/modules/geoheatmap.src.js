@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/geoheatmap
  * @requires highcharts
  *
@@ -11,21 +11,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/geoheatmap", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/geoheatmap", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/geoheatmap"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/geoheatmap"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -33,6 +34,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -65,36 +67,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -216,7 +215,7 @@ var doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_d
 /**
  * Find color of point based on color axis.
  *
- * @function Highcharts.colorFromPoint
+ * @internal
  *
  * @param {number | null} value
  *        Value to find corresponding color on the color axis.
@@ -228,14 +227,15 @@ var doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_d
  *        Color in RGBa array.
  */
 function colorFromPoint(value, point) {
+    var _a;
     var colorAxis = point.series.colorAxis;
     if (colorAxis) {
         var rgba = (colorAxis.toColor(value || 0, point)
                 .split(')')[0]
                 .split('(')[1]
                 .split(',')
-                .map(function (s) { return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(parseFloat(s), parseInt(s, 10)); }));
-        rgba[3] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(rgba[3], 1.0) * 255;
+                .map(function (s) { var _a; return ((_a = parseFloat(s)) !== null && _a !== void 0 ? _a : parseInt(s, 10)); }));
+        rgba[3] = ((_a = rgba[3]) !== null && _a !== void 0 ? _a : 1.0) * 255;
         if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(value) || !point.visible) {
             rgba[3] = 0;
         }
@@ -245,7 +245,7 @@ function colorFromPoint(value, point) {
 }
 /**
  * Method responsible for creating a canvas for interpolation image.
- * @private
+ * @internal
  */
 function getContext(series) {
     var canvas = series.canvas,
@@ -303,7 +303,6 @@ var GeoHeatmapSeries_extends = (undefined && undefined.__extends) || (function (
     };
 })();
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject, stop = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).stop;
 
 
 var noop = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).noop;
@@ -409,6 +408,8 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
      * @private
      */
     GeoHeatmapSeries.prototype.drawPoints = function () {
+        var _a,
+            _b;
         var series = this,
             chart = series.chart,
             mapView = chart.mapView,
@@ -420,14 +421,12 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
                 image_1 = series.image,
                 chart_1 = series.chart,
                 points = series.points,
-                _a = [
-                    (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.colsize, 1),
-                    (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.rowsize, 1)
+                _c = [
+                    ((_a = seriesOptions.colsize) !== null && _a !== void 0 ? _a : 1),
+                    ((_b = seriesOptions.rowsize) !== null && _b !== void 0 ? _b : 1)
                 ],
-                colsize_1 = _a[0],
-                rowsize_1 = _a[1], 
+                colsize_1 = _c[0],
+                rowsize_1 = _c[1], 
                 // Calculate dimensions based on series bounds
                 topLeft = mapView.projectedUnitsToPixels({
                     x: series.bounds.x1,
@@ -457,7 +456,7 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
                     mapView.projection.options.name === 'Orthographic') {
                     var canvasWidth = canvas.width = ~~(360 / colsize_1) + 1, canvasHeight = canvas.height = ~~(180 / rowsize_1) + 1, canvasArea = canvasWidth * canvasHeight, pixelData = new Uint8ClampedArray(canvasArea * 4), 
                         // Guess if we have to round lon/lat with this data
-                        _b = points[0].options, _c = _b.lat, lat = _c === void 0 ? 0 : _c, _d = _b.lon, lon = _d === void 0 ? 0 : _d, unEvenLon = lon % rowsize_1 !== 0, unEvenLat = lat % colsize_1 !== 0, getAdjustedLon = (unEvenLon ?
+                        _d = points[0].options, _e = _d.lat, lat = _e === void 0 ? 0 : _e, _f = _d.lon, lon = _f === void 0 ? 0 : _f, unEvenLon = lon % rowsize_1 !== 0, unEvenLat = lat % colsize_1 !== 0, getAdjustedLon = (unEvenLon ?
                             function (lon) { return (Math.round(lon / rowsize_1) * rowsize_1); } :
                             function (lon) { return lon; }), getAdjustedLat = (unEvenLat ?
                             function (lat) { return (Math.round(lat / colsize_1) * colsize_1); } :
@@ -476,9 +475,9 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
                     // First pixelData represents the geo coordinates
                     for (var i = 0; i < pointsLen; i++) {
                         var p = points[i],
-                            _e = p.options,
-                            lon_1 = _e.lon,
-                            lat_1 = _e.lat;
+                            _g = p.options,
+                            lon_1 = _g.lon,
+                            lat_1 = _g.lat;
                         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(lon_1) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(lat_1)) {
                             pixelData.set(GeoHeatmapSeries_colorFromPoint(p.value, p), scaledPointPos(getAdjustedLon(lon_1), getAdjustedLat(lat_1), canvasWidth, canvasHeight, colsize_1, rowsize_1) * 4);
                         }
@@ -534,7 +533,8 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
                             });
                         };
                         var animOptions = (0,
-                            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(animObject(chart_1.renderer.globalAnimation)),
+                            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)((0,
+                            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(chart_1.renderer.globalAnimation)),
                             userStep_1 = animOptions.step;
                         animOptions.step =
                             function () {
@@ -551,7 +551,7 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
                         // When dragging or first rendering, animation is off
                     }
                     else {
-                        stop(image_1);
+                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(image_1);
                         image_1.attr((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(dimensions, series.isDirtyCanvas ? {
                             href: canvas.toDataURL('image/png', 1)
                         } : void 0));
@@ -574,8 +574,9 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
      * @private
      */
     GeoHeatmapSeries.prototype.getProjectedImageData = function (mapView, projectedWidth, projectedHeight, cartesianImageData, canvas, horizontalShift, verticalShift) {
-        var _a;
-        var projectedPixelData = new Uint8ClampedArray(projectedWidth * projectedHeight * 4), lambda = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)((_a = mapView.projection.options.rotation) === null || _a === void 0 ? void 0 : _a[0], 0), widthFactor = canvas.width / 360, heightFactor = -1 * canvas.height / 180;
+        var _a,
+            _b;
+        var projectedPixelData = new Uint8ClampedArray(projectedWidth * projectedHeight * 4), lambda = ((_b = (_a = mapView.projection.options.rotation) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : 0), widthFactor = canvas.width / 360, heightFactor = -1 * canvas.height / 180;
         var y = -1;
         // For each pixel on the map plane, find the map
         // coordinate and get the color value
@@ -747,9 +748,10 @@ var GeoHeatmapSeries = /** @class */ (function (_super) {
          *         Advanced demo of GeoHeatmap interpolation with multiple
          *         datasets
          *
-         * @type      {boolean|Highcharts.InterpolationOptionsObject}
-         * @since     11.2.0
-         * @product   highmaps
+         * @declare Highcharts.InterpolationOptionsObject
+         * @product highmaps
+         * @since   11.2.0
+         * @type    {boolean|*}
          */
         interpolation: {
             /**
@@ -805,7 +807,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  * specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.geoheatmap
- * @excluding allAreas, dataParser, dataURL, dragDrop, findNearestPointBy,
+ * @excluding allAreas, dragDrop, findNearestPointBy,
  *            joinBy, marker, mapData, negativeColor, onPoint, shadow,
  *            stickyTracking
  * @product   highmaps
@@ -900,6 +902,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var geoheatmap_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

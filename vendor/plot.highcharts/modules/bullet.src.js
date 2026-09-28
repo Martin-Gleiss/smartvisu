@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/bullet
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/bullet", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Series"],["types"],["column"],amd1["SeriesRegistry"]);});
+		define("highcharts/modules/bullet", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Series"],["types"],["column"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/bullet"] = factory(root["_Highcharts"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/bullet"] = factory(root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Series"]["types"]["column"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__448__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Series"]["types"]["column"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__448__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 448:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__448__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__448__;
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -43,6 +45,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -284,7 +284,7 @@ var BulletSeriesDefaults = {
  * @extends   series,plotOptions.bullet
  * @since     6.0.0
  * @product   highcharts
- * @excluding dataParser, dataURL, marker, boostThreshold,
+ * @excluding marker, boostThreshold,
  *            boostBlending
  * @requires  modules/bullet
  * @apioption series.bullet
@@ -442,13 +442,21 @@ var BulletSeries = /** @class */ (function (_super) {
      * @function Highcharts.Series#drawPoints
      */
     BulletSeries.prototype.drawPoints = function () {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f,
+            _g,
+            _h;
         var series = this,
             chart = series.chart,
             options = series.options,
             animationLimit = options.animationLimit || 250;
         _super.prototype.drawPoints.apply(this, arguments);
-        for (var _i = 0, _a = series.points; _i < _a.length; _i++) {
-            var point = _a[_i];
+        for (var _i = 0, _j = series.points; _i < _j.length; _i++) {
+            var point = _j[_i];
             var pointOptions = point.options,
                 targetVal = point.target,
                 pointVal = point.y;
@@ -504,13 +512,14 @@ var BulletSeries = /** @class */ (function (_super) {
                 // Presentational
                 if (!chart.styledMode) {
                     targetGraphic.attr({
-                        fill: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(targetOptions.color, pointOptions.color, (series.zones.length && (point.getZone.call({
-                            series: series,
-                            x: point.x,
-                            y: targetVal,
-                            options: {}
-                        }).color || series.color)) || void 0, point.color, series.color),
-                        stroke: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(targetOptions.borderColor, point.borderColor, series.options.borderColor),
+                        fill: ((_f = (_e = (_b = (_a = targetOptions.color) !== null && _a !== void 0 ? _a : pointOptions.color) !== null && _b !== void 0 ? _b : ((series.zones.length &&
+                            (((_d = (_c = point.getZone) === null || _c === void 0 ? void 0 : _c.call({
+                                series: series,
+                                x: point.x,
+                                y: targetVal,
+                                options: {}
+                            })) === null || _d === void 0 ? void 0 : _d.color) || series.color)) || void 0)) !== null && _e !== void 0 ? _e : point.color) !== null && _f !== void 0 ? _f : series.color),
+                        stroke: (_h = (_g = targetOptions.borderColor) !== null && _g !== void 0 ? _g : point.borderColor) !== null && _h !== void 0 ? _h : series.options.borderColor,
                         'stroke-width': targetOptions.borderWidth,
                         r: targetOptions.borderRadius
                     });
@@ -535,6 +544,8 @@ var BulletSeries = /** @class */ (function (_super) {
      * @function Highcharts.Series#getExtremes
      */
     BulletSeries.prototype.getExtremes = function (yData) {
+        var _a,
+            _b;
         var dataExtremes = _super.prototype.getExtremes.call(this,
             yData),
             targetData = this.targetData;
@@ -542,10 +553,10 @@ var BulletSeries = /** @class */ (function (_super) {
             var targetExtremes = _super.prototype.getExtremes.call(this,
                 targetData);
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(targetExtremes.dataMin)) {
-                dataExtremes.dataMin = Math.min((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(dataExtremes.dataMin, Infinity), targetExtremes.dataMin);
+                dataExtremes.dataMin = Math.min(((_a = dataExtremes.dataMin) !== null && _a !== void 0 ? _a : Infinity), targetExtremes.dataMin);
             }
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(targetExtremes.dataMax)) {
-                dataExtremes.dataMax = Math.max((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(dataExtremes.dataMax, -Infinity), targetExtremes.dataMax);
+                dataExtremes.dataMax = Math.max(((_b = dataExtremes.dataMax) !== null && _b !== void 0 ? _b : -Infinity), targetExtremes.dataMax);
             }
         }
         return dataExtremes;
@@ -579,6 +590,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var bullet_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

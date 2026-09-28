@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module modules/arc-diagram
  * @requires highcharts/modules/sankey
  *
@@ -14,35 +14,30 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Series"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SVGElement"]);
+		module.exports = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/arc-diagram", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["Series"],amd1["SVGRenderer"],amd1["SVGElement"]);});
+		define("highcharts/modules/arc-diagram", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SVGElement"],amd1["SVGRenderer"],amd1["Series"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/arc-diagram"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Series"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SVGElement"]);
+		exports["highcharts/modules/arc-diagram"] = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Series"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["SVGElement"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__28__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SVGElement"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Series"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 28:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
 
 /***/ }),
@@ -50,13 +45,23 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
 /***/ 820:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__820__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -89,36 +94,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -191,6 +193,9 @@ var NodesComposition;
      * @private
      */
     function createNode(id) {
+        var _a,
+            _b,
+            _c;
         var PointClass = this.pointClass,
             findById = function (nodes,
             id) { return (0,
@@ -258,13 +263,7 @@ var NodesComposition;
         // For use in formats
         node.name = node.name || node.options.id || '';
         // Mass is used in networkgraph:
-        node.mass = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-        // Node:
-        node.options.mass, node.options.marker && node.options.marker.radius, 
-        // Series:
-        this.options.marker && this.options.marker.radius, 
-        // Default:
-        4);
+        node.mass = ((_c = (_b = (_a = node.options.mass) !== null && _a !== void 0 ? _a : (node.options.marker && node.options.marker.radius)) !== null && _b !== void 0 ? _b : (this.options.marker && this.options.marker.radius)) !== null && _c !== void 0 ? _c : 4);
         return node;
     }
     NodesComposition.createNode = createNode;
@@ -301,6 +300,7 @@ var NodesComposition;
         });
         // Create the node list and set up links
         this.points.forEach(function (point) {
+            var _a;
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(point.from)) {
                 if (!nodeLookup[point.from]) {
                     nodeLookup[point.from] = _this.createNode(point.from);
@@ -309,7 +309,8 @@ var NodesComposition;
                 point.fromNode = nodeLookup[point.from];
                 // Point color defaults to the fromNode's color
                 if (chart.styledMode) {
-                    point.colorIndex = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.colorIndex, nodeLookup[point.from].colorIndex);
+                    point.colorIndex =
+                        (_a = point.options.colorIndex) !== null && _a !== void 0 ? _a : nodeLookup[point.from].colorIndex;
                 }
                 else {
                     point.color =
@@ -417,7 +418,7 @@ var NodesComposition;
             else {
                 this.series.options.nodes = [nodeConfig];
             }
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+            if (redraw !== null && redraw !== void 0 ? redraw : true) {
                 this.series.chart.redraw(animation);
             }
         }
@@ -1523,6 +1524,9 @@ var ArcDiagramSeries = /** @class */ (function (_super) {
     ArcDiagramSeries.prototype.translateLink = function (point) {
         var _a,
             _b;
+        var _c,
+            _d,
+            _e;
         var series = this,
             fromNode = point.fromNode,
             toNode = point.toNode,
@@ -1530,12 +1534,10 @@ var ArcDiagramSeries = /** @class */ (function (_super) {
             translationFactor = series.translationFactor,
             pointOptions = point.options,
             seriesOptions = series.options,
-            linkWeight = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointOptions.linkWeight,
-            seriesOptions.linkWeight,
-            Math.max((point.weight || 0) *
+            linkWeight = ((_d = (_c = pointOptions.linkWeight) !== null && _c !== void 0 ? _c : seriesOptions.linkWeight) !== null && _d !== void 0 ? _d : Math.max((point.weight || 0) *
                 translationFactor *
-                fromNode.scale, (series.options.minLinkWidth || 0))),
+                fromNode.scale,
+            series.options.minLinkWidth || 0)),
             centeredLinks = point.series.options.centeredLinks,
             nodeTop = fromNode.nodeY;
         var getX = function (node,
@@ -1570,7 +1572,7 @@ var ArcDiagramSeries = /** @class */ (function (_super) {
             toX,
             toX + linkWeight
         ];
-        var linkRadius = ((toX + linkWeight - fromX) / Math.abs(toX + linkWeight - fromX)) * (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.linkRadius, Math.min(Math.abs(toX + linkWeight - fromX) / 2, fromNode.nodeY - Math.abs(linkWeight)));
+        var linkRadius = ((toX + linkWeight - fromX) / Math.abs(toX + linkWeight - fromX)) * ((_e = seriesOptions.linkRadius) !== null && _e !== void 0 ? _e : Math.min(Math.abs(toX + linkWeight - fromX) / 2, fromNode.nodeY - Math.abs(linkWeight)));
         point.shapeArgs = {
             d: [
                 ['M', fromX, bottom],
@@ -1625,12 +1627,13 @@ var ArcDiagramSeries = /** @class */ (function (_super) {
      */
     ArcDiagramSeries.prototype.translateNode = function (node, column) {
         var _a,
-            _b;
+            _b,
+            _c;
         var series = this, translationFactor = series.translationFactor, chart = series.chart, maxNodesLength = chart.inverted ?
                 chart.plotWidth : chart.plotHeight, options = series.options, maxRadius = Math.min(chart.plotWidth, chart.plotHeight, maxNodesLength / node.series.nodes.length - this.nodePadding), sum = node.getSum() * (column.sankeyColumn.scale || 0), equalNodes = options.equalNodes, nodeHeight = equalNodes ?
                 maxRadius :
-                Math.max(sum * translationFactor, this.options.minLinkWidth || 0), lineWidth = ((_a = options.marker) === null || _a === void 0 ? void 0 : _a.lineWidth) || 0, nodeOffset = column.sankeyColumn.offset(node, translationFactor), fromNodeLeft = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(nodeOffset && nodeOffset.absoluteLeft, ((column.sankeyColumn.left(translationFactor) || 0) +
-                (nodeOffset && nodeOffset.relativeLeft || 0))), lineWidth), markerOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(options.marker, node.options.marker), symbol = markerOptions.symbol, markerRadius = markerOptions.radius, top = parseInt((_b = options.offset) !== null && _b !== void 0 ? _b : '100', 10) *
+                Math.max(sum * translationFactor, this.options.minLinkWidth || 0), lineWidth = ((_a = options.marker) === null || _a === void 0 ? void 0 : _a.lineWidth) || 0, nodeOffset = column.sankeyColumn.offset(node, translationFactor), fromNodeLeft = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)(((_b = (nodeOffset && nodeOffset.absoluteLeft)) !== null && _b !== void 0 ? _b : ((column.sankeyColumn.left(translationFactor) || 0) +
+                (nodeOffset && nodeOffset.relativeLeft || 0))), lineWidth), markerOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(options.marker, node.options.marker), symbol = markerOptions.symbol, markerRadius = markerOptions.radius, top = parseInt((_c = options.offset) !== null && _c !== void 0 ? _c : '100', 10) *
                 ((chart.inverted ?
                     chart.plotWidth : chart.plotHeight) - ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)(this.colDistance * (node.column || 0) +
                     (markerOptions.lineWidth || 0) / 2, lineWidth) +
@@ -1752,6 +1755,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var arc_diagram_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

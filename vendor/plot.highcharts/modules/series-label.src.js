@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/series-label
  * @requires highcharts
  *
@@ -12,29 +12,31 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		module.exports = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/series-label", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Templating"]);});
+		define("highcharts/modules/series-label", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/series-label"] = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		exports["highcharts/modules/series-label"] = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Templating"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__984__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -66,36 +68,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -355,7 +354,6 @@ var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 
 var format = (highcharts_Templating_commonjs_highcharts_Templating_commonjs2_highcharts_Templating_root_Highcharts_Templating_default()).format;
 
@@ -382,10 +380,10 @@ var labelDistance = 3;
  * @internal
  */
 function checkClearPoint(series, x, y, bBox, checkDistance) {
+    var _a;
     var chart = series.chart,
         seriesLabelOptions = series.options.label || {},
-        onArea = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesLabelOptions.onArea, !!series.area),
+        onArea = ((_a = seriesLabelOptions.onArea) !== null && _a !== void 0 ? _a : !!series.area),
         findDistanceToOthers = (onArea || seriesLabelOptions.connectorAllowed),
         leastDistance = 16,
         boxesToAvoid = chart.boxesToAvoid;
@@ -551,12 +549,14 @@ function drawSeriesLabels(chart) {
     });
     chart.series.forEach(function (series) {
         var _a,
-            _b;
+            _b,
+            _c,
+            _d;
         var labelOptions = series.options.label;
         if (!labelOptions || (!series.xAxis && !series.yAxis)) {
             return;
         }
-        var colorClass = ('highcharts-color-' + (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.colorIndex, 'none')), isNew = !series.labelBySeries, minFontSize = labelOptions.minFontSize, maxFontSize = labelOptions.maxFontSize, inverted = chart.inverted, paneLeft = (inverted ? series.yAxis.pos : series.xAxis.pos), paneTop = (inverted ? series.xAxis.pos : series.yAxis.pos), paneWidth = chart.inverted ? series.yAxis.len : series.xAxis.len, paneHeight = chart.inverted ? series.xAxis.len : series.yAxis.len, points = series.interpolatedPoints, onArea = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(labelOptions.onArea, !!series.area), results = [], xData = series.getColumn('x');
+        var colorClass = ('highcharts-color-' + ((_a = series.colorIndex) !== null && _a !== void 0 ? _a : 'none')), isNew = !series.labelBySeries, minFontSize = labelOptions.minFontSize, maxFontSize = labelOptions.maxFontSize, inverted = chart.inverted, paneLeft = (inverted ? series.yAxis.pos : series.xAxis.pos), paneTop = (inverted ? series.xAxis.pos : series.yAxis.pos), paneWidth = chart.inverted ? series.yAxis.len : series.xAxis.len, paneHeight = chart.inverted ? series.xAxis.len : series.yAxis.len, points = series.interpolatedPoints, onArea = ((_b = labelOptions.onArea) !== null && _b !== void 0 ? _b : !!series.area), results = [], xData = series.getColumn('x');
         var bBox,
             x,
             y,
@@ -580,11 +580,8 @@ function drawSeriesLabels(chart) {
          * @internal
          */
         function insidePane(x, y, bBox) {
-            var leftBound = Math.max(paneLeft, (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(areaMin, -Infinity)),
-                rightBound = Math.min(paneLeft + paneWidth, (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(areaMax,
-                Infinity));
+            var leftBound = Math.max(paneLeft, (areaMin !== null && areaMin !== void 0 ? areaMin : -Infinity)),
+                rightBound = Math.min(paneLeft + paneWidth, (areaMax !== null && areaMax !== void 0 ? areaMax : Infinity));
             return (x > leftBound &&
                 x <= rightBound - bBox.width &&
                 y >= paneTop &&
@@ -647,9 +644,9 @@ function drawSeriesLabels(chart) {
             for (i = points.length - 1; i > 0; i -= 1) {
                 if (onArea) {
                     // Centered
-                    x = ((_a = points[i].chartCenterX) !== null && _a !== void 0 ? _a : points[i].chartX) -
+                    x = ((_c = points[i].chartCenterX) !== null && _c !== void 0 ? _c : points[i].chartX) -
                         bBox.width / 2;
-                    y = ((_b = points[i].chartCenterY) !== null && _b !== void 0 ? _b : points[i].chartY) -
+                    y = ((_d = points[i].chartCenterY) !== null && _d !== void 0 ? _d : points[i].chartY) -
                         bBox.height / 2;
                     if (insidePane(x, y, bBox)) {
                         best = checkClearPoint(series, x, y, bBox);
@@ -743,7 +740,7 @@ function drawSeriesLabels(chart) {
                     // animation (#9396)
                     var animationOptions = void 0;
                     if (isNew) {
-                        animationOptions = animObject(series.options.animation);
+                        animationOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(series.options.animation);
                         animationOptions.duration *= 0.2;
                     }
                     series.labelBySeries
@@ -791,6 +788,9 @@ function drawSeriesLabels(chart) {
  */
 function getPointsOnGraph(series) {
     var _a;
+    var _b,
+        _c,
+        _d;
     if (!series.xAxis && !series.yAxis) {
         return;
     }
@@ -807,8 +807,7 @@ function getPointsOnGraph(series) {
         paneHeight = inverted ? xAxis.len : yAxis.len,
         paneWidth = inverted ? yAxis.len : xAxis.len,
         seriesLabelOptions = series.options.label || {},
-        onArea = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesLabelOptions.onArea, !!series.area),
+        onArea = ((_b = seriesLabelOptions.onArea) !== null && _b !== void 0 ? _b : !!series.area),
         translatedThreshold = yAxis.getThreshold(series.options.threshold),
         grid = {},
         chartCenterKey = inverted ? 'chartCenterX' : 'chartCenterY';
@@ -877,9 +876,9 @@ function getPointsOnGraph(series) {
         var last = void 0;
         for (i = 0; i < len; i += 1) {
             var point = points[i],
-                _b = point.pos() || [],
-                plotX = _b[0],
-                plotY = _b[1],
+                _e = point.pos() || [],
+                plotX = _e[0],
+                plotY = _e[1],
                 plotHigh = point.plotHigh;
             if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(plotX) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(plotY)) {
                 var ctlPoint = {
@@ -897,11 +896,11 @@ function getPointsOnGraph(series) {
                     }
                     if (inverted) {
                         ctlPoint.chartCenterX = paneLeft + paneWidth - ((plotHigh ? plotHigh : point.plotY || 0) +
-                            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.yBottom, translatedThreshold)) / 2;
+                            ((_c = point.yBottom) !== null && _c !== void 0 ? _c : translatedThreshold)) / 2;
                     }
                     else {
                         ctlPoint.chartCenterY = paneTop + ((plotHigh ? plotHigh : plotY) +
-                            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.yBottom, translatedThreshold)) / 2;
+                            ((_d = point.yBottom) !== null && _d !== void 0 ? _d : translatedThreshold)) / 2;
                     }
                 }
                 // Add interpolated points
@@ -962,7 +961,8 @@ function labelFontSize(series, minFontSize, maxFontSize) {
 function onChartRedraw(e) {
     if (this.renderer) {
         var chart_1 = this;
-        var delay_1 = animObject(chart_1.renderer.globalAnimation).duration;
+        var delay_1 = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(chart_1.renderer.globalAnimation).duration;
         chart_1.labelSeries = [];
         chart_1.labelSeriesMaxSum = 0;
         if (chart_1.seriesLabelTimer) {
@@ -989,7 +989,7 @@ function onChartRedraw(e) {
                 // The labels are processing heavy, wait until the animation is
                 // done
                 if (e.type === 'load') {
-                    delay_1 = Math.max(delay_1, animObject(series.options.animation).duration);
+                    delay_1 = Math.max(delay_1, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(series.options.animation).duration);
                 }
                 // Keep the position updated to the axis while redrawing
                 if (closest) {
@@ -1095,6 +1095,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 SeriesLabel_SeriesLabel.compose(G.Chart, G.SVGRenderer);
 /* harmony default export */ var series_label_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

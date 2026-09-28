@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * Organization chart series type
  * @module highcharts/modules/organization
  * @requires highcharts
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGElement"]);
+		module.exports = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/organization", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["SVGElement"]);});
+		define("highcharts/modules/organization", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SVGElement"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/organization"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGElement"]);
+		exports["highcharts/modules/organization"] = factory(root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["SVGElement"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__28__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 28:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -43,6 +45,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -210,6 +210,7 @@ var OrganizationPoint = /** @class */ (function (_super) {
      * @private
      */
     OrganizationPoint.prototype.setNodeColumn = function () {
+        var _a;
         _super.prototype.setNodeColumn.call(this);
         var node = this,
             fromNode = node.getFromNode().fromNode;
@@ -226,7 +227,8 @@ var OrganizationPoint = /** @class */ (function (_super) {
                 link = void 0;
             // Default all children of the hanging node
             // to have hanging layout
-            node.options.layout = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(node.options.layout, 'hanging');
+            node.options.layout =
+                (_a = node.options.layout) !== null && _a !== void 0 ? _a : 'hanging';
             node.hangsFrom = fromNode;
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.find)(fromNode.linksFrom, function (link, index) {
                 var found = link.toNode === node;
@@ -465,8 +467,12 @@ var OrganizationSeriesDefaults = {
                     this.point.name + '</h4>';
             }
             if (title) {
-                html += '<p ' + styleAttr(titleStyle) + '>' +
-                    (title || '') + '</p>';
+                html += '<p ' + styleAttr(titleStyle) + '>' + title + '</p>';
+            }
+            else {
+                // Required to prevent a glitch in iOS Safari, where text would
+                // flow outside the box if the title is missing (#25043)
+                html += "<p aria-hidden=\"true\"\n                        style=\"line-height:0;margin:1px;font-size:1px;opacity:0\"\n                    >.</p>";
             }
             if (description) {
                 html += '<p ' + styleAttr(descriptionStyle) + '>' +
@@ -524,9 +530,10 @@ var OrganizationSeriesDefaults = {
      * @sample highcharts/series-organization/hanging-shrink
      *         Every indent decreases the nodes' width
      *
-     * @type {Highcharts.OrganizationHangingIndentTranslationValue}
-     * @since 10.0.0
+     * @declare Highcharts.OrganizationHangingIndentTranslationValue
      * @default inherit
+     * @since   10.0.0
+     * @type    {"inherit"|"cumulative"|"shrink"}
      *
      * @private
      */
@@ -859,7 +866,7 @@ function getCurvedPath(pathParams) {
 }
 /**
  * General function to apply corner radius to a path
- * @private
+ * @internal
  */
 function applyRadius(path, r) {
     var d = [];
@@ -916,10 +923,12 @@ function applyRadius(path, r) {
     }
     return d;
 }
+/** @internal */
 var PathUtilities = {
     applyRadius: applyRadius,
     getLinkPath: getLinkPath
 };
+/** @internal */
 /* harmony default export */ var Series_PathUtilities = (PathUtilities);
 
 // EXTERNAL MODULE: external {"amd":["highcharts/highcharts","SVGElement"],"commonjs":["highcharts","SVGElement"],"commonjs2":["highcharts","SVGElement"],"root":["Highcharts","SVGElement"]}
@@ -1350,6 +1359,43 @@ var OrganizationSeries = /** @class */ (function (_super) {
         return node;
     };
     OrganizationSeries.prototype.pointAttribs = function (point, state) {
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f,
+            _g,
+            _h,
+            _j,
+            _k,
+            _l,
+            _m,
+            _o,
+            _p,
+            _q,
+            _r,
+            _s,
+            _t,
+            _u,
+            _v,
+            _w,
+            _x,
+            _y,
+            _z,
+            _0,
+            _1,
+            _2,
+            _3,
+            _4,
+            _5,
+            _6,
+            _7,
+            _8,
+            _9,
+            _10,
+            _11,
+            _12;
         var series = this,
             attribs = SankeySeries.prototype.pointAttribs.call(series,
             point,
@@ -1357,41 +1403,11 @@ var OrganizationSeries = /** @class */ (function (_super) {
             level = point.isNode ? point.level : point.fromNode.level,
             levelOptions = series.mapOptionsToLevel[level || 0] || {},
             options = point.options,
-            stateOptions = (levelOptions.states &&
-                levelOptions.states[state]) ||
-                {},
-            borderRadius = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.borderRadius,
-            options.borderRadius,
-            levelOptions.borderRadius,
-            series.options.borderRadius),
-            linkColor = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.linkColor,
-            options.linkColor,
-            levelOptions.linkColor,
-            series.options.linkColor,
-            stateOptions.link && stateOptions.link.color,
-            options.link && options.link.color,
-            levelOptions.link && levelOptions.link.color,
-            series.options.link && series.options.link.color),
-            linkLineWidth = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.linkLineWidth,
-            options.linkLineWidth,
-            levelOptions.linkLineWidth,
-            series.options.linkLineWidth,
-            stateOptions.link && stateOptions.link.lineWidth,
-            options.link && options.link.lineWidth,
-            levelOptions.link && levelOptions.link.lineWidth,
-            series.options.link && series.options.link.lineWidth),
-            linkOpacity = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(stateOptions.linkOpacity,
-            options.linkOpacity,
-            levelOptions.linkOpacity,
-            series.options.linkOpacity,
-            stateOptions.link && stateOptions.link.linkOpacity,
-            options.link && options.link.linkOpacity,
-            levelOptions.link && levelOptions.link.linkOpacity,
-            series.options.link && series.options.link.linkOpacity);
+            stateOptions = ((_a = levelOptions.states) === null || _a === void 0 ? void 0 : _a[state || 'normal']) || {},
+            borderRadius = ((_d = (_c = (_b = stateOptions.borderRadius) !== null && _b !== void 0 ? _b : options.borderRadius) !== null && _c !== void 0 ? _c : levelOptions.borderRadius) !== null && _d !== void 0 ? _d : series.options.borderRadius),
+            linkColor = ((_p = (_m = (_k = (_h = (_g = (_f = (_e = stateOptions.linkColor) !== null && _e !== void 0 ? _e : options.linkColor) !== null && _f !== void 0 ? _f : levelOptions.linkColor) !== null && _g !== void 0 ? _g : series.options.linkColor) !== null && _h !== void 0 ? _h : (_j = stateOptions.link) === null || _j === void 0 ? void 0 : _j.color) !== null && _k !== void 0 ? _k : (_l = options.link) === null || _l === void 0 ? void 0 : _l.color) !== null && _m !== void 0 ? _m : (_o = levelOptions.link) === null || _o === void 0 ? void 0 : _o.color) !== null && _p !== void 0 ? _p : (_q = series.options.link) === null || _q === void 0 ? void 0 : _q.color),
+            linkLineWidth = ((_0 = (_y = (_w = (_u = (_t = (_s = (_r = stateOptions.linkLineWidth) !== null && _r !== void 0 ? _r : options.linkLineWidth) !== null && _s !== void 0 ? _s : levelOptions.linkLineWidth) !== null && _t !== void 0 ? _t : series.options.linkLineWidth) !== null && _u !== void 0 ? _u : (_v = stateOptions.link) === null || _v === void 0 ? void 0 : _v.lineWidth) !== null && _w !== void 0 ? _w : (_x = options.link) === null || _x === void 0 ? void 0 : _x.lineWidth) !== null && _y !== void 0 ? _y : (_z = levelOptions.link) === null || _z === void 0 ? void 0 : _z.lineWidth) !== null && _0 !== void 0 ? _0 : (_1 = series.options.link) === null || _1 === void 0 ? void 0 : _1.lineWidth),
+            linkOpacity = ((_11 = (_9 = (_7 = (_5 = (_4 = (_3 = (_2 = stateOptions.linkOpacity) !== null && _2 !== void 0 ? _2 : options.linkOpacity) !== null && _3 !== void 0 ? _3 : levelOptions.linkOpacity) !== null && _4 !== void 0 ? _4 : series.options.linkOpacity) !== null && _5 !== void 0 ? _5 : (_6 = stateOptions.link) === null || _6 === void 0 ? void 0 : _6.linkOpacity) !== null && _7 !== void 0 ? _7 : (_8 = options.link) === null || _8 === void 0 ? void 0 : _8.linkOpacity) !== null && _9 !== void 0 ? _9 : (_10 = levelOptions.link) === null || _10 === void 0 ? void 0 : _10.linkOpacity) !== null && _11 !== void 0 ? _11 : (_12 = series.options.link) === null || _12 === void 0 ? void 0 : _12.linkOpacity);
         if (!point.isNode) {
             attribs.stroke = linkColor;
             attribs['stroke-width'] = linkLineWidth;
@@ -1406,20 +1422,22 @@ var OrganizationSeries = /** @class */ (function (_super) {
         return attribs;
     };
     OrganizationSeries.prototype.translateLink = function (point) {
-        var chart = this.chart,
-            options = this.options,
+        var _a,
+            _b,
+            _c,
+            _d,
+            _e,
+            _f;
+        var _g = this,
+            chart = _g.chart,
+            options = _g.options,
             fromNode = point.fromNode,
             toNode = point.toNode,
-            linkWidth = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.linkLineWidth,
-            options.link.lineWidth, 0),
-            factor = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.link.offset, 0.5),
-            type = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.link && point.options.link.type,
-            options.link.type);
+            linkWidth = (_b = (_a = options.linkLineWidth) !== null && _a !== void 0 ? _a : options.link.lineWidth) !== null && _b !== void 0 ? _b : 0,
+            factor = (_c = options.link.offset) !== null && _c !== void 0 ? _c : 0.5,
+            type = (_e = (_d = point.options.link) === null || _d === void 0 ? void 0 : _d.type) !== null && _e !== void 0 ? _e : options.link.type;
         if (fromNode.shapeArgs && toNode.shapeArgs) {
-            var hangingIndent = options.hangingIndent, hangingRight = options.hangingSide === 'right', toOffset = toNode.options.offset, percentOffset = /%$/.test(toOffset) && parseInt(toOffset, 10), inverted = chart.inverted;
+            var hangingIndent = options.hangingIndent || 0, hangingRight = options.hangingSide === 'right', toOffset = toNode.options.offset, percentOffset = /%$/.test(toOffset) && parseInt(toOffset, 10), inverted = chart.inverted;
             var x1 = (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.crisp)((fromNode.shapeArgs.x || 0) +
                     (fromNode.shapeArgs.width || 0),
@@ -1500,7 +1518,7 @@ var OrganizationSeries = /** @class */ (function (_super) {
                         ['L', xMiddle, y1],
                         ['L', xMiddle, y2],
                         ['L', x2, y2]
-                    ], (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.linkRadius, options.link.radius))
+                    ], (_f = options.linkRadius) !== null && _f !== void 0 ? _f : options.link.radius)
                 };
             }
             point.dlBox = {
@@ -1632,6 +1650,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var organization_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

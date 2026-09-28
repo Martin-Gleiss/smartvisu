@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/pictorial
  * @requires highcharts
  *
@@ -14,64 +14,71 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["Chart"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Series"], root["_Highcharts"]["StackItem"], root["_Highcharts"]["SVGRenderer"]);
+		module.exports = factory(root["_Highcharts"]["Chart"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["Series"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["StackItem"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/pictorial", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Series"],["types"],["column"],amd1["Chart"],amd1["SeriesRegistry"],amd1["Series"],amd1["StackItem"],amd1["SVGRenderer"]);});
+		define("highcharts/modules/pictorial", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Chart"],amd1["SVGRenderer"],amd1["Series"],["types"],["column"],amd1["Series"],amd1["SeriesRegistry"],amd1["StackItem"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/pictorial"] = factory(root["_Highcharts"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["Chart"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Series"], root["_Highcharts"]["StackItem"], root["_Highcharts"]["SVGRenderer"]);
+		exports["highcharts/modules/pictorial"] = factory(root["_Highcharts"]["Chart"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Series"]["types"]["column"], root["_Highcharts"]["Series"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["StackItem"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Series"]["types"]["column"], root["Highcharts"]["Chart"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Series"], root["Highcharts"]["StackItem"], root["Highcharts"]["SVGRenderer"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__448__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__184__, __WEBPACK_EXTERNAL_MODULE__540__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Chart"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Series"]["types"]["column"], root["Highcharts"]["Series"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["StackItem"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__448__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__184__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 184:
+/***/ 960:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__184__;
-
-/***/ }),
-
-/***/ 448:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__448__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 
 /***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
+
+/***/ }),
+
+/***/ 448:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__448__;
 
 /***/ }),
 
 /***/ 820:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__820__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
+
+/***/ }),
+
+/***/ 184:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__184__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
-
-/***/ 960:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 
 /***/ })
 
@@ -103,36 +110,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -402,6 +406,8 @@ function onPointAfterInit() {
  * @internal
  */
 function onRendererComplexColor(args) {
+    var _a,
+        _b;
     var color = args.args[0],
         prop = args.args[1],
         element = args.args[2],
@@ -454,7 +460,7 @@ function onRendererComplexColor(args) {
         }
         // Add it. This function does nothing if an element with this ID
         // already exists.
-        this.addPattern(pattern, !this.forExport && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pattern.animation, this.globalAnimation, { duration: 100 }));
+        this.addPattern(pattern, !this.forExport && ((_b = (_a = pattern.animation) !== null && _a !== void 0 ? _a : this.globalAnimation) !== null && _b !== void 0 ? _b : { duration: 100 }));
         value = "url(".concat(this.url, "#").concat(pattern.id + (this.forExport ? '-export' : ''), ")");
     }
     else {
@@ -621,9 +627,8 @@ function pointCalculatePatternDimensions(pattern) {
  */
 function rendererAddPattern(options, animation) {
     var _this = this;
-    var animate = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(animation,
-        true),
+    var _a;
+    var animate = (animation !== null && animation !== void 0 ? animation : true),
         animationOptions = (0,
         highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(animate),
         color = options.color ||
@@ -702,7 +707,7 @@ function rendererAddPattern(options, animation) {
         };
         if (!this.styledMode) {
             attribs.stroke = path.stroke || color;
-            attribs['stroke-width'] = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(path.strokeWidth, 2);
+            attribs['stroke-width'] = ((_a = path.strokeWidth) !== null && _a !== void 0 ? _a : 2);
             attribs.fill = path.fill || 'none';
         }
         if (path.transform) {
@@ -715,9 +720,10 @@ function rendererAddPattern(options, animation) {
     else if (options.image) {
         if (animate) {
             this.image(options.image, 0, 0, width, height, function () {
+                var _a;
                 // Onload
                 this.animate({
-                    opacity: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.opacity, 1)
+                    opacity: ((_a = options.opacity) !== null && _a !== void 0 ? _a : 1)
                 }, animationOptions);
                 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.removeEvent)(this.element, 'load');
             }).attr({ opacity: 0 }).add(pattern);
@@ -1108,6 +1114,53 @@ var PictorialPoint = /** @class */ (function (_super) {
  * */
 /* harmony default export */ var Pictorial_PictorialPoint = (PictorialPoint);
 
+;// ./code/es5/es-modules/Series/Pictorial/PictorialSeriesDefaults.js
+/* *
+ *
+ *  (c) 2010-2026 Highsoft AS
+ *
+ *  Authors: Torstein Hønsi, Magdalena Gut
+ *
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
+ *
+ *
+ * */
+
+/* *
+ *
+ *  API Options
+ *
+ * */
+/**
+ * A pictorial chart uses vector images to represents the data.
+ * The shape of the data point is taken from the path parameter.
+ *
+ * @sample       {highcharts} highcharts/demo/pictorial/
+ *               Pictorial chart
+ *
+ * @extends      plotOptions.column
+ * @since 11.0.0
+ * @product      highcharts
+ * @excluding    allAreas, borderRadius,
+ *               centerInCategory, colorAxis, colorKey, connectEnds,
+ *               connectNulls, crisp, compare, compareBase, dataSorting,
+ *               dashStyle, dataAsColumns, linecap, lineWidth, shadow,
+ *               onPoint
+ * @requires     modules/pictorial
+ * @optionparent plotOptions.pictorial
+ */
+var PictorialSeriesDefaults = {
+    borderWidth: 0
+};
+/* *
+ *
+ *  Default Export
+ *
+ * */
+/* harmony default export */ var Pictorial_PictorialSeriesDefaults = (PictorialSeriesDefaults);
+
 // EXTERNAL MODULE: external {"amd":["highcharts/highcharts","Series"],"commonjs":["highcharts","Series"],"commonjs2":["highcharts","Series"],"root":["Highcharts","Series"]}
 var highcharts_Series_commonjs_highcharts_Series_commonjs2_highcharts_Series_root_Highcharts_Series_ = __webpack_require__(820);
 var highcharts_Series_commonjs_highcharts_Series_commonjs2_highcharts_Series_root_Highcharts_Series_default = /*#__PURE__*/__webpack_require__.n(highcharts_Series_commonjs_highcharts_Series_commonjs2_highcharts_Series_root_Highcharts_Series_);
@@ -1165,6 +1218,7 @@ var PictorialSeries_extends = (undefined && undefined.__extends) || (function ()
 
 
 
+
 /* *
  *
  *  Composition
@@ -1186,7 +1240,7 @@ var PictorialSeries_getStackMetrics = PictorialUtilities.getStackMetrics, Pictor
 /**
  * The pictorial series type.
  *
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.pictorial
  *
@@ -1313,28 +1367,7 @@ var PictorialSeries = /** @class */ (function (_super) {
      *  Static Properties
      *
      * */
-    PictorialSeries.defaultOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(ColumnSeries.defaultOptions, 
-    /**
-     * A pictorial chart uses vector images to represents the data.
-     * The shape of the data point is taken from the path parameter.
-     *
-     * @sample       {highcharts} highcharts/demo/pictorial/
-     *               Pictorial chart
-     *
-     * @extends      plotOptions.column
-     * @since 11.0.0
-     * @product      highcharts
-     * @excluding    allAreas, borderRadius,
-     *               centerInCategory, colorAxis, colorKey, connectEnds,
-     *               connectNulls, crisp, compare, compareBase, dataSorting,
-     *               dashStyle, dataAsColumns, linecap, lineWidth, shadow,
-     *               onPoint
-     * @requires     modules/pictorial
-     * @optionparent plotOptions.pictorial
-     */
-    {
-        borderWidth: 0
-    });
+    PictorialSeries.defaultOptions = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(ColumnSeries.defaultOptions, Pictorial_PictorialSeriesDefaults);
     return PictorialSeries;
 }(ColumnSeries));
 /* *
@@ -1372,6 +1405,8 @@ var PictorialSeries = /** @class */ (function (_super) {
  *
  */
 function renderStackShadow(stack) {
+    var _a,
+        _b;
     // Get first pictorial series
     var stackKeys = Object
             .keys(stack.points)
@@ -1401,14 +1436,12 @@ function renderStackShadow(stack) {
             shape = paths[index],
             width = series.getColumnMetrics &&
                 series.getColumnMetrics().width,
-            _a = PictorialSeries_getStackMetrics(series.yAxis,
+            _c = PictorialSeries_getStackMetrics(series.yAxis,
             shape),
-            height = _a.height,
-            y = _a.y,
+            height = _c.height,
+            y = _c.y,
             shadowOptions = options.stackShadow,
-            strokeWidth = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(shadowOptions && shadowOptions.borderWidth,
-            series.options.borderWidth, 1);
+            strokeWidth = ((_b = (_a = (shadowOptions && shadowOptions.borderWidth)) !== null && _a !== void 0 ? _a : series.options.borderWidth) !== null && _b !== void 0 ? _b : 1);
         if (!stackShadow &&
             shadowOptions &&
             shadowOptions.enabled &&
@@ -1504,7 +1537,7 @@ function forEachStack(chart, callback) {
         });
     }
 }
-(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'render', function () {
+;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'render', function () {
     forEachStack(this, renderStackShadow);
 });
 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_StackItem_commonjs_highcharts_StackItem_commonjs2_highcharts_StackItem_root_Highcharts_StackItem_default()), 'afterSetOffset', function (e) {
@@ -1537,7 +1570,7 @@ function destroyAllStackShadows(chart) {
     });
 }
 // This is a workaround due to no implementation of the animation drilldown.
-(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'afterDrilldown', function () {
+;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'afterDrilldown', function () {
     destroyAllStackShadows(this);
 });
 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()), 'afterDrillUp', function () {
@@ -1563,9 +1596,9 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  * @extends   series,plotOptions.pictorial
  * @since 11.0.0
  * @product   highcharts
- * @excluding dataParser, borderRadius, boostBlending, boostThreshold,
+ * @excluding borderRadius, boostBlending, boostThreshold,
  *            borderColor, borderWidth, centerInCategory, connectEnds,
- *            connectNulls, crisp, colorKey, dataURL, dataAsColumns, depth,
+ *            connectNulls, crisp, colorKey, dataAsColumns, depth,
  *            dragDrop, edgeColor, edgeWidth, linecap, lineWidth,  marker,
  *            dataSorting, dashStyle, onPoint, relativeXValue, shadow, zoneAxis,
  *            zones
@@ -1727,6 +1760,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var pictorial_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

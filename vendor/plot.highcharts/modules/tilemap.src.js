@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highmaps JS v13.0.0 (2026-06-11)
+ * @license Highmaps JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/tilemap
  * @requires highcharts
  * @requires highcharts/modules/map
@@ -14,35 +14,38 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Color"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/tilemap", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["Color"]);});
+		define("highcharts/modules/tilemap", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/tilemap"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Color"]);
+		exports["highcharts/modules/tilemap"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Color"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__620__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
-
-/***/ }),
 
 /***/ 620:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -250,6 +250,9 @@ var ColorAxisComposition;
                     }
                 });
             }
+            else {
+                colorAxis.destroyItems();
+            }
         });
         i = colorAxisItems.length;
         while (i--) {
@@ -351,6 +354,7 @@ var ColorAxisComposition;
     function wrapChartCreateAxis(ChartClass) {
         var superCreateAxis = ChartClass.prototype.createAxis;
         ChartClass.prototype.createAxis = function (type, options) {
+            var _a;
             var chart = this;
             if (type !== 'colorAxis') {
                 return superCreateAxis.apply(chart, arguments);
@@ -369,7 +373,7 @@ var ColorAxisComposition;
                 series.bindAxes();
                 series.isDirtyData = true;
             });
-            if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.redraw, true)) {
+            if ((_a = options.redraw) !== null && _a !== void 0 ? _a : true) {
                 chart.redraw(options.animation);
             }
             return axis;
@@ -380,7 +384,7 @@ var ColorAxisComposition;
      * @internal
      */
     function wrapFxFillSetter() {
-        this.elem.attr('fill', color(this.start).tweenTo(color(this.end), this.pos), void 0, true);
+        (this.elem.attr)('fill', color(this.start).tweenTo(color(this.end), this.pos), void 0, true);
     }
     /**
      * Handle animation of the color attributes directly.
@@ -572,7 +576,8 @@ var TilemapSeriesDefaults = {
      * @sample maps/demo/diamondmap
      *         Diamond tile shapes
      *
-     * @type {Highcharts.TilemapShapeValue}
+     * @declare Highcharts.TilemapShapeValue
+     * @type    {"circle"|"diamond"|"hexagon"|"square"}
      */
     tileShape: 'hexagon'
 };
@@ -581,7 +586,7 @@ var TilemapSeriesDefaults = {
  * not specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.tilemap
- * @excluding allAreas, dataParser, dataURL, joinBy, mapData, marker,
+ * @excluding allAreas, joinBy, mapData, marker,
  *            pointRange, shadow, stack, dataSorting, boostThreshold,
  *            boostBlending
  * @product   highcharts highmaps
@@ -854,6 +859,7 @@ var TilemapShapes = {
             ];
         },
         translate: function () {
+            var _a;
             var series = this,
                 options = series.options,
                 xAxis = series.xAxis,
@@ -863,8 +869,8 @@ var TilemapShapes = {
                 yPad = (options.rowsize || 1) / 2;
             var yShift;
             series.generatePoints();
-            for (var _i = 0, _a = series.points; _i < _a.length; _i++) {
-                var point = _a[_i];
+            for (var _i = 0, _b = series.points; _i < _b.length; _i++) {
+                var point = _b[_i];
                 var x1 = (0,
                     highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(Math.round(xAxis.len -
                         xAxis.translate(point.x - xPad, 0, 1, 0, 0)), -xAxis.len, 2 * xAxis.len),
@@ -880,9 +886,7 @@ var TilemapShapes = {
                 var x2 = (0,
                     highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(Math.round(xAxis.len -
                         xAxis.translate(point.x, 0, 1, 0, 0)), -xAxis.len, 2 * xAxis.len),
-                    pointPadding = (0,
-                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.pointPadding,
-                    seriesPointPadding), 
+                    pointPadding = ((_a = point.pointPadding) !== null && _a !== void 0 ? _a : seriesPointPadding), 
                     // We calculate the point padding of the midpoints to
                     // preserve the angles of the shape.
                     midPointPadding = pointPadding *
@@ -1264,6 +1268,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 Tilemap_TilemapSeries.compose(G.Axis);
 /* harmony default export */ var tilemap_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/exporting
  * @requires highcharts
  *
@@ -14,36 +14,39 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		module.exports = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/exporting", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["AST"],amd1["Chart"]);});
+		define("highcharts/modules/exporting", ["highcharts/highcharts"], function (amd1) {return factory(amd1["AST"],amd1["Chart"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/exporting"] = factory(root["_Highcharts"], root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"]);
+		exports["highcharts/modules/exporting"] = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Chart"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["AST"], root["Highcharts"]["Chart"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__) {
+		root["Highcharts"] = factory(root["Highcharts"]["AST"], root["Highcharts"]["Chart"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__960__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 660:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ }),
 
 /***/ 960:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -75,36 +78,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__960__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -412,12 +412,12 @@ function getBlobFromContent(content, type) {
  *
  * */
 /** @internal */
-var DownloadURL = {
+var DownloadURL = (/* unused pure expression or super */ null && ({
     dataURLtoBlob: dataURLtoBlob,
     downloadURL: downloadURL,
     getBlobFromContent: getBlobFromContent,
     getScript: getScript
-};
+}));
 /** @internal */
 /* harmony default export */ var Shared_DownloadURL = ((/* unused pure expression or super */ null && (DownloadURL)));
 
@@ -1318,6 +1318,38 @@ var navigation = {
              */
             padding: 5,
             /**
+             * Tri-state button styles.
+             *
+             * @sample highcharts/navigation/buttonoptions-theme/
+             *         Theming the buttons
+             *
+             * @apioption navigation.buttonOptions.theme.states
+             */
+            /**
+             * SVG attributes for the disabled state of the button.
+             *
+             * @type      {Highcharts.SVGAttributes}
+             * @apioption navigation.buttonOptions.theme.states.disabled
+             */
+            /**
+             * SVG attributes for the hovered state of the button.
+             *
+             * @type      {Highcharts.SVGAttributes}
+             * @apioption navigation.buttonOptions.theme.states.hover
+             */
+            /**
+             * SVG attributes for the selected state of the button.
+             *
+             * @type      {Highcharts.SVGAttributes}
+             * @apioption navigation.buttonOptions.theme.states.select
+             */
+            /**
+             * CSS styling for the button's text or symbol.
+             *
+             * @type      {Highcharts.CSSObject}
+             * @apioption navigation.buttonOptions.theme.style
+             */
+            /**
              * Default stroke for the buttons.
              *
              * @type {Highcharts.ColorString}
@@ -1981,7 +2013,7 @@ function ajax(settings) {
     if (!((_a = settings.headers) === null || _a === void 0 ? void 0 : _a['Content-Type'])) {
         r.setRequestHeader('Content-Type', headers[settings.dataType || 'json'] || headers.text);
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(settings.headers, function (val, key) {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(settings.headers, function (val, key) {
         r.setRequestHeader(key, val);
     });
     if (settings.responseType) {
@@ -2213,6 +2245,15 @@ var Exporting_generator = (undefined && undefined.__generator) || function (this
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 
 
 
@@ -2415,8 +2456,8 @@ var Exporting = /** @class */ (function () {
     };
     /** @internal */
     /**
-     * Collects all unique font family names used inline
-     * within <text> and <tspan> elements of an SVG by inspecting
+     * Collects all unique font family names used inline within the root
+     * SVG element and its <text> and <tspan> elements by inspecting
      * their style attributes and font-family attributes.
      *
      * @param {SVGSVGElement} svg
@@ -2425,21 +2466,24 @@ var Exporting = /** @class */ (function () {
      * The set to store and accumulate unique font family names.
      */
     Exporting.collectSVGInlineFonts = function (svg, usedFontFamilies) {
-        var textNodes = svg.querySelectorAll('text, tspan');
-        for (var _i = 0, _a = Array.from(textNodes); _i < _a.length; _i++) {
-            var textNode = _a[_i];
+        // Include the root SVG element itself, since the chart-wide
+        // `chart.style.fontFamily` is applied there rather than on the
+        // individual text nodes (#24722).
+        var nodes = __spreadArray([svg], Array.from(svg.querySelectorAll('text, tspan')), true);
+        for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
+            var textNode = nodes_1[_i];
             var styleAttr = textNode.getAttribute('style') || '';
             var inlineFontFamily = textNode.getAttribute('font-family') || '';
             if (styleAttr.indexOf('font-family') > -1) {
                 var match = styleAttr.match(/font-family\s*:\s*([^;]+)/i);
                 var families = Exporting.extractFontFamilies(match === null || match === void 0 ? void 0 : match[1]);
-                for (var _b = 0, families_1 = families; _b < families_1.length; _b++) {
-                    var family = families_1[_b];
+                for (var _a = 0, families_1 = families; _a < families_1.length; _a++) {
+                    var family = families_1[_a];
                     usedFontFamilies.add(family);
                 }
             }
-            for (var _c = 0, _d = Exporting.extractFontFamilies(inlineFontFamily); _c < _d.length; _c++) {
-                var family = _d[_c];
+            for (var _b = 0, _c = Exporting.extractFontFamilies(inlineFontFamily); _b < _c.length; _b++) {
+                var family = _c[_b];
                 usedFontFamilies.add(family);
             }
         }
@@ -2448,7 +2492,6 @@ var Exporting = /** @class */ (function () {
     Exporting.handleStyleSheet = function (sheet_1, fontFaceRules_1, usedFontFamilies_1, svg_1) {
         return Exporting_awaiter(this, arguments, void 0, function (sheet, fontFaceRules, usedFontFamilies, svg, visited) {
             var href,
-                sheetOrigin,
                 _loop_1,
                 _i,
                 _a,
@@ -2466,55 +2509,43 @@ var Exporting = /** @class */ (function () {
                                 return [2 /*return*/];
                             }
                             visited.add(href);
-                            try {
-                                sheetOrigin = new URL(href, Exporting_doc.baseURI).origin;
-                                if (sheetOrigin !== Exporting_win.location.origin) {
-                                    // We skip all cross-origin stylesheets on purpose.
-                                    // This prevents DOM SecurityErrors and unhandled network
-                                    // rejections when the browser blocks cssRules access.
-                                    return [2 /*return*/];
-                                }
-                            }
-                            catch (_d) {
-                                // URL parsing failed, proceed to try/catch
-                            }
                         }
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 6, , 13]);
                         _loop_1 = function (rule) {
                             var importedSheet,
+                                _d,
                                 _e,
                                 _f,
-                                _g,
                                 family,
                                 cssText,
                                 baseUrl_1,
                                 regexp;
-                            return Exporting_generator(this, function (_h) {
-                                switch (_h.label) {
+                            return Exporting_generator(this, function (_g) {
+                                switch (_g.label) {
                                     case 0:
                                         if (!(rule instanceof CSSImportRule)) return [3 /*break*/, 6];
-                                        _h.label = 1;
+                                        _g.label = 1;
                                     case 1:
-                                        _h.trys.push([1, 5, , 6]);
+                                        _g.trys.push([1, 5, , 6]);
                                         return [4 /*yield*/, Exporting.fetchCSS(rule.href)];
                                     case 2:
-                                        importedSheet = _h.sent();
+                                        importedSheet = _g.sent();
                                         if (!importedSheet) return [3 /*break*/, 4];
                                         return [4 /*yield*/, Exporting.handleStyleSheet(importedSheet, fontFaceRules, usedFontFamilies, svg, visited)];
                                     case 3:
-                                        _h.sent();
-                                        _h.label = 4;
+                                        _g.sent();
+                                        _g.label = 4;
                                     case 4: return [3 /*break*/, 6];
                                     case 5:
-                                        _e = _h.sent();
+                                        _d = _g.sent();
                                         return [3 /*break*/, 6];
                                     case 6:
                                         if (rule instanceof CSSStyleRule &&
                                             Exporting.selectorAffectsSVG(rule.selectorText, svg)) {
-                                            for (_f = 0, _g = Exporting.extractFontFamilies(rule.style.fontFamily); _f < _g.length; _f++) {
-                                                family = _g[_f];
+                                            for (_e = 0, _f = Exporting.extractFontFamilies(rule.style.fontFamily); _e < _f.length; _e++) {
+                                                family = _f[_e];
                                                 usedFontFamilies.add(family);
                                             }
                                         }
@@ -2794,6 +2825,12 @@ var Exporting = /** @class */ (function () {
     Exporting.sanitizeSVG = function (svg, 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     options) {
+        // Remove any HTML added to the container after the SVG, like the
+        // Stock Tools GUI wrapper (#894, #9087, #24754)
+        var split = svg.lastIndexOf('</svg>');
+        if (split > -1) {
+            svg = svg.substr(0, split + 6);
+        }
         svg = svg
             // Some tags needs to be closed in xhtml (#13726)
             .replace(/(<(?:img|br).*?(?=\>))>/g, '$1 />')
@@ -2865,7 +2902,10 @@ var Exporting = /** @class */ (function () {
      * @requires modules/exporting
      */
     Exporting.prototype.addButton = function (options) {
-        var _a;
+        var _a,
+            _b,
+            _c,
+            _d;
         var exporting = this,
             chart = exporting.chart,
             renderer = chart.renderer,
@@ -2900,7 +2940,7 @@ var Exporting = /** @class */ (function () {
             };
         }
         if (btnOptions.text && btnOptions.symbol) {
-            theme.paddingLeft = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(theme.paddingLeft, 30);
+            theme.paddingLeft = ((_b = theme.paddingLeft) !== null && _b !== void 0 ? _b : 30);
         }
         else if (!btnOptions.text) {
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)(theme, {
@@ -2920,9 +2960,8 @@ var Exporting = /** @class */ (function () {
             btnOptions.useHTML)
                 .addClass(options.className || '')
                 .attr({
-                title: (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(chart.options.lang[(btnOptions._titleKey ||
-                    btnOptions.titleKey)], '')
+                title: ((_c = chart.options.lang[(btnOptions._titleKey ||
+                    btnOptions.titleKey)]) !== null && _c !== void 0 ? _c : '')
             });
         button.menuClassName = (options.menuClassName ||
             'highcharts-menu-' + exporting.btnCount++);
@@ -2951,7 +2990,7 @@ var Exporting = /** @class */ (function () {
             .add(exporting.group)
             .align((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)(btnOptions, {
             width: button.width,
-            x: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(btnOptions.x, exporting.buttonOffset) // #1654
+            x: ((_d = btnOptions.x) !== null && _d !== void 0 ? _d : exporting.buttonOffset) // #1654
         }), true, 'spacingBox');
         exporting.buttonOffset += (((button.width || 0) + (btnOptions.buttonSpacing || 0)) *
             (btnOptions.align === 'right' ? -1 : 1));
@@ -3100,7 +3139,7 @@ var Exporting = /** @class */ (function () {
             }
             // Hide on mouse out
             menu.hideMenu = function () {
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(menu, { display: 'none' });
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(menu, { display: 'none' });
                 if (button) {
                     button.setState(0);
                 }
@@ -3108,7 +3147,7 @@ var Exporting = /** @class */ (function () {
                     chart.exporting.openMenu = false;
                 }
                 // #10361, #9998
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(chart.renderTo, { overflow: 'hidden' });
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(chart.renderTo, { overflow: 'hidden' });
                 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(chart.container, { overflow: 'hidden' });
                 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.internalClearTimeout)(menu.hideTimer);
                 (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'exportMenuHidden');
@@ -3217,14 +3256,14 @@ var Exporting = /** @class */ (function () {
         else {
             menuStyle.top = (y + height - menuPadding) + 'px';
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(menu, menuStyle);
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(menu, menuStyle);
         // #10361, #9998
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(chart.renderTo, { overflow: '' });
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(chart.container, { overflow: '' });
         if (chart.exporting) {
             chart.exporting.openMenu = true;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'exportMenuShown');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'exportMenuShown');
     };
     /**
      * Destroy the export buttons.
@@ -3641,6 +3680,7 @@ var Exporting = /** @class */ (function () {
      * The SVG representation of the rendered chart.
      *
      * @emits Highcharts.Chart#event:getSVG
+     * @emits Highcharts.Chart#event:afterGetSVG
      *
      * @requires modules/exporting
      */
@@ -3778,11 +3818,12 @@ var Exporting = /** @class */ (function () {
             if (exporting === null || exporting === void 0 ? void 0 : exporting.options.applyStyleSheets) {
                 _this.applyShadowDOMStyles(chartCopy);
             }
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'getSVG', { chartCopy: chartCopy });
             // Get the SVG from the container's innerHTML
             svg = (exporting === null || exporting === void 0 ? void 0 : exporting.getChartHTML(chart.styledMode ||
                 ((_a = options === null || options === void 0 ? void 0 : options.exporting) === null || _a === void 0 ? void 0 : _a.applyStyleSheets))) || '';
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'getSVG', { chartCopy: chartCopy });
             svg = Exporting.sanitizeSVG(svg, options);
+            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'afterGetSVG', { chartCopy: chartCopy, svg: svg });
             // Free up memory
             options = void 0;
             chartCopy.destroy();
@@ -3843,11 +3884,11 @@ var Exporting = /** @class */ (function () {
         // getComputedStyle sees them
         rootNode === null || rootNode === void 0 ? void 0 : rootNode.querySelectorAll('style').forEach(function (style) {
             var clonedStyle = style.cloneNode(true);
-            chartCopy.container.appendChild(clonedStyle);
+            chartCopy.renderer.defs.element.appendChild(clonedStyle);
             // Store for the later removal
             shadowStyles.push(clonedStyle);
         });
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'getSVG', function () {
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'afterGetSVG', function () {
             // Remove temporary Shadow DOM styles
             shadowStyles.forEach(function (style) {
                 style.remove();
@@ -4054,7 +4095,7 @@ var Exporting = /** @class */ (function () {
                     }
                 }
                 // Apply styles
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(node, filteredStyles);
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(node, filteredStyles);
                 // Set default stroke width (needed at least for IE)
                 if (node.nodeName === 'svg') {
                     node.setAttribute('stroke-width', '1px');
@@ -4156,7 +4197,7 @@ var Exporting = /** @class */ (function () {
                         _d.sent();
                         return [2 /*return*/];
                     case 2:
-                        unbindGetSVG = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'getSVG', function (e) {
+                        unbindGetSVG = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(chart, 'afterGetSVG', function (e) {
                             chartCopyOptions = e.chartCopy.options;
                             chartCopyContainer =
                                 e.chartCopy.container.cloneNode(true);
@@ -4365,7 +4406,7 @@ var Exporting = /** @class */ (function () {
     Exporting.prototype.update = function (exportingOptions, redraw) {
         this.isDirty = true;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.options, exportingOptions);
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+        if (redraw !== null && redraw !== void 0 ? redraw : true) {
             this.chart.redraw();
         }
     };
@@ -4461,7 +4502,7 @@ var Exporting = /** @class */ (function () {
             return;
         }
         // Adding wrappers for the deprecated functions
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()).prototype, {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.extend)((highcharts_Chart_commonjs_highcharts_Chart_commonjs2_highcharts_Chart_root_Highcharts_Chart_default()).prototype, {
             exportChart: function (exportingOptions, chartOptions) {
                 return Exporting_awaiter(this, void 0, void 0, function () {
                     var _a;
@@ -4606,7 +4647,7 @@ var Exporting = /** @class */ (function () {
                 if (chart.exporting) {
                     chart.exporting.isDirty = true;
                     (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, chart.options.navigation, options);
-                    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+                    if (redraw !== null && redraw !== void 0 ? redraw : true) {
                         chart.redraw();
                     }
                 }
@@ -4776,6 +4817,7 @@ G.post = G.HttpUtilities.post;
 Exporting.compose(G.Chart, G.Renderer);
 /* harmony default export */ var exporting_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

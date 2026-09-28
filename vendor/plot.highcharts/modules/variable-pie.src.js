@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/variable-pie
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/variable-pie", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/variable-pie", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/variable-pie"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/variable-pie"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -206,8 +205,9 @@ var VariablePieSeriesDefaults = {
      * @sample {highcharts} highcharts/variable-radius-pie/sizeby/
      *         Difference between area and radius sizeBy
      *
-     * @type  {Highcharts.VariablePieSizeByValue}
-     * @since 6.0.0
+     * @declare Highcharts.VariablePieSizeByValue
+     * @since   6.0.0
+     * @type    {"area"|"radius"}
      */
     sizeBy: 'area',
     tooltip: {
@@ -219,7 +219,7 @@ var VariablePieSeriesDefaults = {
  * specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.variablepie
- * @excluding dataParser, dataURL, stack, xAxis, yAxis, dataSorting,
+ * @excluding stack, xAxis, yAxis, dataSorting,
  *            boostThreshold, boostBlending
  * @product   highcharts
  * @requires  modules/variable-pie
@@ -365,6 +365,8 @@ var VariablePieSeries = /** @class */ (function (_super) {
      * @private
      */
     VariablePieSeries.prototype.calculateExtremes = function () {
+        var _a,
+            _b;
         var series = this,
             chart = series.chart,
             plotWidth = chart.plotWidth,
@@ -385,8 +387,8 @@ var VariablePieSeries = /** @class */ (function (_super) {
             positions = series.center || series.getCenter();
         var zMin,
             zMax;
-        for (var _i = 0, _a = ['minPointSize', 'maxPointSize']; _i < _a.length; _i++) {
-            var prop = _a[_i];
+        for (var _i = 0, _c = ['minPointSize', 'maxPointSize']; _i < _c.length; _i++) {
+            var prop = _c[_i];
             var length_1 = seriesOptions[prop];
             var isPercent = /%$/.test(length_1);
             length_1 = parseInt(length_1, 10);
@@ -397,8 +399,10 @@ var VariablePieSeries = /** @class */ (function (_super) {
         series.minPxSize = positions[3] + extremes.minPointSize;
         series.maxPxSize = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.clamp)(positions[2], positions[3] + extremes.minPointSize, extremes.maxPointSize);
         if (zData.length) {
-            zMin = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.zMin, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(zData.filter(series.zValEval)));
-            zMax = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(seriesOptions.zMax, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMax)(zData.filter(series.zValEval)));
+            zMin =
+                (_a = seriesOptions.zMin) !== null && _a !== void 0 ? _a : (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMin)(zData.filter(series.zValEval));
+            zMax =
+                (_b = seriesOptions.zMax) !== null && _b !== void 0 ? _b : (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.arrayMax)(zData.filter(series.zValEval));
             this.getRadii(zMin, zMax, series.minPxSize, series.maxPxSize);
         }
     };
@@ -501,9 +505,10 @@ var VariablePieSeries = /** @class */ (function (_super) {
      * @private
      */
     VariablePieSeries.prototype.translate = function (positions) {
+        var _a;
         this.generatePoints();
         var series = this, precision = 1000, // Issue #172
-            options = series.options, slicedOffset = options.slicedOffset, startAngle = options.startAngle || 0, startAngleRad = Math.PI / 180 * (startAngle - 90), endAngleRad = Math.PI / 180 * ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.endAngle, startAngle + 360) - 90), circ = endAngleRad - startAngleRad, // 2 * Math.PI,
+            options = series.options, slicedOffset = options.slicedOffset, startAngle = options.startAngle || 0, startAngleRad = Math.PI / 180 * (startAngle - 90), endAngleRad = Math.PI / 180 * (((_a = options.endAngle) !== null && _a !== void 0 ? _a : startAngle + 360) - 90), circ = endAngleRad - startAngleRad, // 2 * Math.PI,
             points = series.points, ignoreHiddenPoint = options.ignoreHiddenPoint;
         var cumulative = 0,
             start,
@@ -569,7 +574,7 @@ var VariablePieSeries = /** @class */ (function (_super) {
                 0;
             point.angle = angle;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(series, 'afterTranslate');
     };
     /**
      * For arrayMin and arrayMax calculations array shouldn't have
@@ -619,6 +624,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var variable_pie_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/cylinder
  * @requires highcharts
  * @requires highcharts/highcharts-3d
@@ -15,49 +15,54 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/cylinder", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SVGRenderer"],amd1["Color"],amd1["SVGElement"],amd1["SeriesRegistry"]);});
+		define("highcharts/modules/cylinder", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["SVGElement"],amd1["SVGRenderer"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/cylinder"] = factory(root["_Highcharts"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/cylinder"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Color"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
+
+/***/ 620:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
 
 /***/ 28:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
 
 /***/ }),
 
-/***/ 620:
+/***/ 512:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -90,36 +95,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -144,7 +146,6 @@ var highcharts_SVGRenderer_commonjs_highcharts_SVGRenderer_commonjs2_highcharts_
  *
  *
  * */
-
 
 
 var deg2rad = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).deg2rad;
@@ -229,21 +230,19 @@ function rotate3D(x, y, z, angles) {
  * @requires highcharts-3d
  */
 function perspective(points, chart, insidePlotArea, useInvertedPersp) {
+    var _a,
+        _b;
     var options3d = chart.options.chart.options3d, 
         /* The useInvertedPersp argument is used for inverted charts with
          * already inverted elements,
         such as dataLabels or tooltip positions.
          */
-        inverted = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(useInvertedPersp,
-        insidePlotArea ? chart.inverted : false),
+        inverted = useInvertedPersp !== null && useInvertedPersp !== void 0 ? useInvertedPersp : (insidePlotArea ? chart.inverted : false),
         origin = {
             x: chart.plotWidth / 2,
             y: chart.plotHeight / 2,
             z: options3d.depth / 2,
-            vd: (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.depth, 1) * (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.viewDistance, 0)
+            vd: ((_a = options3d.depth) !== null && _a !== void 0 ? _a : 1) * ((_b = options3d.viewDistance) !== null && _b !== void 0 ? _b : 0)
         },
         scale = chart.scale3d || 1,
         beta = deg2rad * options3d.beta * (inverted ? -1 : 1),
@@ -326,25 +325,22 @@ function perspective3D(coordinate, origin, distance) {
  * @requires highcharts-3d
  */
 function pointCameraDistance(coordinates, chart) {
+    var _a,
+        _b,
+        _c,
+        _d,
+        _e;
     var options3d = chart.options.chart.options3d,
         cameraPosition = {
             x: chart.plotWidth / 2,
             y: chart.plotHeight / 2,
-            z: (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.depth, 1) * (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.viewDistance, 0) +
+            z: ((_a = options3d.depth) !== null && _a !== void 0 ? _a : 1) * ((_b = options3d.viewDistance) !== null && _b !== void 0 ? _b : 0) +
                 options3d.depth
         }, 
         // Added support for objects with plotX or x coordinates.
-        distance = Math.sqrt(Math.pow(cameraPosition.x - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotX,
-        coordinates.x), 2) +
-            Math.pow(cameraPosition.y - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotY,
-        coordinates.y), 2) +
-            Math.pow(cameraPosition.z - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotZ,
-        coordinates.z), 2));
+        distance = Math.sqrt(Math.pow(cameraPosition.x - ((_c = coordinates.plotX) !== null && _c !== void 0 ? _c : coordinates.x), 2) +
+            Math.pow(cameraPosition.y - ((_d = coordinates.plotY) !== null && _d !== void 0 ? _d : coordinates.y), 2) +
+            Math.pow(cameraPosition.z - ((_e = coordinates.plotZ) !== null && _e !== void 0 ? _e : coordinates.z), 2));
     return distance;
 }
 /**
@@ -559,12 +555,13 @@ var SVGElement3D = /** @class */ (function (_super) {
      * @internal
      */
     SVGElement3D.prototype.processParts = function (props, partsProps, verb, duration, complete) {
+        var _a;
         var elem3d = this;
-        for (var _i = 0, _a = elem3d.parts; _i < _a.length; _i++) {
-            var part = _a[_i];
+        for (var _i = 0, _b = elem3d.parts; _i < _b.length; _i++) {
+            var part = _b[_i];
             // If different props for different parts
             if (partsProps) {
-                props = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(partsProps[part], false);
+                props = ((_a = partsProps[part]) !== null && _a !== void 0 ? _a : false);
             }
             // Only if something to set, but allow undefined
             if (props !== false) {
@@ -688,6 +685,7 @@ var SVGElement3DCylinder_color = (highcharts_Color_commonjs_highcharts_Color_com
  *  Class
  *
  * */
+/** @internal */
 var SVGElement3DCylinder = /** @class */ (function (_super) {
     SVGElement3DCylinder_extends(SVGElement3DCylinder, _super);
     function SVGElement3DCylinder() {
@@ -725,6 +723,7 @@ var SVGElement3DCylinder = /** @class */ (function (_super) {
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Cylinder_SVGElement3DCylinder = (SVGElement3DCylinder);
 
 ;// ./code/es5/es-modules/Series/Cylinder/CylinderComposition.js
@@ -754,9 +753,7 @@ var CylinderComposition_perspective = Core_Math3D.perspective;
  *  Functions
  *
  * */
-/**
- *
- */
+/** @internal */
 function compose(SVGRendererClass) {
     var rendererProto = SVGRendererClass.prototype;
     if (!rendererProto.cylinder) {
@@ -774,18 +771,18 @@ function compose(SVGRendererClass) {
 /**
  * Check if a path is simplified. The simplified path contains only lineTo
  * segments, whereas non-simplified contain curves.
- * @private
+ * @internal
  */
 function isSimplified(path) {
     return !path.some(function (seg) { return seg[0] === 'C'; });
 }
-/** @private */
+/** @internal */
 function rendererCylinder(shapeArgs) {
     return this.element3d('cylinder', shapeArgs);
 }
 /**
  * Generates paths and zIndexes.
- * @private
+ * @internal
  */
 function rendererCylinderPath(shapeArgs) {
     var renderer = this,
@@ -817,7 +814,7 @@ function rendererCylinderPath(shapeArgs) {
  * Returns curved path in format of:
  * [ M, x, y, ...[C, cp1x, cp2y, cp2x, cp2y, epx, epy]*n_times ]
  * (cp - control point, ep - end point)
- * @private
+ * @internal
  */
 function rendererGetCurvedPath(points) {
     var path = [['M',
@@ -836,7 +833,7 @@ function rendererGetCurvedPath(points) {
 }
 /**
  * Returns cylinder Back path.
- * @private
+ * @internal
  */
 function rendererGetCylinderBack(topPath, bottomPath) {
     var path = [];
@@ -895,13 +892,15 @@ function rendererGetCylinderBack(topPath, bottomPath) {
 }
 /**
  * Returns cylinder path for top or bottom.
- * @private
+ * @internal
  */
 function rendererGetCylinderEnd(chart, shapeArgs, isBottom) {
-    var _a = shapeArgs.width, width = _a === void 0 ? 0 : _a, _b = shapeArgs.height, height = _b === void 0 ? 0 : _b, _c = shapeArgs.alphaCorrection, alphaCorrection = _c === void 0 ? 0 : _c, 
+    var _a,
+        _b;
+    var _c = shapeArgs.width, width = _c === void 0 ? 0 : _c, _d = shapeArgs.height, height = _d === void 0 ? 0 : _d, _e = shapeArgs.alphaCorrection, alphaCorrection = _e === void 0 ? 0 : _e, 
         // A half of the smaller one out of width or depth (optional, because
         // there's no depth for a funnel that reuses the code)
-        depth = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(shapeArgs.depth, width, 0), radius = Math.min(width, depth) / 2, 
+        depth = ((_b = (_a = shapeArgs.depth) !== null && _a !== void 0 ? _a : width) !== null && _b !== void 0 ? _b : 0), radius = Math.min(width, depth) / 2, 
         // Approximated longest diameter
         angleOffset = CylinderComposition_deg2rad * (chart.options.chart.options3d.beta - 90 +
             alphaCorrection), 
@@ -997,7 +996,7 @@ function rendererGetCylinderEnd(chart, shapeArgs, isBottom) {
 }
 /**
  * Returns cylinder Front path.
- * @private
+ * @internal
  */
 function rendererGetCylinderFront(topPath, bottomPath) {
     var path = topPath.slice(0, 3);
@@ -1043,9 +1042,11 @@ function rendererGetCylinderFront(topPath, bottomPath) {
  *  Default Export
  *
  * */
+/** @internal */
 var CylinderComposition = {
     compose: compose
 };
+/** @internal */
 /* harmony default export */ var Cylinder_CylinderComposition = (CylinderComposition);
 
 // EXTERNAL MODULE: external {"amd":["highcharts/highcharts","SeriesRegistry"],"commonjs":["highcharts","SeriesRegistry"],"commonjs2":["highcharts","SeriesRegistry"],"root":["Highcharts","SeriesRegistry"]}
@@ -1094,6 +1095,7 @@ var ColumnPoint = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_
  *  Class
  *
  * */
+/** @internal */
 var CylinderPoint = /** @class */ (function (_super) {
     CylinderPoint_extends(CylinderPoint, _super);
     function CylinderPoint() {
@@ -1109,6 +1111,7 @@ var CylinderPoint = /** @class */ (function (_super) {
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Cylinder_CylinderPoint = (CylinderPoint);
 
 ;// ./code/es5/es-modules/Series/Cylinder/CylinderSeriesDefaults.js
@@ -1283,7 +1286,7 @@ var ColumnSeries = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry
  * @requires highcharts-3d
  * @requires modules/cylinder
  *
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.cylinder
  *
@@ -1312,6 +1315,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
  *  Default Export
  *
  * */
+/** @internal */
 /* harmony default export */ var Cylinder_CylinderSeries = (CylinderSeries);
 
 ;// ./code/es5/es-modules/masters/modules/cylinder.src.js
@@ -1323,6 +1327,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 Cylinder_CylinderSeries.compose((highcharts_SVGRenderer_commonjs_highcharts_SVGRenderer_commonjs2_highcharts_SVGRenderer_root_Highcharts_SVGRenderer_default()));
 /* harmony default export */ var cylinder_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

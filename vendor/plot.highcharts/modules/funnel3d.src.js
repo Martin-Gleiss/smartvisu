@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/funnel3d
  * @requires highcharts
  * @requires highcharts/highcharts-3d
@@ -16,49 +16,54 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/funnel3d", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SVGRenderer"],amd1["Color"],amd1["SVGElement"],amd1["SeriesRegistry"]);});
+		define("highcharts/modules/funnel3d", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Color"],amd1["SVGElement"],amd1["SVGRenderer"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/funnel3d"] = factory(root["_Highcharts"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/funnel3d"] = factory(root["_Highcharts"]["Color"], root["_Highcharts"]["SVGElement"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["Color"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Color"], root["Highcharts"]["SVGElement"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
+
+/***/ 620:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+
+/***/ }),
 
 /***/ 28:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
 
 /***/ }),
 
-/***/ 620:
+/***/ 512:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -91,36 +96,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -281,12 +283,13 @@ var SVGElement3D = /** @class */ (function (_super) {
      * @internal
      */
     SVGElement3D.prototype.processParts = function (props, partsProps, verb, duration, complete) {
+        var _a;
         var elem3d = this;
-        for (var _i = 0, _a = elem3d.parts; _i < _a.length; _i++) {
-            var part = _a[_i];
+        for (var _i = 0, _b = elem3d.parts; _i < _b.length; _i++) {
+            var part = _b[_i];
             // If different props for different parts
             if (partsProps) {
-                props = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(partsProps[part], false);
+                props = ((_a = partsProps[part]) !== null && _a !== void 0 ? _a : false);
             }
             // Only if something to set, but allow undefined
             if (props !== false) {
@@ -1101,7 +1104,6 @@ var Funnel3DPoint = /** @class */ (function (_super) {
  * */
 
 
-
 var deg2rad = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).deg2rad;
 /* *
  *
@@ -1184,21 +1186,19 @@ function rotate3D(x, y, z, angles) {
  * @requires highcharts-3d
  */
 function perspective(points, chart, insidePlotArea, useInvertedPersp) {
+    var _a,
+        _b;
     var options3d = chart.options.chart.options3d, 
         /* The useInvertedPersp argument is used for inverted charts with
          * already inverted elements,
         such as dataLabels or tooltip positions.
          */
-        inverted = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(useInvertedPersp,
-        insidePlotArea ? chart.inverted : false),
+        inverted = useInvertedPersp !== null && useInvertedPersp !== void 0 ? useInvertedPersp : (insidePlotArea ? chart.inverted : false),
         origin = {
             x: chart.plotWidth / 2,
             y: chart.plotHeight / 2,
             z: options3d.depth / 2,
-            vd: (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.depth, 1) * (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.viewDistance, 0)
+            vd: ((_a = options3d.depth) !== null && _a !== void 0 ? _a : 1) * ((_b = options3d.viewDistance) !== null && _b !== void 0 ? _b : 0)
         },
         scale = chart.scale3d || 1,
         beta = deg2rad * options3d.beta * (inverted ? -1 : 1),
@@ -1281,25 +1281,22 @@ function perspective3D(coordinate, origin, distance) {
  * @requires highcharts-3d
  */
 function pointCameraDistance(coordinates, chart) {
+    var _a,
+        _b,
+        _c,
+        _d,
+        _e;
     var options3d = chart.options.chart.options3d,
         cameraPosition = {
             x: chart.plotWidth / 2,
             y: chart.plotHeight / 2,
-            z: (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.depth, 1) * (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options3d.viewDistance, 0) +
+            z: ((_a = options3d.depth) !== null && _a !== void 0 ? _a : 1) * ((_b = options3d.viewDistance) !== null && _b !== void 0 ? _b : 0) +
                 options3d.depth
         }, 
         // Added support for objects with plotX or x coordinates.
-        distance = Math.sqrt(Math.pow(cameraPosition.x - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotX,
-        coordinates.x), 2) +
-            Math.pow(cameraPosition.y - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotY,
-        coordinates.y), 2) +
-            Math.pow(cameraPosition.z - (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coordinates.plotZ,
-        coordinates.z), 2));
+        distance = Math.sqrt(Math.pow(cameraPosition.x - ((_c = coordinates.plotX) !== null && _c !== void 0 ? _c : coordinates.x), 2) +
+            Math.pow(cameraPosition.y - ((_d = coordinates.plotY) !== null && _d !== void 0 ? _d : coordinates.y), 2) +
+            Math.pow(cameraPosition.z - ((_e = coordinates.plotZ) !== null && _e !== void 0 ? _e : coordinates.z), 2));
     return distance;
 }
 /**
@@ -1441,21 +1438,23 @@ var Funnel3DSeries = /** @class */ (function (_super) {
      * @private
      */
     Funnel3DSeries.prototype.alignDataLabel = function (point, _dataLabel, options) {
+        var _a,
+            _b,
+            _c,
+            _d;
         var series = this,
             dlBoxRaw = point.dlBoxRaw,
             inverted = series.chart.inverted,
-            below = point.plotY > (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(series.translatedThreshold,
-            series.yAxis.len),
-            inside = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.inside, !!series.options.stacking),
+            below = point.plotY >
+                ((_a = series.translatedThreshold) !== null && _a !== void 0 ? _a : series.yAxis.len),
+            inside = ((_b = options.inside) !== null && _b !== void 0 ? _b : !!series.options.stacking),
             dlBox = {
                 x: dlBoxRaw.x,
                 y: dlBoxRaw.y,
                 height: 0
             };
-        options.align = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.align, !inverted || inside ? 'center' : below ? 'right' : 'left');
-        options.verticalAlign = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.verticalAlign, inverted || inside ? 'middle' : below ? 'top' : 'bottom');
+        options.align = (_c = options.align) !== null && _c !== void 0 ? _c : (!inverted || inside ? 'center' : below ? 'right' : 'left');
+        options.verticalAlign = (_d = options.verticalAlign) !== null && _d !== void 0 ? _d : (inverted || inside ? 'middle' : below ? 'top' : 'bottom');
         if (options.verticalAlign !== 'top') {
             dlBox.y += dlBoxRaw.bottom /
                 (options.verticalAlign === 'bottom' ? 1 : 2);
@@ -1508,6 +1507,7 @@ var Funnel3DSeries = /** @class */ (function (_super) {
      * @private
      */
     Funnel3DSeries.prototype.translate = function () {
+        var _a;
         Series.prototype.translate.apply(this, arguments);
         var series = this,
             chart = series.chart,
@@ -1586,8 +1586,8 @@ var Funnel3DSeries = /** @class */ (function (_super) {
                 sum += point.y;
             }
         }
-        for (var _a = 0, points_2 = points; _a < points_2.length; _a++) {
-            var point = points_2[_a];
+        for (var _b = 0, points_2 = points; _b < points_2.length; _b++) {
+            var point = points_2[_b];
             // Set start and end positions
             y5 = null;
             fraction = sum ? point.y / sum : 0;
@@ -1597,7 +1597,7 @@ var Funnel3DSeries = /** @class */ (function (_super) {
             h = y3 - y1;
             shapeArgs = {
                 // For fill setter
-                gradientForSides: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(point.options.gradientForSides, options.gradientForSides),
+                gradientForSides: (_a = point.options.gradientForSides) !== null && _a !== void 0 ? _a : options.gradientForSides,
                 x: centerX,
                 y: y1,
                 height: h,
@@ -1701,6 +1701,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 Funnel3D_Funnel3DSeries.compose((highcharts_SVGRenderer_commonjs_highcharts_SVGRenderer_commonjs2_highcharts_SVGRenderer_root_Highcharts_SVGRenderer_default()));
 /* harmony default export */ var funnel3d_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

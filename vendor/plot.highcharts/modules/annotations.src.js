@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/annotations
  * @requires highcharts
  *
@@ -14,50 +14,55 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]["AST"], root["_Highcharts"]["Color"]);
+		module.exports = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/annotations", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"],amd1["Templating"],amd1["AST"],amd1["Color"]);});
+		define("highcharts/modules/annotations", ["highcharts/highcharts"], function (amd1) {return factory(amd1["AST"],amd1["Color"],amd1["SeriesRegistry"],amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/annotations"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]["AST"], root["_Highcharts"]["Color"]);
+		exports["highcharts/modules/annotations"] = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Color"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Templating"], root["Highcharts"]["AST"], root["Highcharts"]["Color"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__620__) {
+		root["Highcharts"] = factory(root["Highcharts"]["AST"], root["Highcharts"]["Color"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__620__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 512:
+/***/ 660:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
 
 /***/ }),
 
 /***/ 620:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__620__;
 
 /***/ }),
 
-/***/ 660:
+/***/ 512:
 /***/ (function(module) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -89,36 +94,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -166,7 +168,7 @@ var highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default 
 function chartAddAnnotation(options, redraw) {
     var annotation = this.initAnnotation(options);
     this.options.annotations.push(annotation.options);
-    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+    if (redraw !== null && redraw !== void 0 ? redraw : true) {
         annotation.redraw();
         annotation.graphic.attr({
             opacity: 1
@@ -205,14 +207,16 @@ function chartCallback() {
             _c,
             _d,
             _e,
-            _f;
+            _f,
+            _g;
         var annotations = chart.annotations,
             csvColumnHeaderFormatter = ((this.options.exporting &&
                 this.options.exporting.csv) ||
                 {}).columnHeaderFormatter, 
             // If second row doesn't have xValues
             // then it is a title row thus multiple level header is in use.
-            multiLevelHeaders = !event.dataRows[1].xValues,
+            // The row is missing altogether when the chart has no data, #25090.
+            multiLevelHeaders = !((_a = event.dataRows[1]) === null || _a === void 0 ? void 0 : _a.xValues),
             annotationHeader = (chart.options.lang &&
                 chart.options.lang.exportData &&
                 chart.options.lang.exportData.annotationHeader),
@@ -232,7 +236,7 @@ function chartCallback() {
                 };
             }
             return s;
-        }, startRowLength = event.dataRows[0].length, annotationSeparator = (_c = (_b = (_a = chart.options.exporting) === null || _a === void 0 ? void 0 : _a.csv) === null || _b === void 0 ? void 0 : _b.annotations) === null || _c === void 0 ? void 0 : _c.itemDelimiter, joinAnnotations = (_f = (_e = (_d = chart.options.exporting) === null || _d === void 0 ? void 0 : _d.csv) === null || _e === void 0 ? void 0 : _e.annotations) === null || _f === void 0 ? void 0 : _f.join;
+        }, startRowLength = event.dataRows[0].length, annotationSeparator = (_d = (_c = (_b = chart.options.exporting) === null || _b === void 0 ? void 0 : _b.csv) === null || _c === void 0 ? void 0 : _c.annotations) === null || _d === void 0 ? void 0 : _d.itemDelimiter, joinAnnotations = (_g = (_f = (_e = chart.options.exporting) === null || _e === void 0 ? void 0 : _e.csv) === null || _f === void 0 ? void 0 : _f.annotations) === null || _g === void 0 ? void 0 : _g.join;
         annotations.forEach(function (annotation) {
             var _a;
             if ((_a = annotation.options.labelOptions) === null || _a === void 0 ? void 0 : _a.includeInDataExport) {
@@ -1142,19 +1146,19 @@ var AnnotationDefaults = {
      * @apioption annotations.typeOptions.type
      */
     /**
-     * This number defines which `xAxis` the point is connected to.
+     * This option defines which `xAxis` the point is connected to.
      * It refers to either the axis id or the index of the axis
      * in the `xAxis` array.
      *
-     * @type {number}
+     * @type {number|string}
      * @apioption annotations.typeOptions.xAxis
      */
     /**
-     * This number defines which `yAxis` the point is connected to.
+     * This option defines which `yAxis` the point is connected to.
      * It refers to either the axis id or the index of the axis
      * in the `yAxis` array.
      *
-     * @type {number}
+     * @type {number|string}
      * @apioption annotations.typeOptions.yAxis
      */
     },
@@ -1218,7 +1222,7 @@ var EventEmitter = /** @class */ (function () {
     EventEmitter.prototype.addEvents = function () {
         var emitter = this,
             addMouseDownEvent = function (element) {
-                (0,
+                ;(0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(element,
             isTouchDevice ? 'touchstart' : 'mousedown',
             function (e) {
@@ -1406,11 +1410,10 @@ var EventEmitter = /** @class */ (function () {
             prevChartY = e.chartY;
         }, isTouchDevice || firesTouchEvents ? { passive: false } : void 0);
         emitter.removeMouseUp = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(doc, isTouchDevice || firesTouchEvents ? 'touchend' : 'mouseup', function () {
+            var _a;
             // Sometimes the target is the annotation and sometimes its the
             // controllable
-            var annotation = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(emitter.target && emitter.target.annotation,
-                emitter.target);
+            var annotation = ((_a = (emitter.target && emitter.target.annotation)) !== null && _a !== void 0 ? _a : emitter.target);
             if (annotation) {
                 // Keep annotation selected after dragging control point
                 annotation.cancelClick = emitter.hasDragged;
@@ -1419,8 +1422,7 @@ var EventEmitter = /** @class */ (function () {
             emitter.chart.hasDraggedAnnotation = false;
             if (emitter.hasDragged) {
                 // ControlPoints vs Annotation:
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(annotation, // #15952
-                emitter), 'afterUpdate');
+                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)((annotation !== null && annotation !== void 0 ? annotation : emitter), 'afterUpdate');
             }
             emitter.hasDragged = false;
             emitter.onMouseUp();
@@ -1514,6 +1516,7 @@ var ControlPoint = /** @class */ (function (_super) {
      *
      * */
     function ControlPoint(chart, target, options, index) {
+        var _a;
         var _this = _super.call(this) || this;
         /**
          * List of events for `annotation.options.events` that should not be
@@ -1527,7 +1530,7 @@ var ControlPoint = /** @class */ (function (_super) {
         _this.chart = chart;
         _this.target = target;
         _this.options = options;
-        _this.index = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.index, index);
+        _this.index = ((_a = options.index) !== null && _a !== void 0 ? _a : index);
         return _this;
     }
     /* *
@@ -1629,6 +1632,138 @@ var ControlPoint = /** @class */ (function (_super) {
  */
 (''); // Keeps doclets above in JS file
 
+;// ./code/es5/es-modules/Extensions/Annotations/NavigationBindingsUtilities.js
+/* *
+ *
+ *  (c) 2009-2026 Highsoft AS
+ *  Author: Highsoft, Black Label
+ *
+ *  Integration of this software requires a license.
+ *  - For commercial use, see www.highcharts.com/license
+ *  - For non-commercial, see www.highcharts.com/license-eula
+ *
+ *
+ * */
+
+
+/* *
+ *
+ *  Constants
+ *
+ * */
+/**
+ * Define types for editable fields per annotation. There is no need to define
+ * numbers, because they won't change their type to string.
+ * @internal
+ */
+var annotationsFieldsTypes = {
+    backgroundColor: 'color',
+    backgroundColors: 'color',
+    borderColor: 'color',
+    borderRadius: 'string',
+    color: 'color',
+    fill: 'color',
+    fontSize: 'string',
+    labels: 'string',
+    name: 'string',
+    stroke: 'color',
+    title: 'string'
+};
+/* *
+ *
+ *  Functions
+ *
+ * */
+/**
+ * Returns the first xAxis or yAxis that was clicked with its value.
+ *
+ * @internal
+ *
+ * @param {Array<Highcharts.PointerAxisCoordinateObject>} coords
+ *        All the chart's x or y axes with a current pointer's axis value.
+ *
+ * @return {Highcharts.PointerAxisCoordinateObject}
+ *         Object with a first found axis and its value that pointer
+ *         is currently pointing.
+ */
+function getAssignedAxis(coords) {
+    return coords.filter(function (coord) {
+        var _a;
+        var extremes = coord.axis.getExtremes(),
+            axisMin = extremes.min,
+            axisMax = extremes.max, 
+            // Correct axis edges when axis has series
+            // with pointRange (like column)
+            minPointOffset = ((_a = coord.axis.minPointOffset) !== null && _a !== void 0 ? _a : 0);
+        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMin) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMax) &&
+            coord.value >= (axisMin - minPointOffset) &&
+            coord.value <= (axisMax + minPointOffset) &&
+            // Don't count navigator axis
+            !coord.axis.options.isInternal;
+    })[0]; // If the axes overlap, return the first axis that was found.
+}
+/**
+ * Resolve an axis from an annotation option that can reference it either by its
+ * index (number) or by its id (string).
+ *
+ * @internal
+ *
+ * @param {Highcharts.Chart} chart
+ *        The chart instance.
+ *
+ * @param {'xAxis'|'yAxis'} coll
+ *        The axis collection to look in.
+ *
+ * @param {number|string|undefined} idOrIndex
+ *        The axis index or id.
+ *
+ * @return {Highcharts.Axis|undefined}
+ *         The matching axis, or `undefined` if none was found.
+ */
+function getAxisFromOptions(chart, coll, idOrIndex) {
+    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(idOrIndex)) {
+        return chart[coll][idOrIndex];
+    }
+    return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(idOrIndex) ?
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.find)(chart[coll], function (axis) { return axis.options.id === idOrIndex; }) :
+        void 0;
+}
+/**
+ * Get field type according to value
+ *
+ * @internal
+ *
+ * @return {'checkbox'|'color'|'number'|'text'}
+ * Field type (one of: text, number, checkbox, color)
+ */
+function getFieldType(key, value) {
+    var predefinedType = annotationsFieldsTypes[key];
+    var fieldType = typeof value;
+    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(predefinedType)) {
+        fieldType = predefinedType;
+    }
+    return {
+        'string': 'text',
+        'number': 'number',
+        'boolean': 'checkbox',
+        'color': 'color'
+    }[fieldType];
+}
+/* *
+ *
+ *  Default Export
+ *
+ * */
+/** @internal */
+var NavigationBindingsUtilities = {
+    annotationsFieldsTypes: annotationsFieldsTypes,
+    getAssignedAxis: getAssignedAxis,
+    getAxisFromOptions: getAxisFromOptions,
+    getFieldType: getFieldType
+};
+/** @internal */
+/* harmony default export */ var Annotations_NavigationBindingsUtilities = (NavigationBindingsUtilities);
+
 // EXTERNAL MODULE: external {"amd":["highcharts/highcharts","SeriesRegistry"],"commonjs":["highcharts","SeriesRegistry"],"commonjs2":["highcharts","SeriesRegistry"],"root":["Highcharts","SeriesRegistry"]}
 var highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highcharts_SeriesRegistry_root_Highcharts_SeriesRegistry_ = __webpack_require__(512);
 var highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highcharts_SeriesRegistry_root_Highcharts_SeriesRegistry_default = /*#__PURE__*/__webpack_require__.n(highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highcharts_SeriesRegistry_root_Highcharts_SeriesRegistry_);
@@ -1638,6 +1773,8 @@ var highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highc
  *
  * */
 
+
+var MockPoint_getAxisFromOptions = Annotations_NavigationBindingsUtilities.getAxisFromOptions;
 
 var seriesProto = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highcharts_SeriesRegistry_root_Highcharts_SeriesRegistry_default()).series.prototype;
 
@@ -1889,7 +2026,7 @@ var MockPoint = /** @class */ (function () {
                     (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(plotY) &&
                     plotY >= 0 && plotY <= yAxis.len;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this.series.chart, 'afterIsInsidePlot', e);
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this.series.chart, 'afterIsInsidePlot', e);
         return e.isInsidePlot;
     };
     /**
@@ -1998,11 +2135,7 @@ var MockPoint = /** @class */ (function () {
         this.series[axisName] =
             typeof axisOptions === 'object' ?
                 axisOptions :
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(axisOptions) ?
-                    (chart[axisName][axisOptions] ||
-                        // @todo v--- (axisName)[axisOptions] ?
-                        chart.get(axisOptions)) :
-                    null;
+                MockPoint_getAxisFromOptions(chart, axisName, axisOptions) || null;
     };
     /**
      * Transform the mock point to an anchor (relative position on the chart).
@@ -2078,18 +2211,18 @@ var MockPoint = /** @class */ (function () {
 * @type      {number}
 * @name      Highcharts.AnnotationMockPointOptionsObject.y
 */ /**
-* This number defines which xAxis the point is connected to.
+* This option defines which `xAxis` the point is connected to.
 * It refers to either the axis id or the index of the axis in
-* the xAxis array. If the option is not configured or the axis
+* the `xAxis` array. If the option is not configured or the axis
 * is not found the point's x coordinate refers to the chart
 * pixels.
 *
 * @type      {number|string|null}
 * @name      Highcharts.AnnotationMockPointOptionsObject.xAxis
 */ /**
-* This number defines which yAxis the point is connected to.
+* This option defines which `yAxis` the point is connected to.
 * It refers to either the axis id or the index of the axis in
-* the yAxis array. If the option is not configured or the axis
+* the `yAxis` array. If the option is not configured or the axis
 * is not found the point's y coordinate refers to the chart
 * pixels.
 *
@@ -4029,6 +4162,7 @@ var ControllableLabel = /** @class */ (function (_super) {
      * Returns the label position relative to its anchor.
      */
     ControllableLabel.prototype.position = function (anchor) {
+        var _a;
         var item = this.graphic,
             chart = this.annotation.chart,
             tooltip = chart.tooltip,
@@ -4043,14 +4177,14 @@ var ControllableLabel = /** @class */ (function (_super) {
             showItem = point.series.visible &&
                 Annotations_MockPoint.prototype.isInsidePlot.call(point);
         if (item && showItem) {
-            var _a = item.width,
-                width = _a === void 0 ? 0 : _a,
-                _b = item.height,
-                height = _b === void 0 ? 0 : _b;
+            var _b = item.width,
+                width = _b === void 0 ? 0 : _b,
+                _c = item.height,
+                height = _c === void 0 ? 0 : _c;
             if (itemOptions.distance && tooltip) {
                 itemPosition = tooltip.getPosition.call({
                     chart: chart,
-                    distance: (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(itemOptions.distance, 16),
+                    distance: ((_a = itemOptions.distance) !== null && _a !== void 0 ? _a : 16),
                     getPlayingField: tooltip.getPlayingField,
                     pointer: tooltip.pointer
                 }, width, height, {
@@ -4559,6 +4693,8 @@ function addForm(chart, options, callback, isInit) {
  */
 function addToolbar(chart, options, callback) {
     var _this = this;
+    var _a,
+        _b;
     var lang = this.lang,
         popupDiv = this.container,
         showForm = this.showForm,
@@ -4579,11 +4715,7 @@ function addToolbar(chart, options, callback) {
         void 0,
         popupDiv);
     label.setAttribute('aria-label', 'Annotation type');
-    label.appendChild(PopupAnnotations_doc.createTextNode((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(
-    // Advanced annotations:
-    lang[options.langKey] || options.langKey, 
-    // Basic shapes:
-    options.shapes && options.shapes[0].type, '')));
+    label.appendChild(PopupAnnotations_doc.createTextNode(((_b = (_a = (lang[options.langKey] || options.langKey)) !== null && _a !== void 0 ? _a : (options.shapes && options.shapes[0].type)) !== null && _b !== void 0 ? _b : '')));
     // Add buttons
     var button = this.addButton(popupDiv, lang.editButton || 'Edit', 'edit', popupDiv, function () {
             showForm.call(_this, 'annotation-edit', chart, options, callback);
@@ -4901,7 +5033,7 @@ function addIndicatorList(chart, parentDiv, listType, filter) {
         filteredSeriesArray = filterSeriesArray.call(this, series);
     }
     // Sort indicators alphabetically.
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(filteredSeriesArray, function (a, b) {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stableSort)(filteredSeriesArray, function (a, b) {
         var seriesAName = a.indicatorFullName.toLowerCase(),
             seriesBName = b.indicatorFullName.toLowerCase();
         return (seriesAName < seriesBName) ?
@@ -5141,7 +5273,7 @@ function addSelectionOptions(chart, optionName, selectBox, indicatorType, parame
                     series.type === 'column') {
                     selectedOption = seriesOptions.id;
                 }
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.createElement)('option', {
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.createElement)('option', {
                     value: seriesOptions.id
                 }, void 0, selectBox).appendChild(PopupIndicators_doc.createTextNode(seriesName));
             }
@@ -5488,7 +5620,7 @@ function switchTabs(disableTab) {
             return;
         }
         ['click', 'touchstart'].forEach(function (eventName) {
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(tab, eventName, function () {
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.addEvent)(tab, eventName, function () {
                 // Reset class on other elements
                 deselectAll.call(popup);
                 selectTab.call(popup, this, i);
@@ -5723,8 +5855,10 @@ var Popup = /** @class */ (function (_super) {
      *         Return created input element.
      */
     Popup.prototype.addInput = function (option, indicatorType, parentDiv, inputAttributes) {
-        var _a;
-        var optionParamList = option.split('.'), optionName = optionParamList[optionParamList.length - 1], lang = this.lang, inputName = 'highcharts-' + indicatorType + '-' + (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(inputAttributes.htmlFor, optionName);
+        var _a,
+            _b;
+        var optionParamList = option.split('.'), optionName = optionParamList[optionParamList.length - 1], lang = this.lang, inputName = 'highcharts-' + indicatorType + '-' +
+                ((_a = inputAttributes.htmlFor) !== null && _a !== void 0 ? _a : optionName);
         if (!optionName.match(/^\d+$/)) {
             // Add label
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.createElement)('label', {
@@ -5732,7 +5866,7 @@ var Popup = /** @class */ (function (_super) {
                 className: inputAttributes.labelClassName
             }, void 0, parentDiv).appendChild(Popup_doc.createTextNode(lang[optionName] || optionName));
         }
-        if (inputAttributes.type === 'color' && ((_a = this.chart) === null || _a === void 0 ? void 0 : _a.container)) {
+        if (inputAttributes.type === 'color' && ((_b = this.chart) === null || _b === void 0 ? void 0 : _b.container)) {
             return this.createColorInput(option, inputName, inputAttributes, parentDiv, this.chart.container);
         }
         // Add input
@@ -6059,7 +6193,6 @@ var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 
-var getDeferredAnimation = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).getDeferredAnimation;
 
 
 
@@ -6294,14 +6427,11 @@ var Annotation = /** @class */ (function (_super) {
      * @internal
      */
     Annotation.prototype.destroy = function () {
-        var chart = this.chart,
-            destroyItem = function (item) {
-                item.destroy();
-        };
-        this.labels.forEach(destroyItem);
-        this.shapes.forEach(destroyItem);
-        this.clipXAxis = null;
-        this.clipYAxis = null;
+        var chart = this.chart;
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.destroyObjectProperties)(this.labels);
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.destroyObjectProperties)(this.shapes);
+        delete this.clipXAxis;
+        delete this.clipYAxis;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.erase)(chart.labelCollectors, this.labelCollector);
         _super.prototype.destroy.call(this);
         this.destroyControlTarget();
@@ -6359,7 +6489,7 @@ var Annotation = /** @class */ (function (_super) {
         this.addShapes();
         this.addLabels();
         this.setLabelCollector();
-        this.animationConfig = getDeferredAnimation(chart, animOptions);
+        this.animationConfig = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.getDeferredAnimation)(chart, animOptions);
     };
     /**
      * Initialization of a single label.
@@ -6429,7 +6559,7 @@ var Annotation = /** @class */ (function (_super) {
             if (!item.graphic) {
                 this.renderItem(item);
             }
-            item.redraw((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(animation, true) && item.graphic.placed);
+            item.redraw((animation !== null && animation !== void 0 ? animation : true) && item.graphic.placed);
             if (item.points.length) {
                 adjustVisibility(item);
             }
@@ -6580,8 +6710,7 @@ var Annotation = /** @class */ (function (_super) {
     Annotation.prototype.setVisibility = function (visible) {
         var options = this.options,
             navigation = this.chart.navigationBindings,
-            visibility = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(visible, !options.visible);
+            visibility = (visible !== null && visible !== void 0 ? visible : !options.visible);
         this.graphic.attr('visibility', visibility ? 'inherit' : 'hidden');
         if (!visibility) {
             var setItemControlPointsVisibility = function (item) {
@@ -6624,10 +6753,10 @@ var Annotation = /** @class */ (function (_super) {
         // Update options in chart options, used in exporting (#9767, #21507):
         chart.options.annotations[userOptionsIndex] = this.options;
         this.isUpdating = true;
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+        if (redraw !== null && redraw !== void 0 ? redraw : true) {
             chart.drawAnnotations();
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterUpdate');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterUpdate');
         this.isUpdating = false;
     };
     /** @internal */
@@ -6816,111 +6945,6 @@ var ChartNavigationComposition;
 /** @internal */
 /* harmony default export */ var Chart_ChartNavigationComposition = (ChartNavigationComposition);
 
-;// ./code/es5/es-modules/Extensions/Annotations/NavigationBindingsUtilities.js
-/* *
- *
- *  (c) 2009-2026 Highsoft AS
- *  Author: Highsoft, Black Label
- *
- *  Integration of this software requires a license.
- *  - For commercial use, see www.highcharts.com/license
- *  - For non-commercial, see www.highcharts.com/license-eula
- *
- *
- * */
-
-
-/* *
- *
- *  Constants
- *
- * */
-/**
- * Define types for editable fields per annotation. There is no need to define
- * numbers, because they won't change their type to string.
- * @internal
- */
-var annotationsFieldsTypes = {
-    backgroundColor: 'color',
-    backgroundColors: 'color',
-    borderColor: 'color',
-    borderRadius: 'string',
-    color: 'color',
-    fill: 'color',
-    fontSize: 'string',
-    labels: 'string',
-    name: 'string',
-    stroke: 'color',
-    title: 'string'
-};
-/* *
- *
- *  Functions
- *
- * */
-/**
- * Returns the first xAxis or yAxis that was clicked with its value.
- *
- * @internal
- *
- * @param {Array<Highcharts.PointerAxisCoordinateObject>} coords
- *        All the chart's x or y axes with a current pointer's axis value.
- *
- * @return {Highcharts.PointerAxisCoordinateObject}
- *         Object with a first found axis and its value that pointer
- *         is currently pointing.
- */
-function getAssignedAxis(coords) {
-    return coords.filter(function (coord) {
-        var extremes = coord.axis.getExtremes(),
-            axisMin = extremes.min,
-            axisMax = extremes.max, 
-            // Correct axis edges when axis has series
-            // with pointRange (like column)
-            minPointOffset = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coord.axis.minPointOffset, 0);
-        return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMin) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMax) &&
-            coord.value >= (axisMin - minPointOffset) &&
-            coord.value <= (axisMax + minPointOffset) &&
-            // Don't count navigator axis
-            !coord.axis.options.isInternal;
-    })[0]; // If the axes overlap, return the first axis that was found.
-}
-/**
- * Get field type according to value
- *
- * @internal
- *
- * @return {'checkbox'|'color'|'number'|'text'}
- * Field type (one of: text, number, checkbox, color)
- */
-function getFieldType(key, value) {
-    var predefinedType = annotationsFieldsTypes[key];
-    var fieldType = typeof value;
-    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(predefinedType)) {
-        fieldType = predefinedType;
-    }
-    return {
-        'string': 'text',
-        'number': 'number',
-        'boolean': 'checkbox',
-        'color': 'color'
-    }[fieldType];
-}
-/* *
- *
- *  Default Export
- *
- * */
-/** @internal */
-var NavigationBindingUtilities = {
-    annotationsFieldsTypes: annotationsFieldsTypes,
-    getAssignedAxis: getAssignedAxis,
-    getFieldType: getFieldType
-};
-/** @internal */
-/* harmony default export */ var NavigationBindingsUtilities = (NavigationBindingUtilities);
-
 ;// ./code/es5/es-modules/Extensions/Annotations/NavigationBindingsDefaults.js
 /* *
  *
@@ -6935,7 +6959,7 @@ var NavigationBindingUtilities = {
  * */
 
 
-var NavigationBindingsDefaults_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis;
+var NavigationBindingsDefaults_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis;
 
 /* *
  *
@@ -7406,7 +7430,7 @@ var NavigationBindings_format = (highcharts_Templating_commonjs_highcharts_Templ
 var NavigationBindings_composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed, NavigationBindings_doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).doc, win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
 
 
-var NavigationBindings_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis, NavigationBindings_getFieldType = NavigationBindingsUtilities.getFieldType;
+var NavigationBindings_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis, NavigationBindings_getFieldType = Annotations_NavigationBindingsUtilities.getFieldType;
 
 /* *
  *
@@ -7591,7 +7615,7 @@ function selectableAnnotation(annotationType) {
             selectAndShowPopup.call(this, e);
         }
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, annotationType.prototype.defaultOptions.events, {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, annotationType.prototype.defaultOptions.events, {
         click: selectAndShowPopup,
         touchstart: saveCoords,
         touchend: checkForTouchmove
@@ -7739,7 +7763,7 @@ var NavigationBindings = /** @class */ (function () {
             if (navigation.selectedButtonElement.classList === button.classList) {
                 shouldEventBeFired = false;
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'deselectButton', { button: navigation.selectedButtonElement });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'deselectButton', { button: navigation.selectedButtonElement });
             if (navigation.nextEvent) {
                 // Remove in-progress annotations adders:
                 if (navigation.currentUserDetails &&
@@ -7895,9 +7919,9 @@ var NavigationBindings = /** @class */ (function () {
             if (value !== 'undefined') {
                 var parent_1 = config;
                 path.forEach(function (name, index) {
+                    var _a;
                     if (name !== '__proto__' && name !== 'constructor') {
-                        var nextName = (0,
-                            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(path[index + 1], '');
+                        var nextName = ((_a = path[index + 1]) !== null && _a !== void 0 ? _a : '');
                         if (pathLength === index) {
                             // Last index, put value:
                             parent_1[name] = value;
@@ -7946,12 +7970,14 @@ var NavigationBindings = /** @class */ (function () {
         var _a,
             _b,
             _c,
-            _d;
+            _d,
+            _e,
+            _f,
+            _g;
         var options = annotation.options,
             editables = NavigationBindings.annotationsEditable,
             nestedEditables = editables.nestedOptions,
-            type = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.type, (_b = (_a = options.shapes) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.type, (_d = (_c = options.labels) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.type, 'label'),
+            type = (_g = (_d = (_a = options.type) !== null && _a !== void 0 ? _a : (_c = (_b = options.shapes) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.type) !== null && _d !== void 0 ? _d : (_f = (_e = options.labels) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.type) !== null && _g !== void 0 ? _g : 'label',
             nonEditables = NavigationBindings.annotationsNonEditable[options.langKey] || [],
             visualOptions = {
                 langKey: options.langKey,
@@ -8013,7 +8039,7 @@ var NavigationBindings = /** @class */ (function () {
                     else {
                         parent[key] = nextParent;
                     }
-                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(option, function (nestedOption, nestedKey) {
+                    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(option, function (nestedOption, nestedKey) {
                         traverse(nestedOption, nestedKey, key === 0 ?
                             parentEditables :
                             nestedEditables[key], nextParent, key);
@@ -8036,7 +8062,7 @@ var NavigationBindings = /** @class */ (function () {
                 }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options, function (option, key) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options, function (option, key) {
             if (key === 'typeOptions' &&
                 visualOptions['type'] !== 'basicAnnotation' // #23575
             ) {
@@ -8247,6 +8273,7 @@ G.NavigationBindings = G.NavigationBindings || Annotations_NavigationBindings;
 G.Annotation.compose(G.Chart, G.NavigationBindings, G.Pointer, G.SVGRenderer);
 /* harmony default export */ var annotations_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

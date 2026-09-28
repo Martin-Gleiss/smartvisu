@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/item-series
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		module.exports = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/item-series", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["SeriesRegistry"]);});
+		define("highcharts/modules/item-series", ["highcharts/highcharts"], function (amd1) {return factory(amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/item-series"] = factory(root["_Highcharts"], root["_Highcharts"]["SeriesRegistry"]);
+		exports["highcharts/modules/item-series"] = factory(root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["SeriesRegistry"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__512__) {
+		root["Highcharts"] = factory(root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 512:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -545,6 +544,10 @@ var seriesDefaults = {
      * ```
      *
      * @type    {Highcharts.DataMappingOptionsObject}
+     * @sample highcharts/datatable/datamapping
+     *         Basic data mapping
+     * @sample highcharts/datatable/datamapping-dynamic
+     *         Data mapping with dynamic updates
      * @sample {highcharts} highcharts/datatable/series-datatable-multiple
      *         Series with two data tables
      * @sample {highcharts} highcharts/datatable/nested-keys
@@ -554,6 +557,29 @@ var seriesDefaults = {
      *
      * @since     13.0.0
      * @apioption plotOptions.series.dataMapping
+     */
+    /**
+     * Options for a specific series-level data table or an array of data
+     * tables. The `dataTable` option can be either a configuration object or an
+     * instance of the `DataTable` class. If a `DataTable` instance is passed,
+     * it will be used directly. If a configuration object or an array is
+     * passed, a new `DataTable` instance will be created based on the provided
+     * configuration.
+     *
+     * @type   {Highcharts.DataTable|Highcharts.DataTableOptionsObject|Array<Highcharts.DataTable|Highcharts.DataTableOptionsObject>}
+     * @sample {highcharts} highcharts/datatable/series-datatable/
+     *         Series with one data table each
+     * @sample {highcharts} highcharts/datatable/series-datatable-multiple/
+     *         Series with two data tables
+     * @sample {highstock} stock/datatable/series-datatable/
+     *         Series with one data table each
+     * @sample {highstock} stock/datatable/series-datatable-multiple/
+     *         Series with two data tables
+     * @sample {highmaps} maps/datatable/series-datatable
+     *         Series-level data table
+     *
+     * @since 13.0.0
+     * @apioption plotOptions.series.dataTable
      */
     /**
      * Enable or disable the mouse tracking for a specific series. This
@@ -1438,6 +1464,7 @@ var seriesDefaults = {
              * `series.allowPointSelect` option to true.
              *
              * @declare Highcharts.PointStatesSelectOptionsObject
+             * @extends plotOptions.series.marker.states.hover
              */
             select: {
                 /**
@@ -2014,6 +2041,7 @@ var seriesDefaults = {
          * @sample {highmaps} maps/plotoptions/series-datalabels-box/
          *         Data labels box options
          *
+         * @type  {number|Array<number>}
          * @since 2.2.1
          */
         padding: [1, 3],
@@ -2215,6 +2243,9 @@ var seriesDefaults = {
     /**
      * A collection of options for different series states.
      *
+     * In addition to the options documented under each state, any option from
+     * the parent series type can be set, with exception of `data` and `states`.
+     *
      * @declare Highcharts.SeriesStatesOptionsObject
      */
     states: {
@@ -2388,6 +2419,7 @@ var seriesDefaults = {
          *         Disabled inactive state
          *
          * @declare Highcharts.SeriesStatesInactiveOptionsObject
+         * @extends plotOptions.series.states.hover
          */
         inactive: {
             /**
@@ -2764,7 +2796,7 @@ var ItemSeriesDefaults = {
  * it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.item
- * @excluding dataParser, dataURL, stack, xAxis, yAxis, dataSorting,
+ * @excluding stack, xAxis, yAxis, dataSorting,
  *            boostThreshold, boostBlending
  * @product   highcharts
  * @requires  modules/item-series
@@ -2885,7 +2917,7 @@ var PieSeries = (highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_co
  *
  * @requires modules/item-series
  *
- * @private
+ * @internal
  * @class
  * @name Highcharts.seriesTypes.item
  *
@@ -2903,7 +2935,7 @@ var ItemSeries = /** @class */ (function (_super) {
      * */
     /**
      * Fade in the whole chart.
-     * @private
+     * @internal
      */
     ItemSeries.prototype.animate = function (init) {
         var group = this.group;
@@ -2920,6 +2952,9 @@ var ItemSeries = /** @class */ (function (_super) {
             }
         }
     };
+    /**
+     * @internal
+     */
     ItemSeries.prototype.drawDataLabels = function () {
         if (this.center && this.slots) {
             _super.prototype.drawDataLabels.call(this);
@@ -2932,7 +2967,11 @@ var ItemSeries = /** @class */ (function (_super) {
             }
         }
     };
+    /**
+     * @internal
+     */
     ItemSeries.prototype.drawPoints = function () {
+        var _a;
         var series = this, options = this.options, renderer = series.chart.renderer, seriesMarkerOptions = options.marker, borderWidth = this.borderWidth, crisp = borderWidth % 2 ? 0.5 : 1, rows = this.getRows(), cols = Math.ceil(this.total / rows), cellWidth = this.chart.plotWidth / cols, cellHeight = this.chart.plotHeight / rows, itemSize = this.itemSize || Math.min(cellWidth, cellHeight);
         var i = 0;
         /* @todo: remove if not needed
@@ -2944,14 +2983,12 @@ var ItemSeries = /** @class */ (function (_super) {
                 .add(this.group);
         });
         //*/
-        for (var _i = 0, _a = series.points; _i < _a.length; _i++) {
-            var point = _a[_i];
+        for (var _i = 0, _b = series.points; _i < _b.length; _i++) {
+            var point = _b[_i];
             var pointMarkerOptions = point.marker || {},
                 symbol = (pointMarkerOptions.symbol ||
                     seriesMarkerOptions.symbol),
-                r = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(pointMarkerOptions.radius,
-                seriesMarkerOptions.radius),
+                r = ((_a = pointMarkerOptions.radius) !== null && _a !== void 0 ? _a : seriesMarkerOptions.radius),
                 size = (0,
                 highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(r) ? 2 * r : itemSize,
                 padding = size * options.itemPadding;
@@ -3041,6 +3078,9 @@ var ItemSeries = /** @class */ (function (_super) {
             }
         }
     };
+    /**
+     * @internal
+     */
     ItemSeries.prototype.getRows = function () {
         var chart = this.chart,
             total = this.total || 0;
@@ -3076,7 +3116,7 @@ var ItemSeries = /** @class */ (function (_super) {
     };
     /**
      * Get the semi-circular slots.
-     * @private
+     * @internal
      */
     ItemSeries.prototype.getSlots = function () {
         var series = this,
@@ -3156,7 +3196,7 @@ var ItemSeries = /** @class */ (function (_super) {
         var overshoot = finalItemCount - series.total -
                 (isCircle ? rows.length : 0);
         /**
-         * @private
+         * @internal
          * @param {Highcharts.ItemRowContainerObject} item
          * Wrapped object with angle and row
          */
@@ -3199,6 +3239,9 @@ var ItemSeries = /** @class */ (function (_super) {
         series.itemSize = itemSize;
         return slots;
     };
+    /**
+     * @internal
+     */
     ItemSeries.prototype.translate = function (positions) {
         // Initialize chart without setting data, #13379.
         if (this.total === 0 && // Check if that is a (semi-)circle
@@ -3246,6 +3289,7 @@ highcharts_SeriesRegistry_commonjs_highcharts_SeriesRegistry_commonjs2_highchart
 
 /* harmony default export */ var item_series_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

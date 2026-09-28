@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/drilldown
  * @requires highcharts
  *
@@ -15,29 +15,31 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		module.exports = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/drilldown", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Templating"]);});
+		define("highcharts/modules/drilldown", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/drilldown"] = factory(root["_Highcharts"], root["_Highcharts"]["Templating"]);
+		exports["highcharts/modules/drilldown"] = factory(root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Templating"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__984__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
-
-/***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -69,36 +71,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -348,7 +347,7 @@ var options = {
      * `.highcharts-breadcrumbs-buttons .highcharts-button` rule with its
      * different states.
      *
-     * @type  {Highcharts.SVGAttributes}
+     * @type  {Highcharts.CSSObject}
      * @since 10.0.0
      */
     style: {},
@@ -577,17 +576,16 @@ var Breadcrumbs = /** @class */ (function () {
      *         Formatted text.
      */
     Breadcrumbs.prototype.getButtonText = function (breadcrumb) {
+        var _a,
+            _b;
         var breadcrumbs = this,
             chart = breadcrumbs.chart,
             breadcrumbsOptions = breadcrumbs.options,
             lang = chart.options.lang,
-            textFormat = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(breadcrumbsOptions.format,
-            breadcrumbsOptions.showFullPath ?
-                '{level.name}' : '← {level.name}'),
-            defaultText = lang && (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(lang.drillUpText,
-            lang.mainBreadcrumb);
+            textFormat = (_a = breadcrumbsOptions.format) !== null && _a !== void 0 ? _a : (breadcrumbsOptions.showFullPath ?
+                '{level.name}' :
+                '← {level.name}'),
+            defaultText = lang && ((_b = lang.drillUpText) !== null && _b !== void 0 ? _b : lang.mainBreadcrumb);
         var returnText = breadcrumbsOptions.formatter &&
                 breadcrumbsOptions.formatter(breadcrumb) ||
                 format(textFormat, { level: breadcrumb.levelOptions },
@@ -698,6 +696,8 @@ var Breadcrumbs = /** @class */ (function () {
      *        Optional horizontal offset.
      */
     Breadcrumbs.prototype.alignBreadcrumbsGroup = function (xOffset) {
+        var _a,
+            _b;
         var breadcrumbs = this;
         if (breadcrumbs.group) {
             var breadcrumbsOptions = breadcrumbs.options,
@@ -722,7 +722,7 @@ var Breadcrumbs = /** @class */ (function () {
             if (breadcrumbs.options.rtl) {
                 newPositions.x += positionOptions.width;
             }
-            newPositions.y = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(newPositions.y, this.yOffset, 0);
+            newPositions.y = ((_b = (_a = newPositions.y) !== null && _a !== void 0 ? _a : this.yOffset) !== null && _b !== void 0 ? _b : 0);
             breadcrumbs.group.align(newPositions, true, alignTo);
         }
     };
@@ -742,9 +742,14 @@ var Breadcrumbs = /** @class */ (function () {
     Breadcrumbs.prototype.renderButton = function (breadcrumb, posX, posY) {
         var breadcrumbs = this,
             chart = this.chart,
-            breadcrumbsOptions = breadcrumbs.options,
+            breadcrumbsOptions = breadcrumbs.options, 
+            // The `style` option is CSS for the button text, so it belongs in
+            // the theme's `style` rather than being applied afterwards. A
+            // later `setState` re-applies the normal state style, which would
+            // otherwise wipe it (#25357).
             buttonTheme = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(breadcrumbsOptions.buttonTheme);
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(breadcrumbsOptions.buttonTheme,
+            chart.styledMode ? void 0 : { style: breadcrumbsOptions.style });
         var button = chart.renderer
                 .button(breadcrumbs.getButtonText(breadcrumb), posX, posY, function (e /* @todo (Event|any) */) {
                 // Extract events from button object and call
@@ -768,14 +773,11 @@ var Breadcrumbs = /** @class */ (function () {
                 else {
                     e.newLevel = breadcrumb.level;
                 }
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(breadcrumbs, 'up', e);
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(breadcrumbs, 'up', e);
             }
         }, buttonTheme)
             .addClass('highcharts-breadcrumbs-button')
             .add(breadcrumbs.group);
-        if (!chart.styledMode) {
-            button.attr(breadcrumbsOptions.style);
-        }
         return button;
     };
     /**
@@ -991,7 +993,7 @@ var Breadcrumbs = /** @class */ (function () {
  *
  * @callback Highcharts.BreadcrumbsClickCallbackFunction
  *
- * @param {Highcharts.Event} event
+ * @param {Event} event
  * Event.
  *
  * @param {Highcharts.BreadcrumbOptions} breadcrumb
@@ -1400,7 +1402,6 @@ var DrilldownDefaults = {
  * */
 
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 
 /* *
  *
@@ -1422,7 +1423,8 @@ function columnAnimateDrilldown(init) {
         chart = series.chart,
         drilldownLevels = chart.drilldownLevels,
         styledMode = chart.styledMode,
-        animationOptions = animObject((_a = chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation),
+        animationOptions = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((_a = chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation),
         _c = this,
         xAxis = _c.xAxis,
         yAxis = _c.yAxis;
@@ -1469,7 +1471,8 @@ function columnAnimateDrilldown(init) {
 function columnAnimateDrillupFrom(level) {
     var _a;
     var series = this,
-        animationOptions = animObject((series.chart.options.drilldown || {}).animation);
+        animationOptions = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((series.chart.options.drilldown || {}).animation);
     // Cancel mouse events on the series group (#2787)
     (_a = series.trackerGroups) === null || _a === void 0 ? void 0 : _a.forEach(function (key) {
         var _a,
@@ -1527,7 +1530,8 @@ function columnAnimateDrillupTo(init) {
     var _a;
     var series = this,
         level = series.drilldownLevel,
-        animation = animObject((_a = series.chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
+        animation = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((_a = series.chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
     if (!init) {
         // First hide all items before animating in again
         series.points.forEach(function (point) {
@@ -1808,7 +1812,8 @@ function pieAnimateDrilldown(init) {
         points = series.points,
         drilldownLevels = chart.drilldownLevels || [],
         level = drilldownLevels[drilldownLevels.length - 1],
-        animation = animObject((_a = chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
+        animation = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((_a = chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
     if (series.is('item')) {
         animation.duration = 0;
     }
@@ -1886,7 +1891,7 @@ function pointRunDrilldown(holdRedraw, category, originalEvent) {
     }
     // Fire the event. If seriesOptions is undefined, the implementer can check
     // for seriesOptions, and call addSeriesAsDrilldown async if necessary.
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'drilldown', {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'drilldown', {
         point: point,
         seriesOptions: seriesOptions,
         category: category,
@@ -1934,7 +1939,6 @@ var DrilldownSeries = {
  * */
 
 
-var Drilldown_animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject, stop = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).stop;
 
 
 var noop = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).noop;
@@ -2116,7 +2120,8 @@ var ChartAdditions = /** @class */ (function () {
                 chart.options.drilldown.mapZooming) {
                 // First zoomTo then crossfade series
                 chart.mapView.allowTransformAnimation = true;
-                var animOptions = Drilldown_animObject(chart.options.drilldown.animation);
+                var animOptions = (0,
+                    highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(chart.options.drilldown.animation);
                 if (typeof animOptions !== 'boolean') {
                     var userComplete_1 = animOptions.complete,
                         drilldownComplete_1 = function (obj) {
@@ -2296,13 +2301,14 @@ var ChartAdditions = /** @class */ (function () {
                             if (drilldownOptions) {
                                 animOptions = drilldownOptions.animation;
                             }
-                            var drillAnimOptions = Drilldown_animObject(animOptions);
+                            var drillAnimOptions = (0,
+                                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)(animOptions);
                             var hideDataLabels = function () {
                                     var _a;
                                 var hideGroup = function (group) {
                                         var element = group === null || group === void 0 ? void 0 : group.element;
                                     if (group && element) {
-                                        stop(group);
+                                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(group);
                                         element.setAttribute('opacity', '0');
                                         element.setAttribute('visibility', 'hidden');
                                     }
@@ -2320,14 +2326,14 @@ var ChartAdditions = /** @class */ (function () {
                                 seriesRemoved_1 = true;
                                 if (series.chart) {
                                     if (series.group) {
-                                        stop(series.group);
+                                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(series.group);
                                     }
                                     if (series.dataLabelsGroup) {
-                                        stop(series.dataLabelsGroup);
+                                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(series.dataLabelsGroup);
                                     }
                                     (_a = series.dataLabelsGroups) === null || _a === void 0 ? void 0 : _a.forEach(function (group) {
                                         if (group) {
-                                            stop(group);
+                                            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.stop)(group);
                                         }
                                     });
                                     series.remove(false);
@@ -2353,7 +2359,7 @@ var ChartAdditions = /** @class */ (function () {
                                         chart.mapView.allowTransformAnimation =
                                             true; // #20857
                                     }
-                                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'afterApplyDrilldown');
+                                    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'afterApplyDrilldown');
                                 }
                             };
                             if ((_b = series.group) === null || _b === void 0 ? void 0 : _b.element) {
@@ -2389,8 +2395,8 @@ var ChartAdditions = /** @class */ (function () {
             // (#19725)
             if (!chart.hasCartesianSeries) {
                 chart.axes.forEach(function (axis) {
-                    axis.destroy(true);
-                    axis.init(chart, (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(axis.userOptions, axis.options));
+                    axis.visible = false;
+                    axis.redraw();
                 });
             }
             chart.redraw(drilldownOptions === null || drilldownOptions === void 0 ? void 0 : drilldownOptions.animation);
@@ -2417,7 +2423,7 @@ var ChartAdditions = /** @class */ (function () {
         if (!chart.drilldownLevels || chart.drilldownLevels.length === 0) {
             return;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'beforeDrillUp');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'beforeDrillUp');
         var drilldownLevels = chart.drilldownLevels,
             levelNumber = drilldownLevels[drilldownLevels.length - 1].levelNumber,
             chartSeries = chart.series,
@@ -2524,8 +2530,14 @@ var ChartAdditions = /** @class */ (function () {
                 // Reset the zoom level of the upper series
                 if (newSeries === null || newSeries === void 0 ? void 0 : newSeries.xAxis) {
                     oldExtremes = level.oldExtremes;
-                    newSeries.xAxis.setExtremes(oldExtremes.xMin, oldExtremes.xMax, false);
-                    newSeries.yAxis.setExtremes(oldExtremes.yMin, oldExtremes.yMax, false);
+                    var xAxis = newSeries.xAxis,
+                        yAxis = newSeries.yAxis;
+                    xAxis.setExtremes(oldExtremes.xMin, oldExtremes.xMax, false);
+                    yAxis.setExtremes(oldExtremes.yMin, oldExtremes.yMax, false);
+                    // Reset visibility after `applyDrilldown` may have set it
+                    // to false
+                    xAxis.visible = xAxis.options.visible;
+                    yAxis.visible = yAxis.options.visible;
                 }
                 // We have a resetZoomButton tucked away for this level. Attach
                 // it to the chart and show it.
@@ -2615,7 +2627,7 @@ var ChartAdditions = /** @class */ (function () {
         }
         // Fire a once-off event after all series have been
         // drilled up (#5158)
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'drillupall');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(chart, 'drillupall');
     };
     /**
      * A function to fade in a group. First, the element is being hidden, then,
@@ -2631,7 +2643,8 @@ var ChartAdditions = /** @class */ (function () {
      */
     ChartAdditions.prototype.fadeInGroup = function (group) {
         var _a;
-        var animationOptions = Drilldown_animObject((_a = this.chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
+        var animationOptions = (0,
+            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((_a = this.chart.options.drilldown) === null || _a === void 0 ? void 0 : _a.animation);
         if (group) {
             group.hide();
             (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.syncTimeout)(function () {
@@ -3012,6 +3025,7 @@ G.Breadcrumbs = G.Breadcrumbs || Breadcrumbs_Breadcrumbs;
 Drilldown_Drilldown.compose(G.Axis, G.Chart, G.defaultOptions, G.Series, G.seriesTypes, G.SVGRenderer, G.Tick);
 /* harmony default export */ var drilldown_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highstock JS v13.0.0 (2026-06-11)
+ * @license Highstock JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/stock-tools
  * @requires highcharts
  * @requires highcharts/modules/stock
@@ -15,21 +15,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Templating"], root["_Highcharts"]["Series"], root["_Highcharts"]["AST"]);
+		module.exports = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Series"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/stock-tools", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Templating"],amd1["Series"],amd1["AST"]);});
+		define("highcharts/modules/stock-tools", ["highcharts/highcharts"], function (amd1) {return factory(amd1["AST"],amd1["Series"],amd1["Templating"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/stock-tools"] = factory(root["_Highcharts"], root["_Highcharts"]["Templating"], root["_Highcharts"]["Series"], root["_Highcharts"]["AST"]);
+		exports["highcharts/modules/stock-tools"] = factory(root["_Highcharts"]["AST"], root["_Highcharts"]["Series"], root["_Highcharts"]["Templating"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Templating"], root["Highcharts"]["Series"], root["Highcharts"]["AST"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__660__) {
+		root["Highcharts"] = factory(root["Highcharts"]["AST"], root["Highcharts"]["Series"], root["Highcharts"]["Templating"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__660__, __WEBPACK_EXTERNAL_MODULE__820__, __WEBPACK_EXTERNAL_MODULE__984__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 660:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
 
 /***/ }),
@@ -37,21 +38,24 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__660__;
 /***/ 820:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__820__;
-
-/***/ }),
-
-/***/ 944:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ }),
 
 /***/ 984:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
 
@@ -83,36 +87,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__984__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -275,19 +276,45 @@ var annotationsFieldsTypes = {
  */
 function getAssignedAxis(coords) {
     return coords.filter(function (coord) {
+        var _a;
         var extremes = coord.axis.getExtremes(),
             axisMin = extremes.min,
             axisMax = extremes.max, 
             // Correct axis edges when axis has series
             // with pointRange (like column)
-            minPointOffset = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(coord.axis.minPointOffset, 0);
+            minPointOffset = ((_a = coord.axis.minPointOffset) !== null && _a !== void 0 ? _a : 0);
         return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMin) && (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(axisMax) &&
             coord.value >= (axisMin - minPointOffset) &&
             coord.value <= (axisMax + minPointOffset) &&
             // Don't count navigator axis
             !coord.axis.options.isInternal;
     })[0]; // If the axes overlap, return the first axis that was found.
+}
+/**
+ * Resolve an axis from an annotation option that can reference it either by its
+ * index (number) or by its id (string).
+ *
+ * @internal
+ *
+ * @param {Highcharts.Chart} chart
+ *        The chart instance.
+ *
+ * @param {'xAxis'|'yAxis'} coll
+ *        The axis collection to look in.
+ *
+ * @param {number|string|undefined} idOrIndex
+ *        The axis index or id.
+ *
+ * @return {Highcharts.Axis|undefined}
+ *         The matching axis, or `undefined` if none was found.
+ */
+function getAxisFromOptions(chart, coll, idOrIndex) {
+    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isNumber)(idOrIndex)) {
+        return chart[coll][idOrIndex];
+    }
+    return (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.defined)(idOrIndex) ?
+        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.find)(chart[coll], function (axis) { return axis.options.id === idOrIndex; }) :
+        void 0;
 }
 /**
  * Get field type according to value
@@ -316,13 +343,14 @@ function getFieldType(key, value) {
  *
  * */
 /** @internal */
-var NavigationBindingUtilities = {
+var NavigationBindingsUtilities = {
     annotationsFieldsTypes: annotationsFieldsTypes,
     getAssignedAxis: getAssignedAxis,
+    getAxisFromOptions: getAxisFromOptions,
     getFieldType: getFieldType
 };
 /** @internal */
-/* harmony default export */ var NavigationBindingsUtilities = (NavigationBindingUtilities);
+/* harmony default export */ var Annotations_NavigationBindingsUtilities = (NavigationBindingsUtilities);
 
 ;// ./code/es5/es-modules/Extensions/Annotations/NavigationBindingsDefaults.js
 /* *
@@ -338,7 +366,7 @@ var NavigationBindingUtilities = {
  * */
 
 
-var NavigationBindingsDefaults_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis;
+var NavigationBindingsDefaults_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis;
 
 /* *
  *
@@ -809,7 +837,7 @@ var format = (highcharts_Templating_commonjs_highcharts_Templating_commonjs2_hig
 var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed, doc = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).doc, win = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).win;
 
 
-var NavigationBindings_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis, NavigationBindings_getFieldType = NavigationBindingsUtilities.getFieldType;
+var NavigationBindings_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis, NavigationBindings_getFieldType = Annotations_NavigationBindingsUtilities.getFieldType;
 
 /* *
  *
@@ -994,7 +1022,7 @@ function selectableAnnotation(annotationType) {
             selectAndShowPopup.call(this, e);
         }
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, annotationType.prototype.defaultOptions.events, {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, annotationType.prototype.defaultOptions.events, {
         click: selectAndShowPopup,
         touchstart: saveCoords,
         touchend: checkForTouchmove
@@ -1142,7 +1170,7 @@ var NavigationBindings = /** @class */ (function () {
             if (navigation.selectedButtonElement.classList === button.classList) {
                 shouldEventBeFired = false;
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'deselectButton', { button: navigation.selectedButtonElement });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'deselectButton', { button: navigation.selectedButtonElement });
             if (navigation.nextEvent) {
                 // Remove in-progress annotations adders:
                 if (navigation.currentUserDetails &&
@@ -1298,9 +1326,9 @@ var NavigationBindings = /** @class */ (function () {
             if (value !== 'undefined') {
                 var parent_1 = config;
                 path.forEach(function (name, index) {
+                    var _a;
                     if (name !== '__proto__' && name !== 'constructor') {
-                        var nextName = (0,
-                            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(path[index + 1], '');
+                        var nextName = ((_a = path[index + 1]) !== null && _a !== void 0 ? _a : '');
                         if (pathLength === index) {
                             // Last index, put value:
                             parent_1[name] = value;
@@ -1349,12 +1377,14 @@ var NavigationBindings = /** @class */ (function () {
         var _a,
             _b,
             _c,
-            _d;
+            _d,
+            _e,
+            _f,
+            _g;
         var options = annotation.options,
             editables = NavigationBindings.annotationsEditable,
             nestedEditables = editables.nestedOptions,
-            type = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.type, (_b = (_a = options.shapes) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.type, (_d = (_c = options.labels) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.type, 'label'),
+            type = (_g = (_d = (_a = options.type) !== null && _a !== void 0 ? _a : (_c = (_b = options.shapes) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.type) !== null && _d !== void 0 ? _d : (_f = (_e = options.labels) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.type) !== null && _g !== void 0 ? _g : 'label',
             nonEditables = NavigationBindings.annotationsNonEditable[options.langKey] || [],
             visualOptions = {
                 langKey: options.langKey,
@@ -1416,7 +1446,7 @@ var NavigationBindings = /** @class */ (function () {
                     else {
                         parent[key] = nextParent;
                     }
-                    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(option, function (nestedOption, nestedKey) {
+                    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(option, function (nestedOption, nestedKey) {
                         traverse(nestedOption, nestedKey, key === 0 ?
                             parentEditables :
                             nestedEditables[key], nextParent, key);
@@ -1439,7 +1469,7 @@ var NavigationBindings = /** @class */ (function () {
                 }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options, function (option, key) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options, function (option, key) {
             if (key === 'typeOptions' &&
                 visualOptions['type'] !== 'basicAnnotation' // #23575
             ) {
@@ -1659,7 +1689,7 @@ var highcharts_Series_commonjs_highcharts_Series_commonjs2_highcharts_Series_roo
 
 var getOptions = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).getOptions;
 
-var StockToolsUtilities_getAssignedAxis = NavigationBindingsUtilities.getAssignedAxis, StockToolsUtilities_getFieldType = NavigationBindingsUtilities.getFieldType;
+var StockToolsUtilities_getAssignedAxis = Annotations_NavigationBindingsUtilities.getAssignedAxis, StockToolsUtilities_getFieldType = Annotations_NavigationBindingsUtilities.getFieldType;
 
 
 
@@ -1789,7 +1819,7 @@ function addFlagFromForm(type) {
         if (!toolbar || !toolbar.guiEnabled) {
             chart.addSeries(seriesOptions);
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'showPopup', {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(navigation, 'showPopup', {
             formType: 'flag',
             // Enabled options:
             options: {
@@ -1964,7 +1994,7 @@ function manageIndicators(data) {
         }
         chart.addSeries(seriesConfig, false);
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', {
         button: this.selectedButtonElement
     });
     chart.redraw();
@@ -3353,7 +3383,8 @@ var StockToolsBindings = {
         /** @ignore-option */
         start: function (e) {
             var _a,
-                _b;
+                _b,
+                _c;
             var closestPoint = StockToolsBindings_attractToPoint(e,
                 this.chart);
             // Exit if clicked out of axes area
@@ -3382,7 +3413,7 @@ var StockToolsBindings = {
                 navigation.annotationsOptions, (_a = navigation.bindings) === null || _a === void 0 ? void 0 : _a.verticalCounter.annotationsOptions),
                 annotation = this.chart.addAnnotation(options);
             this.verticalCounter++;
-            ((_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click).call(annotation, {});
+            (_c = (_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click) === null || _c === void 0 ? void 0 : _c.call(annotation, {});
         }
     },
     /**
@@ -3404,7 +3435,8 @@ var StockToolsBindings = {
          */
         start: function (e) {
             var _a,
-                _b;
+                _b,
+                _c;
             var closestPoint = StockToolsBindings_attractToPoint(e,
                 this.chart);
             // Exit if clicked out of axes area
@@ -3428,7 +3460,7 @@ var StockToolsBindings = {
                 },
                 navigation.annotationsOptions, (_a = navigation.bindings) === null || _a === void 0 ? void 0 : _a.timeCycles.annotationsOptions),
                 annotation = this.chart.addAnnotation(options);
-            ((_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click).call(annotation, {});
+            (_c = (_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click) === null || _c === void 0 ? void 0 : _c.call(annotation, {});
             return annotation;
         },
         steps: [
@@ -3448,7 +3480,8 @@ var StockToolsBindings = {
         /** @ignore-option */
         start: function (e) {
             var _a,
-                _b;
+                _b,
+                _c;
             var closestPoint = StockToolsBindings_attractToPoint(e,
                 this.chart);
             // Exit if clicked out of axes area
@@ -3474,7 +3507,7 @@ var StockToolsBindings = {
                 },
                 navigation.annotationsOptions, (_a = navigation.bindings) === null || _a === void 0 ? void 0 : _a.verticalLabel.annotationsOptions),
                 annotation = this.chart.addAnnotation(options);
-            ((_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click).call(annotation, {});
+            (_c = (_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click) === null || _c === void 0 ? void 0 : _c.call(annotation, {});
         }
     },
     /**
@@ -3501,7 +3534,8 @@ var StockToolsBindings = {
         /** @ignore-option */
         start: function (e) {
             var _a,
-                _b;
+                _b,
+                _c;
             var closestPoint = StockToolsBindings_attractToPoint(e,
                 this.chart);
             // Exit if clicked out of axes area
@@ -3534,7 +3568,7 @@ var StockToolsBindings = {
                 },
                 navigation.annotationsOptions, (_a = navigation.bindings) === null || _a === void 0 ? void 0 : _a.verticalArrow.annotationsOptions),
                 annotation = this.chart.addAnnotation(options);
-            ((_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click).call(annotation, {});
+            (_c = (_b = annotation.options.events) === null || _b === void 0 ? void 0 : _b.click) === null || _c === void 0 ? void 0 : _c.call(annotation, {});
         }
     },
     /**
@@ -3870,7 +3904,7 @@ var StockToolsBindings = {
             if (this.chart.fullscreen) {
                 this.chart.fullscreen.toggle();
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
         }
     },
     /**
@@ -3904,7 +3938,7 @@ var StockToolsBindings = {
                 });
                 chart.redraw();
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
         }
     },
     /**
@@ -3955,7 +3989,7 @@ var StockToolsBindings = {
             (chart.annotations || []).forEach(function (annotation) {
                 annotation.setVisibility(!this.toggledAnnotations);
             }, this);
-            if (gui && gui.guiEnabled) {
+            if (gui === null || gui === void 0 ? void 0 : gui.guiEnabled) {
                 if (this.toggledAnnotations) {
                     button.firstChild.style['background-image'] =
                         BaseFormUtils('annotations-hidden.svg', gui.iconsURL, StockToolsIcons);
@@ -3965,7 +3999,7 @@ var StockToolsBindings = {
                         BaseFormUtils('annotations-visible.svg', gui.iconsURL, StockToolsIcons);
                 }
             }
-            (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
+            ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'deselectButton', { button: button });
         }
     },
     /**
@@ -5379,6 +5413,7 @@ function navigationGetYAxisPositions(yAxes, plotHeight, defaultHeight, removedYA
 function navigationGetYAxisResizers(yAxes) {
     var resizers = [];
     yAxes.forEach(function (_yAxis, index) {
+        var _a;
         var nextYAxis = yAxes[index + 1];
         // We have next axis, bind them:
         if (nextYAxis) {
@@ -5386,7 +5421,7 @@ function navigationGetYAxisResizers(yAxes) {
                 enabled: true,
                 controlledAxis: {
                     next: [
-                        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(nextYAxis.options.id, nextYAxis.index)
+                        ((_a = nextYAxis.options.id) !== null && _a !== void 0 ? _a : nextYAxis.index)
                     ]
                 }
             };
@@ -5543,6 +5578,7 @@ var Toolbar = /** @class */ (function () {
      *
      * */
     function Toolbar(options, langOptions, chart) {
+        var _a;
         this.width = 0;
         this.isDirty = false;
         this.chart = chart;
@@ -5550,7 +5586,7 @@ var Toolbar = /** @class */ (function () {
         this.iconsURL = this.getIconsURL();
         this.lang = langOptions;
         this.guiEnabled = options.enabled;
-        this.visible = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.visible, true);
+        this.visible = ((_a = options.visible) !== null && _a !== void 0 ? _a : true);
         this.guiClassName = options.className;
         this.toolbarClassName = options.toolbarClassName;
         // General events collection which should be removed upon
@@ -5561,7 +5597,7 @@ var Toolbar = /** @class */ (function () {
             this.createButtons();
             this.showHideNavigation();
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterInit');
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterInit');
     }
     /* *
      *
@@ -5651,7 +5687,7 @@ var Toolbar = /** @class */ (function () {
                     topMargin = 0;
                 }
                 // Apply calculated styles
-                (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(submenuWrapper, {
+                ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.css)(submenuWrapper, {
                     top: -topMargin + 'px',
                     left: buttonWidth + 3 + 'px'
                 });
@@ -5738,7 +5774,8 @@ var Toolbar = /** @class */ (function () {
      *         References to all created HTML elements
      */
     Toolbar.prototype.addButton = function (target, options, btnName, lang) {
-        var _a;
+        var _a,
+            _b;
         if (lang === void 0) { lang = {}; }
         var btnOptions = options[btnName],
             btnLabelName = lang[btnName] || btnName,
@@ -5749,8 +5786,7 @@ var Toolbar = /** @class */ (function () {
         // Main button wrapper
         var buttonWrapper = (0,
             highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.createElement)('li', {
-                className: (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(classMapping[btnName], '') + ' ' + userClassName
+                className: ((_b = classMapping[btnName]) !== null && _b !== void 0 ? _b : '') + ' ' + userClassName
             },
             void 0,
             target);
@@ -6015,16 +6051,17 @@ var Toolbar = /** @class */ (function () {
      * @internal
      */
     Toolbar.prototype.update = function (options, redraw) {
+        var _a;
         this.isDirty = !!options.gui.definitions;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.chart.options.stockTools, options);
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.options, options.gui);
-        this.visible = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(this.options.visible && this.options.enabled, true);
+        this.visible = (_a = (this.options.visible && this.options.enabled)) !== null && _a !== void 0 ? _a : true;
         // If Stock Tools are updated, then bindings should be updated too:
         if (this.chart.navigationBindings) {
             this.chart.navigationBindings.update();
         }
         this.chart.isDirtyBox = true;
-        if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(redraw, true)) {
+        if (redraw !== null && redraw !== void 0 ? redraw : true) {
             this.chart.redraw();
         }
     };
@@ -6270,7 +6307,9 @@ function onChartBeforeRedraw() {
  * @internal
  */
 function setOffset(chart) {
-    var _a;
+    var _a,
+        _b,
+        _c;
     if ((_a = chart.stockTools) === null || _a === void 0 ? void 0 : _a.guiEnabled) {
         var optionsChart = chart.options.chart;
         var listWrapper = chart.stockTools.listWrapper;
@@ -6282,9 +6321,7 @@ function setOffset(chart) {
         chart.stockTools.width = offsetWidth;
         var dirty = false;
         if (offsetWidth < chart.plotWidth) {
-            var nextX = (0,
-                highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(optionsChart.spacingLeft,
-                optionsChart.spacing && optionsChart.spacing[3], 0) + offsetWidth;
+            var nextX = ((_c = (_b = optionsChart.spacingLeft) !== null && _b !== void 0 ? _b : (optionsChart.spacing && optionsChart.spacing[3])) !== null && _c !== void 0 ? _c : 0) + offsetWidth;
             var diff = nextX - chart.spacingBox.x;
             chart.spacingBox.x = nextX;
             chart.spacingBox.width -= diff;
@@ -6403,6 +6440,7 @@ StockTools_StockTools.compose(G.NavigationBindings);
 StockTools_StockToolsGui.compose(G.Chart, G.NavigationBindings);
 /* harmony default export */ var stock_tools_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/series-on-point
  * @requires highcharts
  *
@@ -14,42 +14,46 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGRenderer"]);
+		module.exports = factory(root["_Highcharts"]["Point"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/series-on-point", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Point"],amd1["SeriesRegistry"],amd1["SVGRenderer"]);});
+		define("highcharts/modules/series-on-point", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Point"],amd1["SVGRenderer"],amd1["SeriesRegistry"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/series-on-point"] = factory(root["_Highcharts"], root["_Highcharts"]["Point"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]["SVGRenderer"]);
+		exports["highcharts/modules/series-on-point"] = factory(root["_Highcharts"]["Point"], root["_Highcharts"]["SVGRenderer"], root["_Highcharts"]["SeriesRegistry"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Point"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]["SVGRenderer"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__540__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Point"], root["Highcharts"]["SVGRenderer"], root["Highcharts"]["SeriesRegistry"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__540__, __WEBPACK_EXTERNAL_MODULE__512__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 260:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
-
-/***/ }),
-
-/***/ 512:
-/***/ (function(module) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 540:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__540__;
+
+/***/ }),
+
+/***/ 512:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__512__;
 
 /***/ }),
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -82,36 +86,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -327,13 +328,19 @@ var DataTableCore = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         var _this = this;
         this.isDataTable = true;
-        this.autoId = !options.id;
+        // Reject IDs that would pollute the prototype of ID-keyed maps.
+        var id = this.isPollutingKey(options.id) ? void 0 : options.id;
+        this.autoId = !id;
         this.columns = {};
-        this.id = (options.id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
+        this.id = (id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
         this.rowCount = 0;
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         var rowCount = 0;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options.columns || {}, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = Math.max(rowCount, column.length);
         });
@@ -344,6 +351,17 @@ var DataTableCore = /** @class */ (function () {
      *  Functions
      *
      * */
+    /**
+     * Checks whether a key would pollute the prototype if used to index a
+     * plain object (e.g. as a column ID or table ID).
+     *
+     * @private
+     * @param {string|undefined} key The key to check.
+     * @return {boolean} True if the key is unsafe to use.
+     */
+    DataTableCore.prototype.isPollutingKey = function (key) {
+        return key === '__proto__' || key === 'constructor';
+    };
     /**
      * Applies a row count to the table by setting the `rowCount` property and
      * adjusting the length of all columns.
@@ -393,14 +411,14 @@ var DataTableCore = /** @class */ (function () {
             });
             this.rowCount = length_1;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
     };
     /**
      * Fetches the given column by the canonical column ID. Simplified version
      * of the full `DataTable.getRow` method, always returning by reference.
      *
-     * @function Highcharts.DataTable#setColumn
+     * @function Highcharts.DataTable#getColumn
      *
      * @param {string} columnId
      * ID of the column to get.
@@ -513,6 +531,10 @@ var DataTableCore = /** @class */ (function () {
         var _this = this;
         var rowCount = this.rowCount;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = column.length;
         });
@@ -551,17 +573,20 @@ var DataTableCore = /** @class */ (function () {
      * @emits #afterSetRows
      */
     DataTableCore.prototype.setRow = function (row, rowIndex, insert, eventDetail) {
-        var _a;
         if (rowIndex === void 0) { rowIndex = this.rowCount; }
         var columns = this.columns,
             indexRowCount = insert ? this.rowCount + 1 : rowIndex + 1,
             rowKeys = Object.keys(row);
         if ((eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
             for (var i = 0, iEnd = rowKeys.length; i < iEnd; i++) {
-                columns[_a = rowKeys[i]] || (columns[_a] = new Array(this.rowCount));
+                var rowKey = rowKeys[i];
+                if (!this.isPollutingKey(rowKey) &&
+                    !Object.hasOwnProperty.call(columns, rowKey)) {
+                    columns[rowKey] = new Array(this.rowCount);
+                }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             if (column) {
                 if (insert) {
                     column = DataTableCore_splice(column, rowIndex, 0, true, [row[columnId]]).array;
@@ -1080,6 +1105,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 Series_SeriesOnPointComposition.compose(G.Series, G.Chart);
 /* harmony default export */ var series_on_point_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

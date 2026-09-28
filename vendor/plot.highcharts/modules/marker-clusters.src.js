@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts JS v13.0.0 (2026-06-11)
+ * @license Highcharts JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/marker-clusters
  * @requires highcharts
  *
@@ -23,12 +23,13 @@
 		root["Highcharts"] = factory(root["Highcharts"]);
 })(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -61,36 +62,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -670,13 +668,19 @@ var DataTableCore = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         var _this = this;
         this.isDataTable = true;
-        this.autoId = !options.id;
+        // Reject IDs that would pollute the prototype of ID-keyed maps.
+        var id = this.isPollutingKey(options.id) ? void 0 : options.id;
+        this.autoId = !id;
         this.columns = {};
-        this.id = (options.id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
+        this.id = (id || (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)());
         this.rowCount = 0;
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
         var rowCount = 0;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(options.columns || {}, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = Math.max(rowCount, column.length);
         });
@@ -687,6 +691,17 @@ var DataTableCore = /** @class */ (function () {
      *  Functions
      *
      * */
+    /**
+     * Checks whether a key would pollute the prototype if used to index a
+     * plain object (e.g. as a column ID or table ID).
+     *
+     * @private
+     * @param {string|undefined} key The key to check.
+     * @return {boolean} True if the key is unsafe to use.
+     */
+    DataTableCore.prototype.isPollutingKey = function (key) {
+        return key === '__proto__' || key === 'constructor';
+    };
     /**
      * Applies a row count to the table by setting the `rowCount` property and
      * adjusting the length of all columns.
@@ -736,14 +751,14 @@ var DataTableCore = /** @class */ (function () {
             });
             this.rowCount = length_1;
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.fireEvent)(this, 'afterDeleteRows', { rowIndex: rowIndex, rowCount: rowCount });
         this.versionTag = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.uniqueKey)();
     };
     /**
      * Fetches the given column by the canonical column ID. Simplified version
      * of the full `DataTable.getRow` method, always returning by reference.
      *
-     * @function Highcharts.DataTable#setColumn
+     * @function Highcharts.DataTable#getColumn
      *
      * @param {string} columnId
      * ID of the column to get.
@@ -856,6 +871,10 @@ var DataTableCore = /** @class */ (function () {
         var _this = this;
         var rowCount = this.rowCount;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+            if (columnId === '__proto__' ||
+                columnId === 'constructor') {
+                return;
+            }
             _this.columns[columnId] = column.slice();
             rowCount = column.length;
         });
@@ -894,17 +913,20 @@ var DataTableCore = /** @class */ (function () {
      * @emits #afterSetRows
      */
     DataTableCore.prototype.setRow = function (row, rowIndex, insert, eventDetail) {
-        var _a;
         if (rowIndex === void 0) { rowIndex = this.rowCount; }
         var columns = this.columns,
             indexRowCount = insert ? this.rowCount + 1 : rowIndex + 1,
             rowKeys = Object.keys(row);
         if ((eventDetail === null || eventDetail === void 0 ? void 0 : eventDetail.addColumns) !== false) {
             for (var i = 0, iEnd = rowKeys.length; i < iEnd; i++) {
-                columns[_a = rowKeys[i]] || (columns[_a] = new Array(this.rowCount));
+                var rowKey = rowKeys[i];
+                if (!this.isPollutingKey(rowKey) &&
+                    !Object.hasOwnProperty.call(columns, rowKey)) {
+                    columns[rowKey] = new Array(this.rowCount);
+                }
             }
         }
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(columns, function (column, columnId) {
             if (column) {
                 if (insert) {
                     column = DataTableCore_splice(column, rowIndex, 0, true, [row[columnId]]).array;
@@ -1011,7 +1033,6 @@ var DataTableCore = /** @class */ (function () {
  * */
 
 
-var animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 
 
 var clusterDefaults = MarkerClusters_MarkerClusterDefaults.cluster;
@@ -1503,7 +1524,8 @@ function seriesAnimateClusterPoint(clusterObj) {
     var series = this,
         chart = series.chart,
         mapView = chart.mapView,
-        animation = animObject((_a = series.options.cluster) === null || _a === void 0 ? void 0 : _a.animation),
+        animation = (0,
+        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((_a = series.options.cluster) === null || _a === void 0 ? void 0 : _a.animation),
         animDuration = animation.duration || 500,
         pointsState = (_b = series.markerClusterInfo) === null || _b === void 0 ? void 0 : _b.pointsState,
         newState = pointsState === null || pointsState === void 0 ? void 0 : pointsState.newState,
@@ -2182,7 +2204,7 @@ function seriesIsValidGroupedDataObject(groupedData) {
     if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isObject)(groupedData)) {
         return false;
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(groupedData, function (elem) {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.objectEach)(groupedData, function (elem) {
         result = true;
         if (!(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isArray)(elem) || !elem.length) {
             result = false;
@@ -2367,7 +2389,6 @@ var MarkerClusterScatter = {
  * */
 
 
-var MarkerClusters_animObject = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).animObject;
 
 var defaultOptions = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).defaultOptions;
 
@@ -2417,11 +2438,11 @@ function onAxisSetExtremes() {
         var series = _a[_i];
         if (series.markerClusterInfo) {
             var clusterOptions = series.options.cluster;
-            animationDuration = (MarkerClusters_animObject((clusterOptions || {}).animation).duration ||
+            animationDuration = ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.animObject)((clusterOptions || {}).animation).duration ||
                 0);
         }
     }
-    (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.syncTimeout)(function () {
+    ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.syncTimeout)(function () {
         if (chart.tooltip) {
             chart.tooltip.destroy();
         }
@@ -2627,6 +2648,7 @@ MarkerClusters_MarkerClusters.compose(G.Axis, G.Chart, G.defaultOptions, G.Serie
 MarkerClusters_MarkerClusterSymbols.compose(G.SVGRenderer);
 /* harmony default export */ var marker_clusters_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

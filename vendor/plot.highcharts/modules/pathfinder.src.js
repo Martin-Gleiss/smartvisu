@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts Gantt JS v13.0.0 (2026-06-11)
+ * @license Highcharts Gantt JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/pathfinder
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Point"]);
+		module.exports = factory(root["_Highcharts"]["Point"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/pathfinder", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Point"]);});
+		define("highcharts/modules/pathfinder", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Point"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/pathfinder"] = factory(root["_Highcharts"], root["_Highcharts"]["Point"]);
+		exports["highcharts/modules/pathfinder"] = factory(root["_Highcharts"]["Point"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Point"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__260__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Point"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__260__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 260:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__260__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -602,7 +601,7 @@ function getCurvedPath(pathParams) {
 }
 /**
  * General function to apply corner radius to a path
- * @private
+ * @internal
  */
 function applyRadius(path, r) {
     var d = [];
@@ -659,10 +658,12 @@ function applyRadius(path, r) {
     }
     return d;
 }
+/** @internal */
 var PathUtilities = {
     applyRadius: applyRadius,
     getLinkPath: getLinkPath
 };
+/** @internal */
 /* harmony default export */ var Series_PathUtilities = (PathUtilities);
 
 ;// ./code/es5/es-modules/Gantt/PathfinderAlgorithms.js
@@ -677,7 +678,6 @@ var PathUtilities = {
  *
  *
  * */
-
 
 
 /* *
@@ -877,6 +877,7 @@ function straight(start, end) {
  *         path.
  */
 var simpleConnect = function (start, end, options) {
+    var _a;
     var segments = [],
         chartObstacles = options.chartObstacles,
         startObstacleIx = findObstacleFromPoint(chartObstacles,
@@ -884,9 +885,7 @@ var simpleConnect = function (start, end, options) {
         endObstacleIx = findObstacleFromPoint(chartObstacles,
         end);
     var endSegment,
-        dir = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.startDirectionX,
-        abs(end.x - start.x) > abs(end.y - start.y)) ? 'x' : 'y',
+        dir = ((_a = options.startDirectionX) !== null && _a !== void 0 ? _a : (abs(end.x - start.x) > abs(end.y - start.y))) ? 'x' : 'y',
         startObstacle,
         endObstacle,
         waypoint,
@@ -1016,6 +1015,7 @@ simpleConnect.requiresObstacles = true;
  *         path.
  */
 function fastAvoid(start, end, options) {
+    var _a;
     /*
         Algorithm rules/description
         - Find initial direction
@@ -1036,9 +1036,7 @@ function fastAvoid(start, end, options) {
             - When going around the end obstacle we should not always go the
                 shortest route, rather pick the one closer to the end point
     */
-    var dirIsX = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.startDirectionX,
-        abs(end.x - start.x) > abs(end.y - start.y)),
+    var dirIsX = (_a = options.startDirectionX) !== null && _a !== void 0 ? _a : (abs(end.x - start.x) > abs(end.y - start.y)),
         dir = dirIsX ? 'x' : 'y',
         endSegments = [], 
         // Boundaries to stay within. If beyond soft boundary, prefer to
@@ -2042,8 +2040,7 @@ function Pathfinder_getPointBB(point) {
  */
 function calculateObstacleDistance(a, b, bbMargin) {
     // Count the distance even if we are slightly off
-    var margin = (0,
-        highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(bbMargin, 10),
+    var margin = (bbMargin !== null && bbMargin !== void 0 ? bbMargin : 10),
         yOverlap = a.yMax + margin > b.yMin - margin &&
             a.yMin - margin < b.yMax + margin,
         xOverlap = a.xMax + margin > b.xMin - margin &&
@@ -2298,9 +2295,9 @@ var Pathfinder = /** @class */ (function () {
      * with xMin, xMax, yMin and yMax properties.
      */
     Pathfinder.prototype.getChartObstacles = function (options) {
+        var _a;
         var series = this.chart.series,
-            margin = (0,
-            highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.algorithmMargin, 0);
+            margin = ((_a = options.algorithmMargin) !== null && _a !== void 0 ? _a : 0);
         var obstacles = [],
             calculatedMargin;
         for (var i = 0, sLen = series.length; i < sLen; ++i) {
@@ -2615,6 +2612,7 @@ composeArrowSymbols(G.SVGRenderer);
 G.Pathfinder.compose(G.Chart, G.Point);
 /* harmony default export */ var pathfinder_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()

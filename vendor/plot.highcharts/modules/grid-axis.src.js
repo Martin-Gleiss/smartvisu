@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Highcharts
 /**
- * @license Highcharts Gantt JS v13.0.0 (2026-06-11)
+ * @license Highcharts Gantt JS v13.1.1 (2026-09-20)
  * @module highcharts/modules/grid-axis
  * @requires highcharts
  *
@@ -14,21 +14,22 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(root["_Highcharts"], root["_Highcharts"]["Axis"]);
+		module.exports = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]);
 	else if(typeof define === 'function' && define.amd)
-		define("highcharts/modules/grid-axis", ["highcharts/highcharts"], function (amd1) {return factory(amd1,amd1["Axis"]);});
+		define("highcharts/modules/grid-axis", ["highcharts/highcharts"], function (amd1) {return factory(amd1["Axis"],amd1);});
 	else if(typeof exports === 'object')
-		exports["highcharts/modules/grid-axis"] = factory(root["_Highcharts"], root["_Highcharts"]["Axis"]);
+		exports["highcharts/modules/grid-axis"] = factory(root["_Highcharts"]["Axis"], root["_Highcharts"]);
 	else
-		root["Highcharts"] = factory(root["Highcharts"], root["Highcharts"]["Axis"]);
-})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__944__, __WEBPACK_EXTERNAL_MODULE__532__) {
+		root["Highcharts"] = factory(root["Highcharts"]["Axis"], root["Highcharts"]);
+})(typeof window === 'undefined' ? this : window, function(__WEBPACK_EXTERNAL_MODULE__532__, __WEBPACK_EXTERNAL_MODULE__944__) {
 return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
+/******/ 	// runtime can't be in strict mode because 'output.globalObject' reads 'this'.
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 532:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__532__;
 
 /***/ }),
@@ -36,6 +37,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__532__;
 /***/ 944:
 /***/ (function(module) {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 
 /***/ })
@@ -68,36 +70,33 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__944__;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function() { return module['default']; } :
+/******/ 			function() { return module; };
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); };
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+!function() {
+"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -125,7 +124,7 @@ var highcharts_Axis_commonjs_highcharts_Axis_commonjs2_highcharts_Axis_root_High
 
 
 
-var dateFormats = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).dateFormats;
+var composed = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).composed, dateFormats = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()).dateFormats;
 
 
 /* *
@@ -160,6 +159,7 @@ function isObject(x) {
 }
 /** @internal */
 function applyGridOptions(axis) {
+    var _a;
     var options = axis.options;
     // Center-align by default
     /*
@@ -167,7 +167,7 @@ function applyGridOptions(axis) {
         options.labels = {};
     }
     */
-    options.labels.align = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(options.labels.align, 'center');
+    options.labels.align = ((_a = options.labels.align) !== null && _a !== void 0 ? _a : 'center');
     // @todo: Check against tickLabelPlacement between/on etc
     /* Prevents adding the last tick label if the axis is not a category
        axis.
@@ -189,8 +189,7 @@ function applyGridOptions(axis) {
  * @internal
  */
 function compose(AxisClass, ChartClass, TickClass) {
-    if (!AxisClass.keepProps.includes('grid')) {
-        AxisClass.keepProps.push('grid');
+    if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pushUnique)(composed, 'Axis.Grid')) {
         AxisClass.prototype.getMaxLabelDimensions = getMaxLabelDimensions;
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.wrap)(AxisClass.prototype, 'unsquish', wrapUnsquish);
         (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.wrap)(AxisClass.prototype, 'getOffset', wrapGetOffset);
@@ -351,16 +350,22 @@ function onAfterGetTitlePosition(e) {
 }
 /** @internal */
 function onAfterInit() {
+    var _a;
     var axis = this;
     var chart = axis.chart,
-        _a = axis.options.grid,
-        gridOptions = _a === void 0 ? {} : _a,
+        _b = axis.options.grid,
+        gridOptions = _b === void 0 ? {} : _b,
         userOptions = axis.userOptions;
     if (gridOptions.enabled) {
         applyGridOptions(axis);
     }
     if (gridOptions.columns) {
-        var columns = axis.grid.columns = [];
+        (_a = axis.grid).columns || (_a.columns = []);
+        var columns = axis.grid.columns;
+        // Destroy existing columns. In a future update we could consider
+        // matching and updating existing columns instead of recreating all.
+        columns.forEach(function (column) { return column.destroy(); });
+        columns.length = 0;
         var columnIndex = axis.grid.columnIndex = 0;
         // Handle columns, each column is a grid axis
         while (++columnIndex < gridOptions.columns.length) {
@@ -631,6 +636,8 @@ function onAfterSetAxisTranslation() {
  * @internal
  */
 function onAfterSetOptions(e) {
+    var _a,
+        _b;
     var options = this.options,
         userOptions = e.userOptions,
         gridOptions = ((options && isObject(options.grid)) ? options.grid : {});
@@ -758,7 +765,7 @@ function onAfterSetOptions(e) {
             }
         }
         // Now merge the combined options into the axis options
-        (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.options, gridAxisOptions);
+        ;(0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.merge)(true, this.options, gridAxisOptions);
         if (this.horiz) {
             /*               _________________________
             Make this:    ___|_____|_____|_____|__|
@@ -766,8 +773,8 @@ function onAfterSetOptions(e) {
                             _________________________
             Into this:    |_____|_____|_____|_____|
                                 ^                 ^    */
-            options.minPadding = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(userOptions.minPadding, 0);
-            options.maxPadding = (0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.pick)(userOptions.maxPadding, 0);
+            options.minPadding = ((_a = userOptions.minPadding) !== null && _a !== void 0 ? _a : 0);
+            options.maxPadding = ((_b = userOptions.maxPadding) !== null && _b !== void 0 ? _b : 0);
         }
         // If borderWidth is set, then use its value for tick and
         // line width.
@@ -803,15 +810,18 @@ function onAfterSetScale() {
  * @internal
  */
 function onAfterTickSize(e) {
-    var _a = this,
-        horiz = _a.horiz,
-        maxLabelDimensions = _a.maxLabelDimensions,
-        _b = _a.options.grid,
-        gridOptions = _b === void 0 ? {} : _b;
-    if (gridOptions.enabled && maxLabelDimensions) {
-        var labelPadding = this.options.labels.distance * 2;
-        var distance = horiz ?
-                (gridOptions.cellHeight ||
+    var _a;
+    var _b = this,
+        horiz = _b.horiz,
+        maxLabelDimensions = _b.maxLabelDimensions,
+        options = _b.options,
+        labels = options.labels,
+        _c = options.grid,
+        grid = _c === void 0 ? {} : _c;
+    if (grid.enabled && maxLabelDimensions) {
+        var labelPadding = ((_a = labels.distance) !== null && _a !== void 0 ? _a : 15) * 2,
+            distance = horiz ?
+                (grid.cellHeight ||
                     labelPadding + maxLabelDimensions.height) :
                 labelPadding + maxLabelDimensions.width;
         if ((0,highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_.isArray)(e.tickSize)) {
@@ -833,9 +843,14 @@ function onChartAfterSetChartSize() {
     });
 }
 /** @internal */
-function onDestroy(e) {
+function onDestroy() {
     var grid = this.grid;
-    (grid.columns || []).forEach(function (column) { return column.destroy(e.keepEvents); });
+    // Axes created before the Gantt module was loaded have no grid
+    // additions to be destroyed (#24644).
+    if (!grid) {
+        return;
+    }
+    (grid.columns || []).forEach(function (column) { return column.destroy(); });
     grid.columns = void 0;
 }
 /**
@@ -856,7 +871,9 @@ function onInit(e) {
     }
     axis.hiddenLabels = [];
     axis.hiddenMarks = [];
-    axis.clippable = false;
+    if (gridOptions.enabled) {
+        axis.clippable = false;
+    }
 }
 /**
  * Center tick labels in cells.
@@ -1054,7 +1071,7 @@ function onTrimTicks() {
             max > beforeLastPos);
     if (gridOptions.enabled === true &&
         !categoryAxis &&
-        (axis.isXAxis || axis.isLinked)) {
+        (axis.isXAxis || axis.linkedParent)) {
         if ((endMoreThanMin || startLessThanMin) && !options.startOnTick) {
             tickPositions[0] = min;
         }
@@ -1284,6 +1301,7 @@ var G = (highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_def
 Axis_GridAxis.compose(G.Axis, G.Chart, G.Tick);
 /* harmony default export */ var grid_axis_src = ((highcharts_commonjs_highcharts_commonjs2_highcharts_root_Highcharts_default()));
 
+}();
 __webpack_exports__ = __webpack_exports__["default"];
 /******/ 	return __webpack_exports__;
 /******/ })()
