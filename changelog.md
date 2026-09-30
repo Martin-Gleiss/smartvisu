@@ -17,6 +17,7 @@
 - the widget "lib.sysinfo" shows the current settings of the options changeable with the request parameters and can be activated in the headline with 'svstatus="1"' (config.ini or request parameter)
 - Fritz!Box-TR064 Service has been extended with the "action" request parameter. Options: "update" (get user interface info incl. update notification) and "deviceinfo" (get device info).
 - new type of "internal" items starting with a "@" character. These items are provided by widgets (e.g. phone.data_updateinfo) and do not get requested from the backend.
+- new docstring property "result" defines the "internal"  items with item types for the documentation, templatechecker and widget assistant
 - fhem driver now supports activity indicator for the websocket (blink until all items received)
 
 ### Improvements
