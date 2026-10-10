@@ -552,6 +552,7 @@ $.widget("sv.plot_period", $.sv.plot_highcharts, {
 
     _update: function(response) {
         // response is: [ [ [t1, y1], [t2, y2] ... ], [ [t1, y1], [t2, y2] ... ], ... ]
+        //DEBUG: console.log('getting update', response)
 
         var chart = this.element.highcharts();
         // window.servertimeoffset should be available now
@@ -844,7 +845,6 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
 
         var diff = parseFloat(this.options.min);
         var range = parseFloat(this.options.max - this.options.min);
-//      var percent = (((response - diff) * 100) / range);
         var percent = 0;
 
         var styles = [];
@@ -860,42 +860,21 @@ $.widget("sv.plot_gauge_angular", $.sv.plot_highcharts, {
            /**
            * ----------  Gauge type = scale  -------------
            */
-                 var bands = [{
-                        outerRadius: '99%',
-                        thickness: 15,
-                        from: percent,
-                        to: 100
-                    }];
+                var bands = [{
+                    outerRadius: '99%',
+                    thickness: 15,
+                    from: 0,
+                    to: 100
+                }];
 
-                if (datastop.length > 0 && color.length > 1)
-                {
-                    for (var j = 0; j < datastop.length; j++) {
-                        bands.push({
-                            outerRadius: '99%',
-                            thickness: 15,
-                            from: j == 0 ? 0 : parseFloat(datastop[j-1]),
-                            to: Math.min(parseFloat(datastop[j]), percent)
-                        });
-                        if(parseFloat(datastop[j]) >= percent)
-                            break;
-                    }
+                if (color.length > 1) {
                     for (var j = 0; j < color.length; j++) {
                         if(color[j] != '')
                             styles.push(".highcharts-plot-band:nth-of-type(" + (j + 2) + ") { fill: " + color[j] + "; fill-opacity: 1; }");
                     }
-
                 }
-                else {
-                    bands.push({
-                        outerRadius: '99%',
-                        thickness: 15,
-                        from: 0,
-                        to: percent,
-                    });
-                    if(color.length > 0)
+                else if(color.length > 0)
                         styles.push(".highcharts-plot-band { fill: " + color[0] + "; fill-opacity: 1; }");
-                }
-
 
                 yaxis[i] = {
                     min: 0,
