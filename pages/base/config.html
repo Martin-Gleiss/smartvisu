@@ -60,7 +60,9 @@
 							<div data-role="collapsible" data-collapsed="false" data-theme="c" data-content-theme="a">
 								<h3>{{ lang('configuration_page', 'interface', 'label') }}</h3>
 								<div style="min-height:245px">
-									{{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+                                    {% if source != 'pages' %}
+                                        {{ forms.config_select(source, values, 'pages', dir('pages', '^(?!base|apps)(.+?)') ) }}
+                                    {% endif %}
 									{% set designdir = dir('designs', '(.+?).css') %} {% if isdir('dropins/designs') %} {% set designdir = designdir|merge(dir('dropins/designs', '(.+?).css')) %} {% endif %}
 									{{ forms.config_row(source, values, 'design',
 										[

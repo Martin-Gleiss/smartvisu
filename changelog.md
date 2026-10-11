@@ -32,6 +32,7 @@
 - smarthomeng and offline driver convert an item to a Date object if value is an ISO timedate string (starting with e.g. 2026-03-29T12:03)
 - offline driver allows shorter time increments for series and checks uniqueness of series in order to avoid duplicate updates
 - smarthomeNG, fhem and ioBroker drivers send a debug warning to console naming the items missing from backend (io.openItems) after 15 seconds
+- to avoid conflicts, the configuraion tab "pages" can not change the configured pages folder any more. I.e. pages must be configured in global or device tab. 
 
 ### Updated Libraries
 - ICS Parser v3.5.1
