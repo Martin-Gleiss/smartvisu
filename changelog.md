@@ -62,8 +62,9 @@
 - smartVISU versions 3.3.1 and older display incorrect version info in the update messages since the deprecated format has been removed from version-info.php
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
 
-### PHP Version tested
-- php 8.5.11
+### PHP Version
+- smartVISU is successfully tested up to php 8.5.12
+- php 8.2.0 is minimum required for the backup function since smartVISU v3.6
 
 
 ## v3.6.0 | 16.12.2025
