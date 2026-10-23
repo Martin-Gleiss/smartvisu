@@ -161,10 +161,10 @@ function twig_docu($filenames = null)
 		$file = file_get_contents($filename);
 
 
-		// Header
+		// Header: package info, copyright ...
 		preg_match_all('#.+?@(.+?)\W+(.*)#i', substr($file, 0, strpos($file, '*/') + 2), $header);
 
-		// Body
+		// Body: all widgets with their docstrings and macro codes
 		preg_match_all('#\/\*\*[\r\n]+(.+?)\*\/\s+?\{\% *macro(.+?)\%\}.*?\{\% *endmacro *\%\}#is', strstr($file, '*/'), $widgets);
 
 		if (\count($widgets[2]) > 0)
@@ -176,7 +176,8 @@ function twig_docu($filenames = null)
 				preg_match_all('#(.+?)\((.*?)(\)|,\s+_)#i', $macro, $desc); // param scanning ends on first param name beginning with _
 				$rettmp['name'] = trim($desc[1][0]);
 				$rettmp['params'] = trim($desc[2][0]);
-
+                
+                // get the docstring of the current widget
 				$docu = $widgets[1][$no];
 
 				$rettmp['desc'] = trim(str_replace('* ', '', substr($docu, 0, strpos($docu, '@'))));
@@ -205,10 +206,15 @@ function twig_docu($filenames = null)
 				foreach ($tags as $tagstring)
 				{
 					preg_match('#^(.+?)\s+({(.+?)(\[\??\])?(\(.*?\))?(=.*?)?}\s+)?(.*)$#is', $tagstring, $tag);
+                    
+                    // filter '*' charcters out of description on line starts and preserve double linefeeds
+                    $search = array(0 => '#[\r\n]+\s*\*\s*[\r\n]+\s*\*#', 1 => '#[\r\n]+\s*\*#');
+                    $replace = array(0 => "\n\n", 1 => '');
+					$tag[7] = preg_replace($search, $replace, trim($tag[7]));
 
 					if ($tag[1] == 'param')
 					{
-						$p = array('desc' => trim($tag[7]));
+ 						$p = array('desc' => trim($tag[7]));
 						if(trim($tag[2]) != '') { // type in doc tag available
 							$p['type'] = trim($tag[3]);
 							if($tag[4] == '[?]')
