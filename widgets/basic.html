@@ -110,29 +110,6 @@
 
 
 /**
-* Used to glue two widgets together. Only needed if you don't use 'Realtime'!
-* If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay.
-*
-* @param {id(nonunique)} id of the element that is being clicked (from)
-* @param {id(nonunique)} id of the element that contains an item that will be changed (to)
-*/
-{% macro glue(id_from, id_to) %}
-    <script>
-        $('#{{ config_pages~'_'~page }}').on('pageinit', function (event, ui) {
-            $('#{{ uid(page, id_from) }}').on('click', function () {
-                window.setTimeout(function () {
-                    var items = widget.explode($('#{{ uid(page, id_to) }}').attr('data-item'));
-                    for (var i = 0; i < items.length; i++) {
-                        io.read(items[i]);
-                    }
-                }, {{ config_delay }});
-            });
-        });
-    </script>
-{% endmacro %}
-
-
-/**
 * show an icon, optionally colored statically or dynamically by item
 *
 * @param {image} icon to show 
@@ -814,3 +791,28 @@
 /******************************************************************************
  * D E P R E C A T E D  W I D G E T S
  ******************************************************************************/
+
+
+/**
+* Used to glue two widgets together. Only needed if you don't use 'Realtime'!
+* If you click the 'from'-widget, the 'to'-widget will be reloaded and updated after a delay.
+*
+* @deprecated as of version 3.7, no replacement.
+*
+* @param {id(nonunique)} id of the element that is being clicked (from)
+* @param {id(nonunique)} id of the element that contains an item that will be changed (to)
+*/
+{% macro glue(id_from, id_to) %}
+    <script>
+        $('#{{ config_pages~'_'~page }}').on('pageinit', function (event, ui) {
+            $('#{{ uid(page, id_from) }}').on('click', function () {
+                window.setTimeout(function () {
+                    var items = widget.explode($('#{{ uid(page, id_to) }}').attr('data-item'));
+                    for (var i = 0; i < items.length; i++) {
+                        io.read(items[i]);
+                    }
+                }, {{ config_delay }});
+            });
+        });
+    </script>
+{% endmacro %}

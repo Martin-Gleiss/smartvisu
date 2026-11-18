@@ -21,4 +21,5 @@ removed:
      - basic.shifter
 
 deprecated:
-     - dummy.dummy     
+     - basic.glue
+     #- dummy.dummy
