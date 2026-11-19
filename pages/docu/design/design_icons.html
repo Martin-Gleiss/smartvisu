@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,220 +12,217 @@
 
 {% block content %}
 
-	<style type="text/css">
-		.box {
-			float: left;
-			width: 130px;
-			border: 1px dotted #666;
-			margin: 5px;
-			text-align: center;
-		}
+    <style type="text/css">
+        .iconBox {
+            float: left;
+            width: 130px;
+            border: 1px dotted #666;
+            margin: 5px;
+            text-align: center;
+        }
 
-		.box div {
-			font-size: 0.8em;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			-o-text-overflow: ellipsis;
-			white-space: nowrap;
-		}
+        .iconBox div {
+            font-size: 0.8em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-		.box svg {
-			margin: 5px;
-		}
-	</style>
-
-
-	<h1>Icons</h1>
-	<div class="docu">
-		{{ lib.smartvisu }} uses two kinds of icons:
-	</div>
+        .iconBox svg {
+            margin: 5px;
+        }
+    </style>
 
 
+    <h1>Icons</h1>
+    <div class="docu">
+        {{ lib.smartvisu }} uses two kinds of icons:
+    </div>
 
-	{% set widgetlist = docu('widgets/icon.html') %}
+    {% set widgetlist = docu('widgets/icon.html') %}
 
-	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
-		<div class="app">
-			<div class="image" style="background-color: #08e;">
-				<span style="font-size: 1.7em;">{{ widgetlist|length }}</span><br /><span class="mini">icons</span></div>
-		</div>
-	</div>
+    <div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
+        <div class="app">
+            <div class="image" style="background-color: #08e;">
+                <span style="font-size: 1.7em;">{{ widgetlist|length }}</span><br /><span class="mini">icons</span></div>
+        </div>
+    </div>
 
-	<h2>1. <u>Dynamic Icons</u></h2>
+    <h2>1. <u>Dynamic Icons</u></h2>
 
-	<div class="docu">
-		Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.<br>
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.arrow('id', 'item_switch', 'item_value', 'min', 'max', 'color') }}
-			{% endverbatim %}{% endfilter %}</code>
-		</div>
-		Their properties change with two items:<br> 
-		- item_value controls the dynamic behavior of the icons<br> 
-		- item_switch should be left empty since clicking on the icon will toggle the related item<br><br>
-		
-		Use the slider to see how the dynamic icon changes.
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.arrow('icon1', '', 'bath.light.value') }}
-				{{ icon.battery('icon2', '', 'bath.light.value') }}
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-	</div>
-	<br />
-	{{ basic.slider('slider1', 'bath.light.value', 0, 255, 1) }}
-	<br />
-
-
-	{% for widget in widgetlist %}
-		<div class="box">
-			{{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value', '', '', ''] ) }}
-
-			<div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
-		</div>
-	{% endfor %}
-
-	<div style="clear:left;"><br /><br /></div>
-
-	<h4>Scaling Dynamic Icons</h4>
-	
-	<div class="docu">
-		In dynamic icons, one property is depending on the item given in the parameter list. 
-		To scale the poperty of the icon to the value range of the item, the parameters min and max are used. Default values are 0 - 255.
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.shutter('icon3', '', 'bath.light.value', '', '', '') }}
-				{{ icon.shutter('icon4', '', 'bath.light.value', '0', '510', '') }}
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-	</div>
-	<br />
-	
-	<div class="box">
-		{{ icon.shutter('icon3', '', 'bath.light.value', '', '', '') }}
-		<div>scaled 0-255</div>
-	</div>
-	<div class="box">
-		{{ icon.shutter('icon4', '', 'bath.light.value', '0', '510', '') }}
-		<div>scaled 0-510</div>
-	</div>
-	<br />
-	<br />
-	<div style="clear:left;"><br /><br /></div>
-	
-	<h4>Coloring Dynamic Icons</h4>
-
-	<div class="docu">
-		Dynamic icons can be displayed in different colors. The color can be specified as hexadecimal value or with 6 icon classes 'icon0' through 'icon5'.
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{{ icon.blade2('icon5', '', 'bath.light.value', '', '', '#f9a028') }}
-				{{ icon.battery('icon6', '', 'bath.light.value', '', '', '#4176a9') }}
-				{{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-	</div>
-	<br />
-	
-		<div class="box">
-			{{ icon.blade2('icon5', '', 'bath.light.value', '', '', '#f9a028') }}
-			<div>icon.blade2</div>
-		</div>
-		<div class="box">
-			{{ icon.battery('icon6', '', 'bath.light.value', '', '', '#4176a9') }}
-			<div>icon.battery</div>
-		</div>
-		<div class="box">
-			{{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
-			<div>icon.meter</div>
-		</div>
-	<br />
-	<br />
-	<div style="clear:left;"><br /><br /></div>
+    <div class="docu">
+        Dynamic icons are based on svg-images. They are directly rendered in the browser and are the fastest way to show dynamic changes.<br>
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                {{ icon.arrow('id', 'item_switch', 'item_value', 'min', 'max', 'color') }}
+            {% endverbatim %}{% endfilter %}</code>
+        </div>
+        Their properties change with two items:<br> 
+        - item_value controls the dynamic behavior of the icons<br> 
+        - item_switch should be left empty since clicking on the icon will toggle the related item<br><br>
+        
+        Use the slider to see how the dynamic icon changes.
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                {{ icon.arrow('icon1', '', 'bath.light.value') }}
+                {{ icon.battery('icon2', '', 'bath.light.value') }}
+            {% endverbatim %}{% endfilter %}</code>
+        </div>
+    </div>
+    <br />
+    {{ basic.slider('slider1', 'bath.light.value', 0, 255, 1) }}
+    <br />
 
 
-	{% set iconlist = dir(icon0, '(.*\.svg)') %}
+    {% for widget in widgetlist %}
+        <div class="iconBox">
+            {{ attribute(icon, widget.name, [widget.name, '', 'bath.light.value', '', '', ''] ) }}
 
-	<div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
-		<div class="app">
-			<div class="image" style="background-color: #08e;">
-				<span style="font-size: 1.7em;">{{ iconlist|length }}</span><br /><span class="mini">icons</span></div>
-		</div>
-	</div>
+            <div {% if widget.author %} title="Author: {{ widget.author }}" {% endif %}>{{ widget.command }}</div>
+        </div>
+    {% endfor %}
+
+    <div style="clear:left;"><br /><br /></div>
+
+    <h4>Scaling Dynamic Icons</h4>
+
+    <div class="docu">
+        In dynamic icons, one property is depending on the item given in the parameter list. 
+        To scale the poperty of the icon to the value range of the item, the parameters min and max are used. Default values are 0 - 255.
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                {{ icon.shutter('icon3', '', 'bath.light.value', '', '', '') }}
+                {{ icon.shutter('icon4', '', 'bath.light.value', '0', '510', '') }}
+                {% endverbatim %}{% endfilter %}</code>
+        </div>
+    </div>
+    <br />
+
+    <div class="iconBox">
+        {{ icon.shutter('icon3', '', 'bath.light.value', '', '', '') }}
+        <div>scaled 0-255</div>
+    </div>
+    <div class="iconBox">
+        {{ icon.shutter('icon4', '', 'bath.light.value', '0', '510', '') }}
+        <div>scaled 0-510</div>
+    </div>
+    <br />
+    <br />
+    <div style="clear:left;"><br /><br /></div>
+
+    <h4>Coloring Dynamic Icons</h4>
+
+    <div class="docu">
+        Dynamic icons can be displayed in different colors. The color can be specified as hexadecimal value or with 6 icon classes 'icon0' through 'icon5'.
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                {{ icon.blade2('icon5', '', 'bath.light.value', '', '', '#f9a028') }}
+                {{ icon.battery('icon6', '', 'bath.light.value', '', '', '#4176a9') }}
+                {{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
+                {% endverbatim %}{% endfilter %}</code>
+        </div>
+    </div>
+    <br />
+
+        <div class="iconBox">
+            {{ icon.blade2('icon5', '', 'bath.light.value', '', '', '#f9a028') }}
+            <div>icon.blade2</div>
+        </div>
+        <div class="iconBox">
+            {{ icon.battery('icon6', '', 'bath.light.value', '', '', '#4176a9') }}
+            <div>icon.battery</div>
+        </div>
+        <div class="iconBox">
+            {{ icon.meter('icon7', '', 'bath.light.value', '', '', 'icon4') }}
+            <div>icon.meter</div>
+        </div>
+    <br />
+    <br />
+    <div style="clear:left;"><br /><br /></div>
 
 
-	<h2>2. <u>Static Icons</u></h2>
+    {% set iconlist = dir(icon0, '(.*\.svg)') %}
 
-	<div class="docu">
-		A static icon may be based on PNG or SVG image. PNG images are not styleable. They must be made available colorized and sorted in subfolders of ./icons by their colors (e.g. ./icons/or). 
-		SVG images get embedded into the html DOM by smartVISU and are then styleable using 6 classes of the configured design or with individual colors. 
-		While "icon0" and "icon1" are the classes for normal and highlighted SVG icons "&#123;&#123; icon0 &#125;&#125;" and "&#123;&#123; icon1 &#125;&#125;" serve as path variables for the icon files in normal and highlighted colors.
-		All icons coming with smartVISU are SVG icons since SVGs are clearly preferred. However, legacy PNG icons are still supported.
+    <div style="float:right; width: 72px; color:#000; text-shadow: 0 1px 1px #fff;">
+        <div class="app">
+            <div class="image" style="background-color: #08e;">
+                <span style="font-size: 1.7em;">{{ iconlist|length }}</span><br /><span class="mini">icons</span></div>
+        </div>
+    </div>
+
+
+    <h2>2. <u>Static Icons</u></h2>
+
+    <div class="docu">
+        A static icon may be based on PNG or SVG image. PNG images are not styleable. They must be made available colorized and sorted in subfolders of ./icons by their colors (e.g. ./icons/or). 
+        SVG images get embedded into the html DOM by smartVISU and are then styleable using 6 classes of the configured design or with individual colors. 
+        While "icon0" and "icon1" are the classes for normal and highlighted SVG icons "&#123;&#123; icon0 &#125;&#125;" and "&#123;&#123; icon1 &#125;&#125;" serve as path variables for the icon files in normal and highlighted colors.
+        All icons coming with smartVISU are SVG icons since SVGs are clearly preferred. However, legacy PNG icons are still supported.
         <br><br>
-		As of v3.3 the loading of icons has changed to improve performance and stylability. It is recommended to use the widget "lib.svgimg" on svg icons in ./icons/ws or ./dropins/icons/ws with classes and styling options. 
-		This method is faster in loading and profits from the cache mechanism. For backward compatibility the img-tags will still receive long-term support. 
-		<div class="twig">
-			<h5 style="margin-top: 5px;">normal:</h5>
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        As of v3.3 the loading of icons has changed to improve performance and stylability. It is recommended to use the widget "lib.svgimg" on svg icons in ./icons/ws or ./dropins/icons/ws with classes and styling options. 
+        This method is faster in loading and profits from the cache mechanism. For backward compatibility the img-tags will still receive long-term support. 
+        <div class="twig">
+            <h5 style="margin-top: 5px;">normal:</h5>
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				{{ lib.svgimg('', 'light_light', 'icon0') }}
-				<img class="icon" src="{{ icon0 }}light_light.svg" />
-				<img class="icon" src="{{ icon0 }}light_light.png" />
-				
-				{% endverbatim %}{% endfilter %}</code>
+                {{ lib.svgimg('', 'light_light', 'icon0') }}
+                <img class="icon" src="{{ icon0 }}light_light.svg" />
+                <img class="icon" src="{{ icon0 }}light_light.png" />
+                
+                {% endverbatim %}{% endfilter %}</code>
 
-			<h5>highlighted:</h5>
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            <h5>highlighted:</h5>
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-				{{ lib.svgimg('', 'light_light', 'icon1') }}
-				{{ lib.svgimg('', 'light_light', '', 'fill:red; stroke:red;') }}
-				<img class="icon icon1" src="{{ icon0 }}light_light.svg" />
-				<img class="icon" src="{{ icon1 }}light_light.png" />
-				
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-	</div>
+                {{ lib.svgimg('', 'light_light', 'icon1') }}
+                {{ lib.svgimg('', 'light_light', '', 'fill:red; stroke:red;') }}
+                <img class="icon icon1" src="{{ icon0 }}light_light.svg" />
+                <img class="icon" src="{{ icon1 }}light_light.png" />
+                
+                {% endverbatim %}{% endfilter %}</code>
+        </div>
+    </div>
 
 
-	<h5>Examples</h5>
+    <h5>Examples</h5>
 
-	<div class="docu">
-		Icons located in "{{ icon0 }}"
-		<br/><b>Important:</b> These images are available as .svg-image only. By default smartVISU does not come with .png-images. 
-	</div>
+    <div class="docu">
+        Icons located in "{{ icon0 }}"
+        <br/><b>Important:</b> These images are available as .svg-image only. By default smartVISU does not come with .png-images. 
+    </div>
 
-	{% set cat = 'au' %}
-	{% for file in  iconlist %}
-		{% if cat != file.name|slice(0, 2) %}
-			<div style="clear:left;"><br /><br /></div>
-			{% set cat = file.name|slice(0, 2) %}
-		{% endif %}
-		<div class="box">
-			<a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
-			<div>{{ file.name }}</div>
-		</div>
-	{% endfor %}
-	<div style="clear:left;"><br /><br /></div>
-	
-	<div class="docu">
-			Custom SVG icons provided by you in "dropins/{{ icon0 }}" 
-	</div>
-	{% set iconlist = dir('dropins/'~icon0, '(.*\.svg)') %}
-	{% for file in  iconlist %}
-		<div class="box">
-			<a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
-			<div>{{ file.name }}</div>
-		</div>
-	{% endfor %}
-	
+    {% set cat = 'au' %}
+    {% for file in  iconlist %}
+        {% if cat != file.name|slice(0, 2) %}
+            <div style="clear:left;"><br /><br /></div>
+            {% set cat = file.name|slice(0, 2) %}
+        {% endif %}
+        <div class="iconBox">
+            <a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
+            <div>{{ file.name }}</div>
+        </div>
+    {% endfor %}
+    <div style="clear:left;"><br /><br /></div>
 
-	<script type="text/javascript">
-		$(document).on('vmouseover', '.box svg', function () {
-			$(this).addClass('icon1');
-		});
-		$(document).on('vmouseout', '.box svg', function () {
-			$(this).removeClass('icon1');
-		});
-	</script>
+    <div class="docu">
+            Custom SVG icons provided by you in "dropins/{{ icon0 }}" 
+    </div>
+    {% set iconlist = dir('dropins/'~icon0, '(.*\.svg)') %}
+    {% for file in  iconlist %}
+        <div class="iconBox">
+            <a title="{{ file.name }}"> {{ lib.svgimg('', file.name, 'icon0') }} </a>
+            <div>{{ file.name }}</div>
+        </div>
+    {% endfor %}
+
+
+    <script type="text/javascript">
+        $(document).on('vmouseover', '.iconBox svg', function () {
+            $(this).addClass('icon1');
+        });
+        $(document).on('vmouseout', '.iconBox svg', function () {
+            $(this).removeClass('icon1');
+        });
+    </script>
 {% endblock %}
-
