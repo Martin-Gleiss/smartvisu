@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -23,9 +23,9 @@
 
 Single input
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.input('', 'input', '', '', '', '', '', '', 'Single Input') }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -34,9 +34,9 @@ Single input
 
 Multiple input with duration and date
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.input('', ['input1', 'input2'], ['durationflip', 'date'], ['', '5'], ['', '10'], '', '', '', 'Multi Input', ['1', '2']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">

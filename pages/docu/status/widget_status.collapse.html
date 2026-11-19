@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -17,125 +17,119 @@
 You may use this widget to hide or collapse some html or show / open it. To bind a div to the widget, use the "data-bind" attribute in the div - tag.
 In this example the div is bound to the status.collapse and will be controled by it. The additional class="hide" will hide the div at startup.
 <div class="twig">
-	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-		{{ status.collapse('w1', 'bath.alert.info', '0', 'hide') }}
-		<div class="hide" data-bind="w1">
-			...
-		</div>
+        {{ status.collapse('w1', 'bath.alert.info', '0', 'hide') }}
+        <div class="hide" data-bind="w1">
+            ...
+        </div>
 
-		{% endverbatim %}{% endfilter %}
-	</code>
+    {% endverbatim %}{% endfilter %}</code>
 </div>
 
 Use it with simple html, to show and hide a <b>div</b>:<br />
 <div class="html">
-	{{ basic.flip('f1', 'bath.alert.info') }}<br />
-	{{ status.collapse('w1', 'bath.alert.info', '', 'hide') }}
+    {{ basic.flip('f1', 'bath.alert.info') }}<br />
+    {{ status.collapse('w1', 'bath.alert.info', '', 'hide') }}
 
-	<div class="hide" data-bind="w1">
-		Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.svg" alt="sample icon" /> ...
-	</div>
+    <div class="hide" data-bind="w1">
+        Every simple html-code could be collapsed ... with text and icons <img class="icon" src="{{ icon0 }}audio_audio.svg" alt="sample icon" /> ...
+    </div>
 </div>
 
 Or use it to show and hide a <b>popup</b>:<br />
 <div class="twig">
-	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        <div id="status-popup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
+            .... code for the popup
+        </div>
 
-	<div id="status-popup" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
-		.... code for the popup
-	</div>
-
-	{{ status.collapse('w2', 'bath.alert.warning') }}
-
-		{% endverbatim %}{% endfilter %}
-	</code>
+        {{ status.collapse('w2', 'bath.alert.warning') }}
+    {% endverbatim %}{% endfilter %}</code>
 </div>
 <div class="html">
-	{{ basic.flip('f2', 'bath.alert.warning') }}<br />
+    {{ basic.flip('f2', 'bath.alert.warning') }}<br />
 
-	<div id="status-popup1" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
-		<div data-role="header" data-theme="c"><h1>Popup</h1></div>
-		<p>... or a popup ...</p>
+    <div id="status-popup1" class="alert" data-bind="w2" data-role="popup" data-overlay-theme="a">
+        <div data-role="header" data-theme="c"><h1>Popup</h1></div>
+        <p>... or a popup ...</p>
 
-		<div class="control">
-			<span class="stamp"></span>
-			<a onClick="$('#status-popup1').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
-		</div>
-	</div>
+        <div class="control">
+            <span class="stamp"></span>
+            <a onClick="$('#status-popup1').popup('close');" class="ui-mini" data-icon="check" data-iconpos="top" data-role="button" data-inline="true">OK</a>
+        </div>
+    </div>
 
-	{{ status.collapse('w2', 'bath.alert.warning') }}
+    {{ status.collapse('w2', 'bath.alert.warning') }}
 
 </div>
 
 Or use it to show and hide collapsible <b>sections</b>:<br />
 <div class="twig">
-	<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ status.collapse('w3', 'bath.alert.error') }}
 
-	{{ status.collapse('w3', 'bath.alert.error') }}
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-bind="w3" data-role="collapsible" data-collapsed="false">
+                    <h3>Block</h3>
 
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-			<div data-bind="w3" data-role="collapsible" data-collapsed="false">
-				<h3>Block</h3>
+                    <p>Content</p>
+                </div>
 
-				<p>Content</p>
-			</div>
+            </div>
+        </div>
 
-		</div>
-	</div>
-
-		{% endverbatim %}{% endfilter %}
-	</code>
+    {% endverbatim %}{% endfilter %}</code>
 </div>
 <div class="html">
-	{{ basic.flip('f3', 'bath.alert.error') }}<br />
-	{{ status.collapse('w3', 'bath.alert.error') }}
+    {{ basic.flip('f3', 'bath.alert.error') }}<br />
+    {{ status.collapse('w3', 'bath.alert.error') }}
 
-	<div class="block">
-		<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+    <div class="block">
+        <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-			<div data-bind="w3" data-role="collapsible" data-collapsed="false">
-				<h3>Block</h3>
+            <div data-bind="w3" data-role="collapsible" data-collapsed="false">
+                <h3>Block</h3>
 
-				<p>Content</p>
-			</div>
+                <p>Content</p>
+            </div>
 
-		</div>
-	</div>
+        </div>
+    </div>
 
 </div>
 
 A list of values can be used to make collapsing more flexible <br>
 Select a value to show the effects.
-	{{ basic.select('s1', 'bath.multistate', 'mini', [0, 1, '2', 3, 4], '', [0, 1, 2, 3, 4] ) }}<br>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ status.collapse('w4', 'bath.multistate', [1, 2, 4]) }}
-			{{ status.collapse('w5', 'bath.multistate', [0, 3]) }}
-	
-			<div class="hide" data-bind="w4">
-				{{ basic.symbol('', 'bath.multistate', '', ['secur_locked', 'audio_sound'], [0, 3]) }}
-				This section is collapsed if values match 1, 2 or 4  
-			</div>
-			<div class="hide" data-bind="w5">
-				Now you've been choosing 1, 2 or 4. 
-				{{ basic.symbol('', 'bath.multistate', '', ['audio_play', 'audio_pause', 'audio_stop'], [1, 2, 4]) }}
-			</div>	
-		{% endverbatim %}{% endfilter %} </code>
-	</div>
+    {{ basic.select('s1', 'bath.multistate', 'mini', [0, 1, '2', 3, 4], '', [0, 1, 2, 3, 4] ) }}<br>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ status.collapse('w4', 'bath.multistate', [1, 2, 4]) }}
+            {{ status.collapse('w5', 'bath.multistate', [0, 3]) }}
+
+            <div class="hide" data-bind="w4">
+                {{ basic.symbol('', 'bath.multistate', '', ['secur_locked', 'audio_sound'], [0, 3]) }}
+                This section is collapsed if values match 1, 2 or 4  
+            </div>
+            <div class="hide" data-bind="w5">
+                Now you've been choosing 1, 2 or 4. 
+                {{ basic.symbol('', 'bath.multistate', '', ['audio_play', 'audio_pause', 'audio_stop'], [1, 2, 4]) }}
+            </div>    
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
 
-	{{ status.collapse('w4', 'bath.multistate', [1, 2, 4]) }}
-	{{ status.collapse('w5', 'bath.multistate', [0, 3]) }}
-	
-	Result: 
+    {{ status.collapse('w4', 'bath.multistate', [1, 2, 4]) }}
+    {{ status.collapse('w5', 'bath.multistate', [0, 3]) }}
+    
+    Result: 
 <div class="hide" data-bind="w4">
-		{{ basic.symbol('', 'bath.multistate', '', ['secur_locked', 'audio_sound'], [0, 3]) }}
-		This section is collapsed if values match 1, 2 or 4  
+        {{ basic.symbol('', 'bath.multistate', '', ['secur_locked', 'audio_sound'], [0, 3]) }}
+        This section is collapsed if values match 1, 2 or 4  
 </div>
 <div class="hide" data-bind="w5">
-		Now you've been choosing 1, 2 or 4. {{ basic.symbol('', 'bath.multistate', '', ['audio_play', 'audio_pause', 'audio_stop'], [1, 2, 4]) }}
-</div>	
+        Now you've been choosing 1, 2 or 4. {{ basic.symbol('', 'bath.multistate', '', ['audio_play', 'audio_pause', 'audio_stop'], [1, 2, 4]) }}
+</div>    
 
 {% endblock %}

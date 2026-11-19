@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Onkel Andy
-* @copyright   2017 - 2020
+* @copyright   2017 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -13,34 +13,34 @@
 {% block example %}
 <script>
 $( document ).ready(function() {
-		 io.write('item_play', 1);
-		 io.write('item_pause', 0);
-		 io.write('item_stop', 0);
-	});
+         io.write('item_play', 1);
+         io.write('item_pause', 0);
+         io.write('item_stop', 0);
+    });
 
 </script>
 
-	<h5>Example</h5>
-	Simple implementation of the widget. Try with your own audio/videoplayer for better results.
+    <h5>Example</h5>
+    Simple implementation of the widget. Try with your own audio/videoplayer for better results.
 
-	<div>Use these switches to simulate the items. Change playmode by using the icon below: <br />
-		{{ basic.stateswitch('', 'item_play', 'icon', '', 'audio_play') }}&nbsp;
-		{{ basic.stateswitch('', 'item_pause', 'icon', '', 'audio_pause') }}&nbsp;
-		{{ basic.stateswitch('', 'item_stop', 'icon', '', 'audio_stop') }}
-	</div>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <div>Use these switches to simulate the items. Change playmode by using the icon below: <br />
+        {{ basic.stateswitch('', 'item_play', 'icon', '', 'audio_play') }}&nbsp;
+        {{ basic.stateswitch('', 'item_pause', 'icon', '', 'audio_pause') }}&nbsp;
+        {{ basic.stateswitch('', 'item_stop', 'icon', '', 'audio_stop') }}
+    </div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.playpause('', 'item_play', 'item_pause', 'item_stop') }}
+            {{ multimedia.playpause('', 'item_play', 'item_pause', 'item_stop') }}
 
-			{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-	<div class="block">
+            {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+    <div class="block">
 
-			{{ multimedia.playpause('', 'item_play', 'item_pause', 'item_stop') }}
-	</div>
-	</div>
+            {{ multimedia.playpause('', 'item_play', 'item_pause', 'item_stop') }}
+    </div>
+    </div>
 
 
 {% endblock %}

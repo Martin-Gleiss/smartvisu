@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,43 +12,39 @@
 
 {% block example %}
 
-	<h5>Please note</h5>
-	<p>This plot uses historical data series. Not all backends/drivers do support this.</p>
+    <h5>Please note</h5>
+    <p>This plot uses historical data series. Not all backends/drivers do support this.</p>
 
-	<h5>Example</h5>
-	<code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state') }}
-		{{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '50', '3d', 'now', 'on') }}
-	{% endverbatim %}{% endfilter %}</code>
+    <h5>Example</h5>
+    <code class="twig prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state') }}
+        {{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '50', '3d', 'now', 'on') }}
+    {% endverbatim %}{% endfilter %}</code>
 
-	<div class="html">
+    <div class="html">
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>room temperature plot</h3>
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>room temperature plot</h3>
 
-					{{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '', '', '') }}
+                    {{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '', '', '') }}
 
-				</div>
+                </div>
 
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>plot for 3 days with less datapoints, using backend's <i>on</i> function for state</h3>
+                    {{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '50', '3d', 'now', 'on') }}
+                </div>
+            </div>
+        </div>
 
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>plot for 3 days with less datapoints, using backend's <i>on</i> function for state</h3>
-
-					{{ plot.rtr('', 'bath.plot.temp_actual', 'bath.plot.temp_set', 'bath_plot_state', '50', '3d', 'now', 'on') }}
-
-				</div>
-
-			</div>
-		</div>
-
-	</div>
+    </div>
 
 {% endblock %}

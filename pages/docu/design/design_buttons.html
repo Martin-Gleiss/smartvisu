@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,180 +12,179 @@
 
 {% block content %}
 
-	<h1>Buttons</h1>
+    <h1>Buttons</h1>
+
+    <div class="docu">
+
+        Here are some examples to show buttons available in {{ lib.smartVISU }} <br />
+
+        <h4>Examples</h4>
+
+        To improve readability in the code blocks, the item names are replaced with 'myItem'.
+
+        <br /><br />
+
+        A simple button: inline pic, only text, inline pic and text, SVG pic and text - each in sizes 'mini' and 'midi'.<br />
+        "Inline pics" are jQuery symbols originally delivered inline via CSS. Now, these are SVG pics with prefix "jquery_" but for backward compatibility reasons the prefix can be omitted.
+        
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+
+                {{ basic.stateswitch('', 'myItem', '', '', 'grid') }}
+                {{ basic.stateswitch('', 'myItem', '', '', '','Up') }}
+                {{ basic.stateswitch('', 'myItem', '', '', 'grid', 'Up') }}
+                {{ basic.stateswitch('', 'myItem', '', '', 'control_arrow_down', 'Down') }}
+
+                {{ basic.stateswitch('', 'myItem', 'midi', '', 'grid') }}
+                {{ basic.stateswitch('', 'myItem', 'midi', '', '', 'Up') }}
+                {{ basic.stateswitch('', 'myItem', 'midi', '', 'grid', 'Up') }}
+                {{ basic.stateswitch('', 'myItem', 'midi', 0, 'control_arrow_down', 'Down') }}
+
+                {% endverbatim %}{% endfilter %}</code>
+        </div>
+        <div class="html">
+            {{ basic.stateswitch('', 'bath.light.switch', '', '', 'grid') }}
+            {{ basic.stateswitch('', 'bath.light.switch', '', '', '','Up') }}
+            {{ basic.stateswitch('', 'bath.light.switch', '', '', 'grid', 'Up') }}
+            {{ basic.stateswitch('', 'bath.light.switch', '', '', 'control_arrow_down', 'Down') }}
+
+            {{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'grid') }}
+            {{ basic.stateswitch('', 'bath.light.switch', 'midi', '', '', 'Up') }}
+            {{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'grid', 'Up') }}
+            {{ basic.stateswitch('', 'bath.light.switch', 'midi', 0, 'control_arrow_down', 'Down') }}
+        </div>
 
 
-	<div class="docu">
+        An alternating switch with two SVG pics - in sizes 'mini' and 'midi'
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-		Here are some examples to show buttons available in {{ lib.smartVISU }} <br />
+                {{ basic.stateswitch('', 'myItem', '', '', ['control_arrow_up','control_arrow_down']) }}
+                {{ basic.stateswitch('', 'myItem', 'midi', '', ['control_arrow_up', 'control_arrow_down']) }}
 
-		<h4>Examples</h4>
+                {% endverbatim %}{% endfilter %}</code>
+        </div>
+        <div class="html">
+            {{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up','control_arrow_down']) }}
+            {{ basic.stateswitch('', 'bath.light.switch', 'midi', '', ['control_arrow_up', 'control_arrow_down']) }}
+        </div>
 
-		To improve readability, the items are replaced with '...'.
+    <h5>Available sizes</h5>
+    
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.stateswitch('', 'myItem', ...) }}
+            {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
+            <div class="ui-block-a"></div>
+            <div class="ui-block-b"><b>'mirco'</b></div>
+            <div class="ui-block-c"><b>'mini'</b></div>
+            <div class="ui-block-d"><b>'midi'</b></div>
+        </div>
 
-		<br /><br />
+        <div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
+            <div class="ui-block-a">only txt</div>
+            <div class="ui-block-b">{{ basic.stateswitch('', 'bath.light.switch', 'micro', '', '', 'On') }}</div>
+            <div class="ui-block-c">{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', '', 'On') }}</div>
+            <div class="ui-block-d">{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', '', 'On') }}</div>
+        </div>
 
-		A simple button: only pic, only text, pic and text, big icon (and text as hover) in 'mini' and 'midi'
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        <div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
+            <div class="ui-block-a">only pic (inline)</div>
+            <div class="ui-block-b">{{ basic.stateswitch('', 'bath.light.switch', 'micro', '', 'grid') }}</div>
+            <div class="ui-block-c">{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'grid') }}</div>
+            <div class="ui-block-d">{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'grid') }}</div>
+        </div>
 
-				{{ basic.stateswitch('single1', '...', '', '', 'grid') }}
-				{{ basic.stateswitch('single2', '...', '', '', '','Up') }}
-				{{ basic.stateswitch('single3', '...', '', '', 'grid', 'Up') }}
-				{{ basic.stateswitch('single4', '...', '', '', 'control_arrow_down.svg', 'Down') }}
+        <div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
+            <div class="ui-block-a">only pic (icon)</div>
+            <div class="ui-block-b">{{ basic.stateswitch('', 'bath.light.switch', 'micro', '', 'control_on_off') }}</div>
+            <div class="ui-block-c">{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'control_on_off') }}</div>
+            <div class="ui-block-d">{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'control_on_off') }}</div>
+        </div>
 
-				{{ basic.stateswitch('single5', '...', 'midi', '', 'grid') }}
-				{{ basic.stateswitch('single6', '...', 'midi', '', '', 'Up') }}
-				{{ basic.stateswitch('single7', '...', 'midi', '', 'grid', 'Up') }}
-				{{ basic.stateswitch('single8', '...', 'midi', 0, 'control_arrow_down.svg', 'Down') }}
+        <div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
+            <div class="ui-block-a">txt and pic (inline)</div>
+            <div class="ui-block-b"></div>
+            <div class="ui-block-c">{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'grid', 'On') }}</div>
+            <div class="ui-block-d">{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'grid', 'On') }}</div>
+        </div>
 
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-		<div class="html">
-			{{ basic.stateswitch('single1', 'bath.light.switch', '', '', 'grid') }}
-			{{ basic.stateswitch('single2', 'bath.light.switch', '', '', '','Up') }}
-			{{ basic.stateswitch('single3', 'bath.light.switch', '', '', 'grid', 'Up') }}
-			{{ basic.stateswitch('single4', 'bath.light.switch', '', '', 'control_arrow_down.svg', 'Down') }}
+        <div class="ui-grid-c">
+            <div class="ui-block-a">txt and pic (icon)</div>
+            <div class="ui-block-b"></div>
+            <div class="ui-block-c">{{ basic.stateswitch('', 'bath.light.switch', 'mini', '', 'control_on_off', 'On') }}</div>
+            <div class="ui-block-d">{{ basic.stateswitch('', 'bath.light.switch', 'midi', '', 'control_on_off', 'On') }}</div>
+        </div>
+    </div>
 
-			{{ basic.stateswitch('single5', 'bath.light.switch', 'midi', '', 'grid') }}
-			{{ basic.stateswitch('single6', 'bath.light.switch', 'midi', '', '', 'Up') }}
-			{{ basic.stateswitch('single7', 'bath.light.switch', 'midi', '', 'grid', 'Up') }}
-			{{ basic.stateswitch('single8', 'bath.light.switch', 'midi', 0, 'control_arrow_down.svg', 'Down') }}
-		</div>
+    With other inline pictures: <br />
+    <code>
+        arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search
+    </code>
 
+    <div class="html">
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'arrow-l') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'arrow-r') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'arrow-u') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'arrow-d') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'delete') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'plus') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'minus') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'check') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'gear') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'refresh') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'forward') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'back') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'grid') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'star') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'alert') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'info') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'home') }}
+        {{ basic.stateswitch('', 'bath.light.switch', '', '', 'search') }}
+    </div>
 
-		A switch with two pics 'mini' and 'midi'
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        Grouping
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            <div data-role="controlgroup" data-type="horizontal">
+                {{ basic.stateswitch('', 'myItem', '', 0, 'plus', 'Up') }}
+                {{ basic.stateswitch('', 'myItem', '', 1, 'minus', 'Down') }}
+                {{ basic.stateswitch('', 'myItem', '', '', ['control_arrow_up', 'control_arrow_down']) }}
+            </div>
 
-				{{ basic.stateswitch('dual0', '...', '', '', ['control_arrow_up.svg','control_arrow_down.svg']) }}
-				{{ basic.stateswitch('dual1', '...', 'midi', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-
-				{% endverbatim %}{% endfilter %}</code>
-		</div>
-		<div class="html">
-			{{ basic.stateswitch('dual0', 'bath.light.switch', '', '', ['control_arrow_up.svg','control_arrow_down.svg']) }}
-			{{ basic.stateswitch('dual1', 'bath.light.switch', 'midi', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-		</div>
-
-	<h5>Examples</h5>
-
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.stateswitch('b1', 'bath.light.switch', ...) }}
-			{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
-			<div class="ui-block-a"></div>
-			<div class="ui-block-b"><b>'mirco'</b></div>
-			<div class="ui-block-c"><b>'mini'</b></div>
-			<div class="ui-block-d"><b>'midi'</b></div>
-		</div>
-
-		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
-			<div class="ui-block-a">only txt</div>
-			<div class="ui-block-b">{{ basic.stateswitch('b11', 'bath.light.switch', 'micro', '', '', 'On') }}</div>
-			<div class="ui-block-c">{{ basic.stateswitch('b12', 'bath.light.switch', 'mini', '', '', 'On') }}</div>
-			<div class="ui-block-d">{{ basic.stateswitch('b13', 'bath.light.switch', 'midi', '', '', 'On') }}</div>
-		</div>
-
-		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
-			<div class="ui-block-a">only pic (inline)</div>
-			<div class="ui-block-b">{{ basic.stateswitch('b21', 'bath.light.switch', 'micro', '', 'grid') }}</div>
-			<div class="ui-block-c">{{ basic.stateswitch('b22', 'bath.light.switch', 'mini', '', 'grid') }}</div>
-			<div class="ui-block-d">{{ basic.stateswitch('b23', 'bath.light.switch', 'midi', '', 'grid') }}</div>
-		</div>
-
-		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
-			<div class="ui-block-a">only pic (icon)</div>
-			<div class="ui-block-b">{{ basic.stateswitch('b31', 'bath.light.switch', 'micro', '', 'control_on_off.svg') }}</div>
-			<div class="ui-block-c">{{ basic.stateswitch('b32', 'bath.light.switch', 'mini', '', 'control_on_off.svg') }}</div>
-			<div class="ui-block-d">{{ basic.stateswitch('b33', 'bath.light.switch', 'midi', '', 'control_on_off.svg') }}</div>
-		</div>
-
-		<div class="ui-grid-c" style="border-bottom: 1px dotted #888;">
-			<div class="ui-block-a">txt and pic (inline)</div>
-			<div class="ui-block-b"></div>
-			<div class="ui-block-c">{{ basic.stateswitch('b42', 'bath.light.switch', 'mini', '', 'grid', 'On') }}</div>
-			<div class="ui-block-d">{{ basic.stateswitch('b43', 'bath.light.switch', 'midi', '', 'grid', 'On') }}</div>
-		</div>
-
-		<div class="ui-grid-c">
-			<div class="ui-block-a">txt and pic (icon)</div>
-			<div class="ui-block-b"></div>
-			<div class="ui-block-c">{{ basic.stateswitch('b52', 'bath.light.switch', 'mini', '', 'control_on_off.svg', 'On') }}</div>
-			<div class="ui-block-d">{{ basic.stateswitch('b53', 'bath.light.switch', 'midi', '', 'control_on_off.svg', 'On') }}</div>
-		</div>
-	</div>
-
-	With other inline pictures: <br />
-	<code>
-		arrow-l, arrow-r, arrow-u, arrow-d, delete, plus, minus, check, gear, refresh, forward, back, grid, star, alert, info, home, search
-	</code>
-
-	<div class="html">
-		{{ basic.stateswitch('button2', 'bath.light.switch', '', '', 'arrow-l') }}
-		{{ basic.stateswitch('button3', 'bath.light.switch', '', '', 'arrow-r') }}
-		{{ basic.stateswitch('button4', 'bath.light.switch', '', '', 'arrow-u') }}
-		{{ basic.stateswitch('button5', 'bath.light.switch', '', '', 'arrow-d') }}
-		{{ basic.stateswitch('button6', 'bath.light.switch', '', '', 'delete') }}
-		{{ basic.stateswitch('button7', 'bath.light.switch', '', '', 'plus') }}
-		{{ basic.stateswitch('button8', 'bath.light.switch', '', '', 'minus') }}
-		{{ basic.stateswitch('button9', 'bath.light.switch', '', '', 'check') }}
-		{{ basic.stateswitch('button10', 'bath.light.switch', '', '', 'gear') }}
-		{{ basic.stateswitch('button11', 'bath.light.switch', '', '', 'refresh') }}
-		{{ basic.stateswitch('button12', 'bath.light.switch', '', '', 'forward') }}
-		{{ basic.stateswitch('button13', 'bath.light.switch', '', '', 'back') }}
-		{{ basic.stateswitch('button14', 'bath.light.switch', '', '', 'grid') }}
-		{{ basic.stateswitch('button15', 'bath.light.switch', '', '', 'star') }}
-		{{ basic.stateswitch('button16', 'bath.light.switch', '', '', 'alert') }}
-		{{ basic.stateswitch('button17', 'bath.light.switch', '', '', 'info') }}
-		{{ basic.stateswitch('button18', 'bath.light.switch', '', '', 'home') }}
-		{{ basic.stateswitch('button19', 'bath.light.switch', '', '', 'search') }}
-	</div>
-
-		Grouping
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			<div data-role="controlgroup" data-type="horizontal">
-				{{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-			</div>
-
-			<div data-role="controlgroup" data-type="vertical">
-				{{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-			</div>
-			{% endverbatim %}{% endfilter %}</code>
-		</div>
-		<div class="html">
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">horizontal</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-		    <div data-role="controlgroup" data-type="horizontal">
-				{{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-			</div>
-			</div>
-		</div>
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">vertical</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-		    <div data-role="controlgroup" data-type="vertical">
-				{{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
-				{{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up.svg', 'control_arrow_down.svg']) }}
-			</div>
-			</div>
-		</div>
-		</div>
-
-	</div>
-
+            <div data-role="controlgroup" data-type="vertical">
+                {{ basic.stateswitch('', 'myItem', '', 0, 'plus', 'Up') }}
+                {{ basic.stateswitch('', 'myItem', '', 1, 'minus', 'Down') }}
+                {{ basic.stateswitch('', 'myItem', '', '', ['control_arrow_up', 'control_arrow_down']) }}
+            </div>
+            {% endverbatim %}{% endfilter %}</code>
+        </div>
+        <div class="html">
+            <div class="block">
+                <div class="ui-bar-c ui-li-divider ui-corner-top">horizontal</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom">
+                    <div data-role="controlgroup" data-type="horizontal">
+                        {{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
+                        {{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
+                        {{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up', 'control_arrow_down']) }}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="ui-bar-c ui-li-divider ui-corner-top">vertical</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom">
+                    <div data-role="controlgroup" data-type="vertical">
+                        {{ basic.stateswitch('', 'bath.light.switch', '', 0, 'plus', 'Up') }}
+                        {{ basic.stateswitch('', 'bath.light.switch', '', 1, 'minus', 'Down') }}
+                        {{ basic.stateswitch('', 'bath.light.switch', '', '', ['control_arrow_up', 'control_arrow_down']) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 

@@ -1,9 +1,9 @@
 /**
 * -----------------------------------------------------------------------------
-* @package		 smartVISU
-* @author			Martin Gleiß
-* @copyright	 2012 - 2015
-* @license		 GPL [http://www.gnu.de]
+* @package       smartVISU
+* @author        Martin Gleiß
+* @copyright     2012 - 2026
+* @license       GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
 
@@ -12,155 +12,155 @@
 
 {% block example %}
 
-	<h5>Please note</h5>
-	<p>This plot uses historical data series. Available modes depend on backends/drivers and not all of them do support series at all.<br />
-	   As from v3.2, the 'source' parameter enables data to be loaded from list items which need to have the structure [[ timestamp, data ], ... , [ timestamp, data ]].
-	</p>
+    <h5>Please note</h5>
+    <p>This plot uses historical data series. Available modes depend on backends/drivers and not all of them do support series at all.<br />
+       As from v3.2, the 'source' parameter enables data to be loaded from list items which need to have the structure [[ timestamp, data ], ... , [ timestamp, data ]].
+    </p>
 
-	<h5>Examples</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ plot.period('', 'bath_plot_value', 'avg', '3h') }}
-			
-			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
-			
-			{{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
-			
-			{{ plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) }}
-			
-			{{ plot.period('', ['env.system.load','env.core.memory'],	'avg', '1d', '', '', '', '', ['system load', 'memory'], ['#a00','#070'], '', ['Time', 'CPU', 'RAM'], '', [1,2], [0,1], ['#f00','#0a0']) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
+    <h5>Examples</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ plot.period('', 'bath_plot_value', 'avg', '3h') }}
+            
+            {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
+            
+            {{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
+            
+            {{ plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) }}
+            
+            {{ plot.period('', ['env.system.load','env.core.memory'],    'avg', '1d', '', '', '', '', ['system load', 'memory'], ['#a00','#070'], '', ['Time', 'CPU', 'RAM'], '', [1,2], [0,1], ['#f00','#0a0']) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
-	<div class="html">
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a simple plot</h3>
-					{{ plot.period('', 'bath_plot_value', 'avg', '3h') }}
-				</div>
-			</div>
-		</div>
+    <div class="html">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a simple plot</h3>
+                    {{ plot.period('', 'bath_plot_value', 'avg', '3h') }}
+                </div>
+            </div>
+        </div>
 
-	<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot of 3 series</h3>
-					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
-				</div>
-			</div>
-		</div>
+    <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot of 3 series</h3>
+                    {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, 100, '', '', ['#aa0', '#a00', '#00a'], ['area', 'column', 'line']) }}
+                </div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a zoomable plot with unit</h3>
-					{{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
-				</div>
-			</div>
-		</div>
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a zoomable plot with unit</h3>
+                    {{ plot.period('', 'bath_plot_value', 'avg', '20h', 'now', 0, 100, '', '', '', '', '', '1h', '', '', '', '', '%') }}
+                </div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a minmaxavg plot</h3>
-					{{ plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) }}
-				</div>
-			</div>
-		</div>
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a minmaxavg plot</h3>
+                    {{ plot.period('', 'bath_plot_value', 'minmaxavg', '12h', '', '', '', 25) }}
+                </div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot with two y-axes</h3>
-					{{ plot.period('',
-						['env.system.load','env.core.memory'],
-						'avg', '1d', '', '', '', '',
-						['system load', 'memory'],
-						['#a00','#070'], '',
-						['Time', 'CPU', 'Memory'],
-						'', [1,2], [0,1],
-						['#f00','#0a0']) }}
-				</div>
-			</div>
-		</div>
-	</div>	
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot with two y-axes</h3>
+                    {{ plot.period('',
+                        ['env.system.load','env.core.memory'],
+                        'avg', '1d', '', '', '', '',
+                        ['system load', 'memory'],
+                        ['#a00','#070'], '',
+                        ['Time', 'CPU', 'Memory'],
+                        '', [1,2], [0,1],
+                        ['#f00','#0a0']) }}
+                </div>
+            </div>
+        </div>
+    </div>    
 
-	<h5>Data Export</h5>
+    <h5>Data Export</h5>
 
-	By setting the parameter 'export' to '1', export of graphics can be selected in a context menu. Setting the parameter to '2' enables 
-	data export additionally. See the examples below for details.
-	<br>
-	<h5>Stacking</h5>
+    By setting the parameter 'export' to '1', export of graphics can be selected in a context menu. Setting the parameter to '2' enables 
+    data export additionally. See the examples below for details.
+    <br>
+    <h5>Stacking</h5>
 
-	Line, area and column graphs may be stacked by selecting the stacked 'exposure' type. Stacking mode is 'normal' (stack of actual values) or 
-	'percent' (share of the sum of all values in %). The 'stack' parameter allows grouping in different stacks. If multiple stacks are used,
-	the stacking mode needs to be set for each stack in array form. Note that series will be stacked only if time values on x-axis are synchronized 
-	for the stacked series.
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','percent','', 1) }}
-			
-			{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
-			
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot of 3 stacked area series</h3>
-					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','percent', '', 1) }}
-				</div>
-			</div>
-		</div>
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot of 2 stacked and a single column series</h3>
-					{{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
-				</div>
-			</div>
-		</div>
-	</div>
+    Line, area and column graphs may be stacked by selecting the stacked 'exposure' type. Stacking mode is 'normal' (stack of actual values) or 
+    'percent' (share of the sum of all values in %). The 'stack' parameter allows grouping in different stacks. If multiple stacks are used,
+    the stacking mode needs to be set for each stack in array form. Note that series will be stacked only if time values on x-axis are synchronized 
+    for the stacked series.
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','percent','', 1) }}
+            
+            {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
+            
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot of 3 stacked area series</h3>
+                    {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', '', '', '', ['areastack', 'areastack', 'areastack'],'','','','','','','','','percent', '', 1) }}
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot of 2 stacked and a single column series</h3>
+                    {{ plot.period('', ['bath_plot1', 'bath_plot2', 'bath_plot3'], 'avg', '1h', 'now', 0, '', 12, '', ['#aa0', '#a00', '#00a'], ['columnstack', 'columnstack', 'column'],'','','','','','','','',['normal', 'normal'],['0','0','1'], 2) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<h5>Special functions</h5>
+    <h5>Special functions</h5>
 
-	Not all features of Highcharts are accessible via widget parameters. To make charts even more flexible, the parameter 'chartoptions' is able to 
-	write additional options directly to Highcharts. The first example changes the scale on the first y-axis, disables lables on the second y-axis and 
-	places the legend below the graph. y-axis can be individually adressed by writing them in array-format.<br><br>
-	The second example shows the 'advanced' zoom option and sets the default zoom level via 'chartoptions'. The level correlates with the sequence
-	of the range selector buttons, starting from the left with '0'.	
-	<br>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			// Array format for e.g. yaxis:
-			// {yaxis: [{options for axis 0},{options for axis 1}]}
-			
-			{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
-			
-			{{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced', '', '', '', '', '', { rangeSelector: {selected: '2'}}) }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
+    Not all features of Highcharts are accessible via widget parameters. To make charts even more flexible, the parameter 'chartoptions' is able to 
+    write additional options directly to Highcharts. The first example changes the scale on the first y-axis, disables lables on the second y-axis and 
+    places the legend below the graph. y-axis can be individually adressed by writing them in array-format.<br><br>
+    The second example shows the 'advanced' zoom option and sets the default zoom level via 'chartoptions'. The level correlates with the sequence
+    of the range selector buttons, starting from the left with '0'.    
+    <br>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            // Array format for e.g. yaxis:
+            // {yaxis: [{options for axis 0},{options for axis 1}]}
+            
+            {{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
+            
+            {{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced', '', '', '', '', '', { rangeSelector: {selected: '2'}}) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
-	<div class="html">
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot with secondary switch axis and additional chart options</h3>
-					{{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
-				</div>
-			</div>
-		</div>
+    <div class="html">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot with secondary switch axis and additional chart options</h3>
+                    {{ plot.period('', ['bath_plot_value','bath_plot_switch'], 'max', '1d', '', [20,'Off'], [24,'On'], '', ['Temperature','Heating'], '', ['line','stair'], '', '', [1,2], [0,1], '', ['linear', 'boolean'], '°C', { yAxis: [ { tickInterval: 0.5 },{labels: {enabled: false}} ], legend: { verticalAlign: 'bottom', y: -30 } }) }}
+                </div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true" style="clear: both;">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>a plot with advanced zooming</h3>
-					{{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced', '', '', '', '', '', { rangeSelector: {selected: '2'}}) }}
-				</div>
-			</div>
-		</div>
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true" style="clear: both;">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>a plot with advanced zooming</h3>
+                    {{ plot.period('', 'bath_plot_value', 'avg', '1y', 'now', '', '', 36500, '', '', '', '', 'advanced', '', '', '', '', '', { rangeSelector: {selected: '2'}}) }}
+                </div>
+            </div>
+        </div>
 
         <h5>Unwanted Effects</h5>
 
@@ -168,9 +168,9 @@
         e.g."bath_plot1.avg.1h.now.10" and "bath_plot1.avg.1h.now.100". This results in duplicate updates and may show unwanted points in either of the plots. So if you need to display series for the same item 
         in two different plots on the same page, avoid the series parameters to be too similar. Use e.g. count = 12 instead of 10 or use tmin = 60m instead of 1h.
         
-		<br /><br />
-		{% if config_plot_library == 'highcharts' %} More information on Highcharts: <a href="https://www.highcharts.com/">https://www.highcharts.com/</a> {% endif %}
+        <br /><br />
+        {% if config_plot_library == 'highcharts' %} More information on Highcharts: <a href="https://www.highcharts.com/">https://www.highcharts.com/</a> {% endif %}
         {% if config_plot_library == 'echarts' %} More information on Apache echarts: <a href="https://echarts.apache.org/en/">https://echarts.apache.org/en/</a> {% endif %}
-	</div>
+    </div>
 
 {% endblock %}

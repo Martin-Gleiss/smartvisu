@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,26 +12,27 @@
 
 {% block example %}
 
-	This widget triggers a logic on the backend given by the parameter 'name'. The default function will show a button for manual triggering. <br />
-	With the parameter 'event' set to 'page', the logic is being triggered automatically during page create (button is hidden) while 'both' enables both triggenring methods. 
-	
-	<h5>Examples</h5>
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; basic.trigger('trigger1', 'Dev', '', 'check') &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ basic.trigger('trigger1', 'Dev', '', 'check') }}
-	</div>
+    This widget triggers a logic on the backend given by the parameter 'name'. The default function will show a button for manual triggering. <br />
+    With the parameter 'event' set to 'page', the logic is being triggered automatically during page create (button is hidden) while 'both' enables both triggenring methods. 
 
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) &#125;&#125;<br />
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) }}
-	</div>
+    <h5>Examples</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.trigger('trigger1', 'Dev', '', 'check') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.trigger('trigger1', 'Dev', '', 'check') }}
+    </div>
+
+    <div class="twig">
+        <code class="prettyprint">
+            {% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.trigger('trigger2', 'Dev', 'Trigger', '', 1) }}
+    </div>
 
 {% endblock %}
-
-

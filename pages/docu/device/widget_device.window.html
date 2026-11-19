@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Wolfram v. Hülsen
-* @copyright   2021
+* @copyright   2021 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,34 +12,34 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
+    <h5>Examples</h5>
 
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ device.window ('', 'Window Kitchen North', 'wkn.move', 'wkn.stop', 'wkn.pos','', 'window.right', 'window.left', 'icon') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.window ('', 'Window Kitchen North', 'wkn.move', 'wkn.stop', 'wkn.pos','', 'window.right', 'window.left', 'icon') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
- 	Use slider to control the shutter and switches to simulate window status. Click on the icon to open the control popup.
-	
-	<div class="html">
-		
-		{{ basic.slider('','bath.blind.pos') }}
-		Left window:
-		<div data-role="controlgroup" data-type="horizontal"> 
-			{{ basic.stateswitch('', 'bath.light.value2', '', 0, '', '0') }}
-			{{ basic.stateswitch('', 'bath.light.value2', '', 1, '', '1') }}
-			{{ basic.stateswitch('', 'bath.light.value2', '', 2, '', '2') }}
-		</div> &nbsp;&nbsp;
-		Right window:
-		<div data-role="controlgroup" data-type="horizontal">
-			{{ basic.stateswitch('', 'bath.light.multistate', '', 0, '', '0') }}
-			{{ basic.stateswitch('', 'bath.light.multistate', '', 1, '', '1') }}
-			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
-		</div>
-		<br>
-		{{ device.window ('', 'Window Kitchen North', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.light.multistate', 'bath.light.value2', 'icon') }} <br>
+     Use slider to control the shutter and switches to simulate window status. Click on the icon to open the control popup.
+    
+    <div class="html">
+        
+        {{ basic.slider('','bath.blind.pos') }}
+        Left window:
+        <div data-role="controlgroup" data-type="horizontal"> 
+            {{ basic.stateswitch('', 'bath.light.value2', '', 0, '', '0') }}
+            {{ basic.stateswitch('', 'bath.light.value2', '', 1, '', '1') }}
+            {{ basic.stateswitch('', 'bath.light.value2', '', 2, '', '2') }}
+        </div> &nbsp;&nbsp;
+        Right window:
+        <div data-role="controlgroup" data-type="horizontal">
+            {{ basic.stateswitch('', 'bath.light.multistate', '', 0, '', '0') }}
+            {{ basic.stateswitch('', 'bath.light.multistate', '', 1, '', '1') }}
+            {{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
+        </div>
+        <br>
+        {{ device.window ('', 'Window Kitchen North', 'bath.blind.move', 'bath.blind.stop', 'bath.blind.pos', '', 'bath.light.multistate', 'bath.light.value2', 'icon') }} <br>
 
-	</div>
+    </div>
 
 {% endblock %}

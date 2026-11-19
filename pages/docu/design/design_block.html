@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,156 +12,155 @@
 
 {% block content %}
 
-	<h1>Blocks</h1>
-	
-	<div class="docu">
+    <h1>Blocks</h1>
 
-		Here are some examples to show blocks available in {{ lib.smartVISU }} <br />
+    <div class="docu">
 
-		<h4>Examples</h4>
+        Here are some examples to show blocks available in {{ lib.smartVISU }} <br />
 
-		A static block 
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			<div class="block">
-			    <div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
-			    <div class="ui-fixed ui-body-a ui-corner-bottom">
-					<p>This is a static block</p>
-				</div>
-			</div>
-			{% endverbatim %}{% endfilter %}</code>
-		</div>		
-		<div class="html">
-			<div class="block">
-				<div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
-				<div class="ui-fixed ui-body-a ui-corner-bottom">
+        <h4>Examples</h4>
 
-					<p>This is a static block</p>
+        A static block 
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            <div class="block">
+                <div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom">
+                    <p>This is a static block</p>
+                </div>
+            </div>
+            {% endverbatim %}{% endfilter %}</code>
+        </div>        
+        <div class="html">
+            <div class="block">
+                <div class="ui-bar-c ui-li-divider ui-corner-top">Block 1</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom">
 
-				</div>
-			</div>
-		</div> <br />
-		A variable set of blocks which are collapsible. Use 'set-1', 'set-2', 'set-3' to define the number of sections in a block.
-		Set the attribute 'data-collapsed=&quot;false&quot;' for the open section (only one) and omit the attribute for the others.<br>
-		You can also define the width of the block by adding a width statement to the first div (see last example).<br>
-		By adding the widget "lib.supersize('')" to the h3-section of a block, the block receives a button which expands the block to full-screen width.
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			<div class="block">
-				<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-					<div data-role="collapsible" data-collapsed="false">
-						<h3>{{ lib.supersize('') }}Block 2</h3>
-						<p>This is a collapsible block which can be supersized clicking the arrow in the top right corner. <br><br>
-						Vertical scroll position will go to the top in supersize mode and back to the previous position when returning to normal size. </p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="block">
-				<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-					<div data-role="collapsible" data-collapsed="false">
-						<h3>Section 1</h3>
-						<p>Set of two collapsible blocks with one being collapsed</p>
-					</div>
-					<div data-role="collapsible">
-						<h3>Section 2</h3>
-						<p>Collapsed by default if 'data-collapsed=&quot;false&quot;' is omitted</p>
-					</div>
-				</div>
-			</div>
-			{% endverbatim %}{% endfilter %}</code>
-		</div>
-		<div class="html">
-			<div class="block">
-				<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                    <p>This is a static block</p>
 
-					<div data-role="collapsible" data-collapsed="false">
-						<h3>{{ lib.supersize('') }}Block 2</h3>
+                </div>
+            </div>
+        </div> <br />
+        A variable set of blocks which are collapsible. Use 'set-1', 'set-2', 'set-3' to define the number of sections in a block.
+        Set the attribute 'data-collapsed=&quot;false&quot;' for the open section (only one) and omit the attribute for the others.<br>
+        You can also define the width of the block by adding a width statement to the first div (see last example).<br>
+        By adding the widget "lib.supersize('')" to the h3-section of a block, the block receives a button which expands the block to full-screen width.
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            <div class="block">
+                <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>{{ lib.supersize('') }}Block 2</h3>
+                        <p>This is a collapsible block which can be supersized clicking the arrow in the top right corner. <br><br>
+                        Vertical scroll position will go to the top in supersize mode and back to the previous position when returning to normal size. </p>
+                    </div>
+                </div>
+            </div>
 
-						<p>This is a collapsible block which can be supersized clicking the arrow in the top right corner. <br><br>
-						Vertical scroll position will go to the top in supersize mode and back to the previous position when returning to normal size. </p>
-					</div>
+            <div class="block">
+                <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>Section 1</h3>
+                        <p>Set of two collapsible blocks with one being collapsed</p>
+                    </div>
+                    <div data-role="collapsible">
+                        <h3>Section 2</h3>
+                        <p>Collapsed by default if 'data-collapsed=&quot;false&quot;' is omitted</p>
+                    </div>
+                </div>
+            </div>
+            {% endverbatim %}{% endfilter %}</code>
+        </div>
+        <div class="html">
+            <div class="block">
+                <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-				</div>
-			</div>
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>{{ lib.supersize('') }}Block 2</h3>
 
-			<div class="block">
-				<div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                        <p>This is a collapsible block which can be supersized clicking the arrow in the top right corner. <br><br>
+                        Vertical scroll position will go to the top in supersize mode and back to the previous position when returning to normal size. </p>
+                    </div>
 
-					<div data-role="collapsible" data-collapsed="false">
-						<h3>Section 1</h3>
+                </div>
+            </div>
 
-						<p>Set of two blocks with one being collapsed</p>
-					</div>
+            <div class="block">
+                <div class="set-2" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-					<div data-role="collapsible">
-						<h3>Section 2</h3>
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>Section 1</h3>
 
-						<p>Collapsed by default if 'data-collapsed=&quot;false&quot;&nbsp;' is omitted</p>
-					</div>
+                        <p>Set of two blocks with one being collapsed</p>
+                    </div>
 
-				</div>
-			</div>
+                    <div data-role="collapsible">
+                        <h3>Section 2</h3>
+
+                        <p>Collapsed by default if 'data-collapsed=&quot;false&quot;&nbsp;' is omitted</p>
+                    </div>
+
+                </div>
+            </div>
 
 
-			<div class="block" style="width:100%">
-				<div class="set-3" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+            <div class="block" style="width:100%">
+                <div class="set-3" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-					<div data-role="collapsible" data-collapsed="false">
-						<h3>Section 1</h3>
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>Section 1</h3>
 
-						<p>A set of 3 collapsible blocks <br><br>
-						   The description 'style=&quot;width:100%&quot;&nbsp;' has been added to the &lt;div class=&quot;block&quot;&gt; statement 
-						   in order to make the block use the whole available width of the screen.
-						</p>
-					</div>
+                        <p>A set of 3 collapsible blocks <br><br>
+                           The description 'style=&quot;width:100%&quot;&nbsp;' has been added to the &lt;div class=&quot;block&quot;&gt; statement 
+                           in order to make the block use the whole available width of the screen.
+                        </p>
+                    </div>
 
-					<div data-role="collapsible">
-						<h3>Section 2</h3>
+                    <div data-role="collapsible">
+                        <h3>Section 2</h3>
 
-						<p>Content 2</p>
-					</div>
+                        <p>Content 2</p>
+                    </div>
 
-					<div data-role="collapsible">
-						<h3>Section 3</h3>
+                    <div data-role="collapsible">
+                        <h3>Section 3</h3>
 
-						<p>Content 3</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		Blocks are defined with a minimum height of 14.5em. Depending on the devices resolution and font size, the height measured in 'px' is approx. 232px. 
-		Blocks normally change their height with the included content. However, it may make sense to control a blocks height manually in order to perfectly align several blocks:
-		
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				<div class="block"> 
-				<div class="ui-bar-c ui-li-divider ui-corner-top">Example 2</div>
-				<div class="ui-fixed ui-body-a ui-corner-bottom" style="height:250px">
-				A box with height 250px
-				</div>
-				</div>
-			{% endverbatim %}{% endfilter %}</code>
-		</div>
-		
-		<div class="html">
-			<div class="block"> 
-				<div class="ui-bar-c ui-li-divider ui-corner-top">Example 1</div>
-				<div class="ui-fixed ui-body-a ui-corner-bottom" style="height:232px">
-					<br><br><br>
-					A box with height 232px, normally <br>
-					the minimum height.
-				</div>
-			</div>
-			<div class="block"> 
-				<div class="ui-bar-c ui-li-divider ui-corner-top">Example 2</div>
-				<div class="ui-fixed ui-body-a ui-corner-bottom" style="height:250px">
-					<br><br><br>
-					A box with height 250px
-				</div>
-			</div>
-		</div>
-	</div>
+                        <p>Content 3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        Blocks are defined with a minimum height of 14.5em. Depending on the devices resolution and font size, the height measured in 'px' is approx. 232px. 
+        Blocks normally change their height with the included content. However, it may make sense to control a blocks height manually in order to perfectly align several blocks:
+
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                <div class="block"> 
+                <div class="ui-bar-c ui-li-divider ui-corner-top">Example 2</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom" style="height:250px">
+                A box with height 250px
+                </div>
+                </div>
+            {% endverbatim %}{% endfilter %}</code>
+        </div>
+
+        <div class="html">
+            <div class="block"> 
+                <div class="ui-bar-c ui-li-divider ui-corner-top">Example 1</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom" style="height:232px">
+                    <br><br><br>
+                    A box with height 232px, normally <br>
+                    the minimum height.
+                </div>
+            </div>
+            <div class="block"> 
+                <div class="ui-bar-c ui-li-divider ui-corner-top">Example 2</div>
+                <div class="ui-fixed ui-body-a ui-corner-bottom" style="height:250px">
+                    <br><br><br>
+                    A box with height 250px
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
-

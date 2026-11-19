@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Stefan Widmer
-* @copyright   2016
+* @copyright   2016 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,164 +12,160 @@
 
 {% block example %}
 
-	<h5>Example</h5>
+    <h5>Example</h5>
 
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-					{{ basic.input('', 'bath.text') }}
-					{{ basic.input('', 'bath.text', 'number') }}
-					{{ basic.input('', 'bath.text', 'textarea') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-					{{ basic.input('', 'bath.date', 'date') }}
-					{{ basic.input('', 'bath.date', 'dateflip') }}
-					{{ basic.input('', 'bath.date', 'datecal') }}
-					{{ basic.input('', 'bath.date', 'dateslide') }}
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.input('', 'bath.text') }}
+            {{ basic.input('', 'bath.text', 'number') }}
+            {{ basic.input('', 'bath.text', 'textarea') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.input('', 'bath.date', 'date') }}
+            {{ basic.input('', 'bath.date', 'dateflip') }}
+            {{ basic.input('', 'bath.date', 'datecal') }}
+            {{ basic.input('', 'bath.date', 'dateslide') }}
 
-					{{ basic.input('', 'bath.time', 'time') }}
-					{{ basic.input('', 'bath.time', 'timeflip') }}
+            {{ basic.input('', 'bath.time', 'time') }}
+            {{ basic.input('', 'bath.time', 'timeflip') }}
 
-					{{ basic.input('', 'bath.duration', 'duration') }}
-					{{ basic.input('', 'bath.duration', 'durationflip') }}
-					
-					{{ basic.input('', 'bath.datetime', 'datetime') }}
-					{{ basic.input('', 'bath.datetime', 'datetimeflip') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">Text/Number</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label> text </label>
-					{{ basic.input('', 'bath.text') }}
-				</div>
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label> number </label>
-					{{ basic.input('', 'bath.text', 'number') }}
-				</div>
-				<div>
-					You entered: {{ basic.print('', 'bath.text') }}
-				</div>
-					<div data-role="fieldcontain" class="ui-field-contain">
-					<label> auto-growing textarea  </label>
-					{{ basic.input('', 'bath.text', 'textarea') }}
-				</div>
-			</div>
-		</div>
+            {{ basic.input('', 'bath.duration', 'duration') }}
+            {{ basic.input('', 'bath.duration', 'durationflip') }}
 
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">Date/Time</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
+            {{ basic.input('', 'bath.datetime', 'datetime') }}
+            {{ basic.input('', 'bath.datetime', 'datetimeflip') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">Text/Number</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label> text </label>
+                    {{ basic.input('', 'bath.text') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label> number </label>
+                    {{ basic.input('', 'bath.text', 'number') }}
+                </div>
+                <div>
+                    You entered: {{ basic.print('', 'bath.text') }}
+                </div>
+                    <div data-role="fieldcontain" class="ui-field-contain">
+                    <label> auto-growing textarea  </label>
+                    {{ basic.input('', 'bath.text', 'textarea') }}
+                </div>
+            </div>
+        </div>
 
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						date
-					</label>
-					{{ basic.input('', 'bath.date', 'date') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						dateflip
-					</label>
-					{{ basic.input('', 'bath.date', 'dateflip') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						datecal
-					</label>
-					{{ basic.input('', 'bath.date', 'datecal') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						dateslide
-					</label>
-					{{ basic.input('', 'bath.date', 'dateslide') }}
-				</div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">Date/Time</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        date
+                    </label>
+                    {{ basic.input('', 'bath.date', 'date') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        dateflip
+                    </label>
+                    {{ basic.input('', 'bath.date', 'dateflip') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        datecal
+                    </label>
+                    {{ basic.input('', 'bath.date', 'datecal') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        dateslide
+                    </label>
+                    {{ basic.input('', 'bath.date', 'dateslide') }}
+                </div>
 
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						time
-					</label>
-					{{ basic.input('', 'bath.time', 'time') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						timeflip
-					</label>
-					{{ basic.input('', 'bath.time', 'timeflip') }}
-				</div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        time
+                    </label>
+                    {{ basic.input('', 'bath.time', 'time') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        timeflip
+                    </label>
+                    {{ basic.input('', 'bath.time', 'timeflip') }}
+                </div>
 
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						duration
-					</label>
-					{{ basic.input('', 'bath.duration', 'duration') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						durationflip
-					</label>
-					{{ basic.input('', 'bath.duration', 'durationflip') }}
-				</div>
-		 <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						datetime
-					</label>
-					{{ basic.input('', 'bath.datetime', 'datetime') }}
-				</div>
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						datetimeflip
-					</label>
-					{{ basic.input('', 'bath.datetime', 'datetimeflip') }}
-				</div>
-
-
-			</div>
-		</div>
-	</div>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ basic.input('', 'bath.date2', 'date', '', '', '', '%Y-%m-%d') }}
-			{{ basic.input('', 'bath.datetime2', 'datetime', '', '', '', '%d.%m.%Y / %k:%M:%S') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">Datetime formatted</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						Date
-					</label>
-					{{ basic.input('', 'bath.date2', 'date', '', '', '', '%Y-%m-%d') }}
-				</div>
-        		<div>
-					You entered: {{ basic.print('', 'bath.date2') }} <br><br>
-					Be aware that the input field shows the standard format defined by the language settings while the item contains the value formatted with the specified format.
-				</div>
-			</div>
-		</div>
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">Datetime formatted</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-        <div data-role="fieldcontain" class="ui-field-contain">
-					<label>
-						Datetime
-					</label>
-					{{ basic.input('', 'bath.datetime2', 'datetime', '', '', '', '%d.%m.%Y / %k:%M:%S') }}
-				</div>
-        		<div>
-					You entered: {{ basic.print('', 'bath.datetime2') }}<br><br>
-					Be aware that the datetime input field is not switched to the language settings by the JTSage datebox plugin. It shows "yyyy-mm-ddThh:mm:ss" by default. 
-					If a format string is specified smartVISU switches the item <u>and</u> the input field to the specified format.
-				</div>
-			</div>
-		</div>
-	</div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        duration
+                    </label>
+                    {{ basic.input('', 'bath.duration', 'duration') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        durationflip
+                    </label>
+                    {{ basic.input('', 'bath.duration', 'durationflip') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        datetime
+                    </label>
+                    {{ basic.input('', 'bath.datetime', 'datetime') }}
+                </div>
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        datetimeflip
+                    </label>
+                    {{ basic.input('', 'bath.datetime', 'datetimeflip') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.input('', 'bath.date2', 'date', '', '', '', '%Y-%m-%d') }}
+            {{ basic.input('', 'bath.datetime2', 'datetime', '', '', '', '%d.%m.%Y / %k:%M:%S') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">Datetime formatted</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        Date
+                    </label>
+                    {{ basic.input('', 'bath.date2', 'date', '', '', '', '%Y-%m-%d') }}
+                </div>
+                <div>
+                    You entered: {{ basic.print('', 'bath.date2') }} <br><br>
+                    Be aware that the input field shows the standard format defined by the language settings while the item contains the value formatted with the specified format.
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">Datetime formatted</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                <div data-role="fieldcontain" class="ui-field-contain">
+                    <label>
+                        Datetime
+                    </label>
+                    {{ basic.input('', 'bath.datetime2', 'datetime', '', '', '', '%d.%m.%Y / %k:%M:%S') }}
+                </div>
+                <div>
+                    You entered: {{ basic.print('', 'bath.datetime2') }}<br><br>
+                    Be aware that the datetime input field is not switched to the language settings by the JTSage datebox plugin. It shows "yyyy-mm-ddThh:mm:ss" by default. 
+                    If a format string is specified smartVISU switches the item <u>and</u> the input field to the specified format.
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
-

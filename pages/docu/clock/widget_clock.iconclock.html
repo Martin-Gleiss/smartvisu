@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,12 +12,14 @@
 
 {% block example %}
 
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; clock.iconclock('clock1') &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ clock.iconclock('clock1') }}
-	</div>
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{  clock.iconclock('clock1') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ clock.iconclock('clock1') }}
+    </div>
 
 {% endblock %}

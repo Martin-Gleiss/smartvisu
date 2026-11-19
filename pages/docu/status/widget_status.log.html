@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,17 +12,15 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
+    <h5>Examples</h5>
 
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; status.log('log1', 'bath_log', 10) &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ status.log('log1', 'bath_log', 10) }}
-	</div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ status.log('log1', 'bath_log', 10) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ status.log('log1', 'bath_log', 10) }}
+    </div>
 
 {% endblock %}
-
-

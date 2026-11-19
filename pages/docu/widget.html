@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,109 +12,109 @@
 
 {% block content %}
 
-	{% block headline %}<h3>Widgets</h3>{% endblock %}
+    {% block headline %}<h3>Widgets</h3>{% endblock %}
 
-	{% if pagepath != '' %}
-		{% set widgetlist = docu('widgets/'~pagepath~'.html') %}
-		/** {% set widgetlist = widgetlist|merge(docu('shwidgets/'~pagepath~'.html')) %} **/
+    {% if pagepath != '' %}
+        {% set widgetlist = docu('widgets/'~pagepath~'.html') %}
+        /** {% set widgetlist = widgetlist|merge(docu('shwidgets/'~pagepath~'.html')) %} **/
 
-		{% for widget in widgetlist %}
-			{% set dir = "pages/docu/%s/widget_%s.html"|format(pagepath, widget.command) %}
-			{% set dir_b = "dropins/widget_%s.html"|format(widget.command) %}
-			{% set dir_c = "dropins/widgets/widget_%s.html"|format(widget.command) %}
-			{% set dir_d = "dropins/shwidgets/widget_%s.html"|format(widget.command) %}
-			
-			{% if isfile(dir) %}
-				<a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
-			{% elseif isfile(dir_b) %}
-				<a href="index.php?page=widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
-			{% elseif isfile(dir_c) %}
-				<a href="index.php?page=widgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
-			{% elseif isfile(dir_d) %}
-				<a href="index.php?page=shwidgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>	
-			{% elseif widget.command %}
-				<a{{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
-			{% endif %}
+        {% for widget in widgetlist %}
+            {% set dir = "pages/docu/%s/widget_%s.html"|format(pagepath, widget.command) %}
+            {% set dir_b = "dropins/widget_%s.html"|format(widget.command) %}
+            {% set dir_c = "dropins/widgets/widget_%s.html"|format(widget.command) %}
+            {% set dir_d = "dropins/shwidgets/widget_%s.html"|format(widget.command) %}
+            
+            {% if isfile(dir) %}
+                <a href="index.php?page={{ pagepath }}/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+            {% elseif isfile(dir_b) %}
+                <a href="index.php?page=widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+            {% elseif isfile(dir_c) %}
+                <a href="index.php?page=widgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+            {% elseif isfile(dir_d) %}
+                <a href="index.php?page=shwidgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>    
+            {% elseif widget.command %}
+                <a{{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+            {% endif %}
 
-		{% endfor %}
-	{% endif %}
+        {% endfor %}
+    {% endif %}
 
-	<br />
-	<hr /><br />
+    <br />
+    <hr /><br />
 
-	{% set widget = page|slice(7)|preg_replace('/_/', '.', 1) %}
+    {% set widget = page|slice(7)|preg_replace('/_/', '.', 1) %}
 
-	{% if pagepath != '' and widget != pagepath %}
+    {% if pagepath != '' and widget != pagepath %}
 
-		<div class="docu">
+        <div class="docu">
 
-			<div class="macro">
-				<code>{{ widget }}</code>
-			</div>
+            <div class="macro">
+                <code>{{ widget }}</code>
+            </div>
 
-		{% if widgetlist[widget].deprecated %}
-			<p class="deprecated">Deprecated {{ widgetlist[widget].deprecated }}</p>
-		{% endif %}
+        {% if widgetlist[widget].deprecated %}
+            <p class="deprecated">Deprecated {{ widgetlist[widget].deprecated }}</p>
+        {% endif %}
 
-			<p>{{ widgetlist[widget].desc }}</p>
+            <p>{{ widgetlist[widget].desc }}</p>
 
-			<h5>Parameters</h5>
+            <h5>Parameters</h5>
 
-			<div class="twig">
-				<code>&#123;&#123;&nbsp;{{ widgetlist[widget].call }}&nbsp;&#125;&#125;</code>
-			</div>
+            <div class="twig">
+                <code>&#123;&#123;&nbsp;{{ widgetlist[widget].call }}&nbsp;&#125;&#125;</code>
+            </div>
 
-			<div class="param">
-				{% for param_name, param_docu in widgetlist[widget].param %}
-					<code>{{ param_name }}</code>
-					<div class="desc">{{ param_docu.desc|nl2br }}</div>
-				{% endfor %}
-			</div>
+            <div class="param">
+                {% for param_name, param_docu in widgetlist[widget].param %}
+                    <code>{{ param_name }}</code>
+                    <div class="desc">{{ param_docu.desc|nl2br }}</div>
+                {% endfor %}
+            </div>
 
-			<div class="see">
-				{% if widgetlist[widget].see %}
-					<h5>More Information</h5>
-					<div class="links">
-						{% for see in widgetlist[widget].see %}
-							<a href="index.php?page={{ see.page }}">{{ see.anchor }}</a>
-						{% endfor %}
-					</div>
-				{% endif %}
-			</div>
+            <div class="see">
+                {% if widgetlist[widget].see %}
+                    <h5>More Information</h5>
+                    <div class="links">
+                        {% for see in widgetlist[widget].see %}
+                            <a href="index.php?page={{ see.page }}">{{ see.anchor }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
 
 
 
-			{% block example %}{% endblock %}
+            {% block example %}{% endblock %}
 
-			<div style="clear:left;"></div>
+            <div style="clear:left;"></div>
 
-			{% if widgetlist[widget].author or widgetlist[widget].info or widgetlist[widget].link %}
-				<hr />
+            {% if widgetlist[widget].author or widgetlist[widget].info or widgetlist[widget].link %}
+                <hr />
 
-				<div class="mini">
-					{% if widgetlist[widget].author %}
-						Author: {{ widgetlist[widget].author }}<br />
-					{% endif %}
+                <div class="mini">
+                    {% if widgetlist[widget].author %}
+                        Author: {{ widgetlist[widget].author }}<br />
+                    {% endif %}
 
-					{% if widgetlist[widget].info %}
-						{{ widgetlist[widget].info }}
-					{% endif %}
+                    {% if widgetlist[widget].info %}
+                        {{ widgetlist[widget].info }}
+                    {% endif %}
 
-					{% if widgetlist[widget].link %}
-						- <a href="{{ widgetlist[widget].link }}" target="_blank">{{ widgetlist[widget].link }}</a>
-					{% endif %}
-				</div>
-			{% endif %}
+                    {% if widgetlist[widget].link %}
+                        - <a href="{{ widgetlist[widget].link }}" target="_blank">{{ widgetlist[widget].link }}</a>
+                    {% endif %}
+                </div>
+            {% endif %}
 
-		</div>
+        </div>
 
-	{% else %}
+    {% else %}
 
-		{% block intro %}
-			Intro
-		{% endblock %}
+        {% block intro %}
+            Intro
+        {% endblock %}
 
-	{% endif %}
+    {% endif %}
 
 
 {% endblock %}

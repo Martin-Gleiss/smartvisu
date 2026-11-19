@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -11,132 +11,132 @@
 {% extends "index.html" %}
 {% block content %}
 
-	<h1>Fundamentals</h1>
+    <h1>Fundamentals</h1>
 
-	<div class="docu">
+    <div class="docu">
 
-		<h2>Items</h2>
+        <h2>Items</h2>
 
-		Items represent the status and control addresses for devices in the backend system. smartVISU subscribes status information for all items on a page from the backend and sends 
-		control commands to the same items. It is to be expected that the backend always returns the correct status after a control command has been sent. 
-		In some cases, status and control values differ in the backend, e.g. if an actor has been blocked or an action is delayed. Then, it makes sense to use different / combined items. <br>
-		As of v3.4 smartVISU supports combined status and control items in the backend drivers for smarthomeNG and eibd/knxd. Format is 'item_status:item_control'. A colon separates the two items.
-		The status info is read from the status item as before while control commands are sent to the control item.  
-		<br />
+        Items represent the status and control addresses for devices in the backend system. smartVISU subscribes status information for all items on a page from the backend and sends 
+        control commands to the same items. It is to be expected that the backend always returns the correct status after a control command has been sent. 
+        In some cases, status and control values differ in the backend, e.g. if an actor has been blocked or an action is delayed. Then, it makes sense to use different / combined items. <br>
+        As of v3.4 smartVISU supports combined status and control items in the backend drivers for smarthomeNG and eibd/knxd. Format is 'item_status:item_control'. A colon separates the two items.
+        The status info is read from the status item as before while control commands are sent to the control item.  
+        <br />
 
-		<h5>Example</h5>
+        <h5>Example</h5>
 
-		<div class="twig">
-			<code class="prettyprint">
-				... 'bath.light.switch' ... -> normal syntax in most cases<br />
-				... 'bath.light.switch.status:bath.light.switch.control' ... -> combined status and control item<br />
-			</code>
-		</div>
-		<br />
+        <div class="twig">
+            <code class="prettyprint">
+                ... 'bath.light.switch' ... -> normal syntax in most cases<br />
+                ... 'bath.light.switch.status:bath.light.switch.control' ... -> combined status and control item<br />
+            </code>
+        </div>
+        <br />
 
-		<h2>Array Form</h2>
+        <h2>Array Form</h2>
 
-		Some widgets may have an array as a parameter. Use [ ... , ... ] to define it. An array is only needed if you have more than one object.<br />
+        Some widgets may have an array as a parameter. Use [ ... , ... ] to define it. An array is only needed if you have more than one object.<br />
 
-		<h5>Example</h5>
+        <h5>Example</h5>
 
-		<div class="twig">
-			<code class="prettyprint">
-				... ['bath_plot1', 'bath_plot2', 'bath_plot3'] ... -> 3 items as an array<br />
-				... 'bath_plot1' ... -> only one item, no array needed<br />
-			</code>
-		</div><br />
-		
+        <div class="twig">
+            <code class="prettyprint">
+                ... ['bath_plot1', 'bath_plot2', 'bath_plot3'] ... -> 3 items as an array<br />
+                ... 'bath_plot1' ... -> only one item, no array needed<br />
+            </code>
+        </div><br />
+        
 
-		<h2>Duration Format</h2>
+        <h2>Duration Format</h2>
 
-		Some widgets require a parameter for duration or period. This is specified with the following letters:<br />
-		<b>s</b> (second), <b>i</b> (minute), <b>h</b> (hour), <b>d</b> (day), <b>w</b> (week),
-		<b>m</b> (month, 30 days), <b>y</b> (year, 365 days)
+        Some widgets require a parameter for duration or period. This is specified with the following letters:<br />
+        <b>s</b> (second), <b>i</b> (minute), <b>h</b> (hour), <b>d</b> (day), <b>w</b> (week),
+        <b>m</b> (month, 30 days), <b>y</b> (year, 365 days)
 
-		<h5>Example</h5>
+        <h5>Example</h5>
 
-		<div class="twig">
-			<code class="prettyprint">
-				... '10i 30s' ... -> 10 minutes + 30 seconds<br />
-				... '2w' ... -> 2 weeks<br />
-			</code>
-		</div><br />
-		
+        <div class="twig">
+            <code class="prettyprint">
+                ... '10i 30s' ... -> 10 minutes + 30 seconds<br />
+                ... '2w' ... -> 2 weeks<br />
+            </code>
+        </div><br />
+        
 
-		<h2>Formats and Units</h2>
+        <h2>Formats and Units</h2>
 
-		Widgets like basic.print allow formatting dates and numbers and add units. The prototype functions "transUnit(unit)" manage the conversion.<br />
-		<ul>
-			<li>standard formats for unit names are defined in the configured language file in the [format] section. Example: the unit "temp" is defined as "%01,1f °C" in ./lang/de.ini.
-			You can define your own standard formats in a custom language file in ./dropins/lang.</li>
-			<li>the unit string is parsed as format string if unit is not the name of a standard format</li>
-			<li>for numbers there is a check whether unit is a valid format string. Otherwise the unit string will be appeded to the number.</li>
-		</ul>
-		Fomat options for numbers are described in the php manual for "printf()". Format options for dates are:<br />
-		<b>l</b> = long weekday, e.g. "Monday", <b>D</b> = short weekday, e.g. "Mo", <b>d</b> = two digit day date, e.g. "05", <b>j</b> = day date, "e.g."5", 
-		<b>m</b> = two digit month date, <b>n</b> = month date, <b>F</b> = full month name, e.g. "January", <b>M</b> = short month name, e.g. "Jan",
-		<b>y</b> = two digit year, <b>Y</b> = full year, <b>H</b> = two digit hour, <b>G</b> = hour, <b>i</b> = two digit minute, <b>s</b> = two digit second. <br />
-		<b>t</b> displays "today" or "tomorrow" if applicable and otherwise applies format given in parentheses. 
-
-
-		<h5>Example</h5>
-
-		<div class="twig">
-			<code class="prettyprint">
-				'l, d.m.Y' -> Monday, 03.02.2025<br />
-				't(l), d.m.Y H:i' -> today, 03.02.2025 10:12 / tomorrow, 04.02.2025 / Wednesday, 05.02.2025<br />
-				't(D, d.m.) H:i'  -> today 10:12 / tomorrow 10:12 / We, 05.02. 10:12<br />	
-			</code>
-		</div>
-		
-		<br />
-		
-		<h2>Anchor Links in html Code</h2>
-
-		Links with normal html anchors will not work in smartVISU. Therefore, an alternative anchor representation is provided. Just append "&amp;anchor=myAnchor" to the page URI in 
-		a link instead of "#myAnchor". This can be used with link and target on the same page as well as across pages.<br />
-
-		<h5>Example</h5>
-
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			// the link to a target 
-			<a href="index.php?page=targetPage&anchor=targetDiv">Link</a>
-			...
-			...
-			// the target
-			<div id="targetDiv">
-			    ...
-			</div>
-				
-			{% endverbatim %}{% endfilter %} </code>
-		</div>
+        Widgets like basic.print allow formatting dates and numbers and add units. The prototype functions "transUnit(unit)" manage the conversion.<br />
+        <ul>
+            <li>standard formats for unit names are defined in the configured language file in the [format] section. Example: the unit "temp" is defined as "%01,1f °C" in ./lang/de.ini.
+            You can define your own standard formats in a custom language file in ./dropins/lang.</li>
+            <li>the unit string is parsed as format string if unit is not the name of a standard format</li>
+            <li>for numbers there is a check whether unit is a valid format string. Otherwise the unit string will be appeded to the number.</li>
+        </ul>
+        Fomat options for numbers are described in the php manual for "printf()". Format options for dates are:<br />
+        <b>l</b> = long weekday, e.g. "Monday", <b>D</b> = short weekday, e.g. "Mo", <b>d</b> = two digit day date, e.g. "05", <b>j</b> = day date, "e.g."5", 
+        <b>m</b> = two digit month date, <b>n</b> = month date, <b>F</b> = full month name, e.g. "January", <b>M</b> = short month name, e.g. "Jan",
+        <b>y</b> = two digit year, <b>Y</b> = full year, <b>H</b> = two digit hour, <b>G</b> = hour, <b>i</b> = two digit minute, <b>s</b> = two digit second. <br />
+        <b>t</b> displays "today" or "tomorrow" if applicable and otherwise applies format given in parentheses. 
 
 
-		<br />
-		<h2>Check if Asset exists</h2>
+        <h5>Example</h5>
 
-		SmartVISU provides a Twig function to check if an asset (image, widget HTML, etc.) exists. That is especially important for widgets that might be imported from the dropins folder.<br />
+        <div class="twig">
+            <code class="prettyprint">
+                'l, d.m.Y' -> Monday, 03.02.2025<br />
+                't(l), d.m.Y H:i' -> today, 03.02.2025 10:12 / tomorrow, 04.02.2025 / Wednesday, 05.02.2025<br />
+                't(D, d.m.) H:i'  -> today 10:12 / tomorrow 10:12 / We, 05.02. 10:12<br />    
+            </code>
+        </div>
+        
+        <br />
+        
+        <h2>Anchor Links in html Code</h2>
 
-		<h5>Example</h5>
+        Links with normal html anchors will not work in smartVISU. Therefore, an alternative anchor representation is provided. Just append "&amp;anchor=myAnchor" to the page URI in 
+        a link instead of "#myAnchor". This can be used with link and target on the same page as well as across pages.<br />
 
-		<div class="twig">
-			<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-				{% if asset_exists('stateengine.html') %}
-				  {% import "@widgets/stateengine.html" as stateengine %}
-				{% endif %}
-				{% endverbatim %}{% endfilter %}
-			</code>
-		</div>
+        <h5>Example</h5>
 
-		<br />
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|nl2br %}{% verbatim %}
+            // the link to a target 
+            <a href="index.php?page=targetPage&amp;anchor=targetDiv">Link</a>
+            ...
+            ...
+            // the target
+            <div id="targetDiv">
+                ...
+            </div>
+                
+            {% endverbatim %}{% endfilter %} </code>
+        </div>
 
-		<h2>More Information</h2>
-		
-		More information can be found on the <a href="https://github.com/Martin-Gleiss/smartvisu/wiki">wiki pages.</a><br>
-		Please contribute there if you like to share your knowledge. We'll integrate the contents into this inline documentation later.
-		
-	</div>
+
+        <br />
+        <h2>Check if Asset exists</h2>
+
+        SmartVISU provides a Twig function to check if an asset (image, widget HTML, etc.) exists. That is especially important for widgets that might be imported from the dropins folder.<br />
+
+        <h5>Example</h5>
+
+        <div class="twig">
+            <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+                {% if asset_exists('stateengine.html') %}
+                  {% import "@widgets/stateengine.html" as stateengine %}
+                {% endif %}
+                {% endverbatim %}{% endfilter %}
+            </code>
+        </div>
+
+        <br />
+
+        <h2>More Information</h2>
+        
+        More information can be found on the <a href="https://github.com/Martin-Gleiss/smartvisu/wiki">wiki pages.</a><br>
+        Please contribute there if you like to share your knowledge. We'll integrate the contents into this inline documentation later.
+        
+    </div>
 
 {% endblock %}

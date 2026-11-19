@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -28,10 +28,10 @@
 
 Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_down'],'volume_slider']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.playercontrol('volume', 'Volume Slider, UZSU and Plot', '', '', '', '', '', '', '', '', '', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, '', '', '', '', '', 'speakerAB', 'uzsu', ['', '', 'num', '', 'icon1', 'icon0'], 'Volume.Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_up','volume_down'],'volume_slider']) }}
 
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -40,9 +40,9 @@ Volume Control with the following columns: ['uzsu','plot',['volume_up','volume_d
 
 Player Control with standard columns
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.playercontrol('player', 'Squeezebox', 'Previous', '', 'Pause', 'Stop', 'Next', '', 'Eject', 'Repeat', 'Shuffle', '', 'Mute', 'Volume', 'VolumeUp', 'VolumeDown', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot') }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -51,9 +51,9 @@ Player Control with standard columns
 
 Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.playercontrol('player2', 'Source as Icons', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'icon', ['10', 'edit_numeric_1.svg'], ['13', 'edit_numeric_2.svg']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', 'speakerAB', 'uzsu', '', 'Plot', '', '', '', '', '', '', ['uzsu','plot',['volume_down','volume_up','power'], 'source']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -62,9 +62,9 @@ Player Control with ['uzsu','plot',['volume_down','volume_up','power'], 'source'
 
 Player Control with [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_position']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.playercontrol('player3', 'With Album Art', 'Previous', 'Play', 'Pause', 'Stop', 'Next', 'Power', 'Eject', 'Repeat', 'Shuffle', ['Source', 'menu', ['10', '', '10'], ['13', '', '13']], 'Mute', 'Volume', 'Volume_Up', 'Volume_Down', 0, 100, 1, 0, 100, 80, 'Album', 'Artist', 'Title', 'Time', 'Duration', '', 'uzsu', '', 'Plot', '', '', '', '', '', '', [['pause', 'stop'], ['cover', 'album'], 'shuffle', 'song_position']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
