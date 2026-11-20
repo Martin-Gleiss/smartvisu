@@ -33,7 +33,7 @@
             {% elseif isfile(dir_d) %}
                 <a href="index.php?page=shwidgets/widget_{{ widget.command }}" {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>    
             {% elseif widget.command %}
-                <a{{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
+                <a {{ widget.deprecated ? 'class="deprecated"' }}>{{ widget.command }}</a>
             {% endif %}
 
         {% endfor %}
