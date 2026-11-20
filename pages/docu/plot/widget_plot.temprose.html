@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,59 +12,57 @@
 
 {% block example %}
 <script>
-	$( document ).ready(function() {
-		io.write('sleep.rtr.act', 18 );
-		io.write('office.rtr.act', 21 );
-		io.write('kid.rtr.act', 22 );
-		io.write('bath.rtr.act', 23 );
-		io.write('floor.rtr.act', 19 );
-		io.write('sleep.rtr.set', 17 );
-		io.write('office.rtr.set', 22 );
-		io.write('kid.rtr.set', 21 );
-		io.write('bath.rtr.set', 23 );
-		io.write('floor.rtr.set', 20 );
-	});
+    $( document ).ready(function() {
+        io.write('sleep.rtr.act', 18 );
+        io.write('office.rtr.act', 21 );
+        io.write('kid.rtr.act', 22 );
+        io.write('bath.rtr.act', 23 );
+        io.write('floor.rtr.act', 19 );
+        io.write('sleep.rtr.set', 17 );
+        io.write('office.rtr.set', 22 );
+        io.write('kid.rtr.set', 21 );
+        io.write('bath.rtr.set', 23 );
+        io.write('floor.rtr.set', 20 );
+    });
 </script>
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ plot.temprose('',
+                ['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
+                ['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
+                ['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
 
-			{{ plot.temprose('',
-				['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
-				['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
-				['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+            {{ plot.temprose('',
+                ['bath.p1', 'bath.p2', 'bath.p3'], '',
+                ['South', 'East', 'West'], 'Brightness', 'lx') }}
 
-			{{ plot.temprose('',
-				['bath.p1', 'bath.p2', 'bath.p3'], '',
-				['South', 'East', 'West'], 'Brightness', 'lx') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>house temperature plot</h3>
+                    {{ plot.temprose('',
+                    ['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
+                    ['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
+                    ['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
+                </div>
+            </div>
+        </div>
 
-			{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>brightness in cardinal directions</h3>
+                    {{ plot.temprose('',
+                    ['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act'], '',
+                    ['South', 'East', 'West'], ['Brightness'], 'lx') }}
+                </div>
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>house temperature plot</h3>
-					{{ plot.temprose('',
-					['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act', 'bath.rtr.act', 'floor.rtr.act'],
-					['sleep.rtr.set', 'office.rtr.set', 'kid.rtr.set', 'bath.rtr.set', 'floor.rtr.set'],
-					['Sleeping', 'Office', 'Kid', 'Bath', 'Floor']) }}
-				</div>
-			</div>
-		</div>
-
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>brightness in cardinal directions</h3>
-					{{ plot.temprose('',
-					['sleep.rtr.act', 'office.rtr.act', 'kid.rtr.act'], '',
-					['South', 'East', 'West'], ['Brightness'], 'lx') }}
-				</div>
-			</div>
-		</div>
-
-	</div>
+    </div>
 
 {% endblock %}

@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,35 +12,35 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+    <h5>Examples</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 
-			{{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
-			'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath_music_mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
+            {{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
+            'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath_music_mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
 
-			{{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
+            {{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
 
-			{% endverbatim %}{% endfilter %}</code>
-	</div>
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
-	<div class="block">
-		<div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Full</div>
-		<div class="ui-fixed ui-body-a ui-corner-bottom">
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Full</div>
+        <div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			{{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
-			'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath.music.mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
+            {{ multimedia.music('music1', 'bath.music.play', 'bath.music.stop', 'bath.music.fwdback',
+            'bath.music.more.fwdback', 'bath.music.pos', 'bath.music.vol', 'bath.music.mute', 'bath.music.title', 'bath.music.artist', 'bath.music.repeat') }}
 
-		</div>
-	</div>
+        </div>
+    </div>
 
-	<div class="block">
-		<div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Radio</div>
-		<div class="ui-fixed ui-body-a ui-corner-bottom">
+    <div class="block">
+        <div class="ui-bar-c ui-li-divider ui-corner-top">Multimedia Radio</div>
+        <div class="ui-fixed ui-body-a ui-corner-bottom">
 
-			{{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
+            {{ multimedia.music('radio1', 'bath.radio.play', '', '', 'bath.radio.fwdback', '', 'bath.radio.vol', 'bath.radio.mute', 'bath.radio.title', '', '') }}
 
-		</div>
-	</div>
+        </div>
+    </div>
 
 {% endblock %}

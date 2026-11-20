@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -16,48 +16,48 @@ $( document ).ready(function() {
      io.write('weather.temp', '15' );
      io.write('weather.wind', 'fart from neighbours garden at 0.03 m/s' );
      io.write('weather.airpressure', '1023' );
-	 io.write('weather.rain', '1.2' );
-	 io.write('weather.humidity', '10' );
+     io.write('weather.rain', '1.2' );
+     io.write('weather.humidity', '10' );
   });
 </script>
 
-	<h5>Examples</h5>
+    <h5>Examples</h5>
 
-	If no location is given, the default location from config (in your case <b>{{ config_weather_location }}</b>) is being used.
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ weather.current('weather1') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	
-	If the location is specified as parameter, the location format must match the format required by the configured online service. 
-	Otherwise the read request will fail.
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ weather.current('weather2', 'lat=45&lon=7') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ weather.current('weather2', 'lat=45&lon=7') }}
-	</div>
-	
-	<h5>Weather data from the backend</h5>
-	
-	The weather widget can now display weather data which are delivered by items from the backend.
-	Temperature, wind conditions and humidity values from the online weather service can be used by leaving the corresponding parameters empty.  
-	Otherwise they will be replaced by the item values. Two additional items take further values.
-	<br>
-	The following example shows temperature from the online service and other values from the backend. The wind condition comes as a string 
-	constructed by the backend (option 'text').
-	
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ weather.current('weather3','','','', 'weather.wind', 'text', 'weather.airpressure', 'Air pressure ', 'hPa', 'weather.rain', 'Rain ', 'l/m²', 'weather.humidity', 'Humidity ', '%') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="twig">
-			{{ weather.current('weather3','','','', 'weather.wind', 'text', 'weather.airpressure', 'Air pressure ', 'hPa', 'weather.rain', 'Rain ', 'l/m²', 'weather.humidity', 'Humidity ', '%') }}
-	</div>
-	
+    If no location is given, the default location from config (in your case <b>{{ config_weather_location }}</b>) is being used.
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ weather.current('weather1') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    
+    If the location is specified as parameter, the location format must match the format required by the configured online service. 
+    Otherwise the read request will fail.
+    <div class="twig">
+        <code class="prettyprint">{% verbatim %}
+            &#123;&#123; weather.current('weather2', 'lat=45&amp;lon=7') &#125;&#125;
+        {% endverbatim %}</code>
+    </div>
+    <div class="html">
+        {{ weather.current('weather2', 'lat=45&lon=7') }}
+    </div>
+    
+    <h5>Weather data from the backend</h5>
+    
+    The weather widget can now display weather data which are delivered by items from the backend.
+    Temperature, wind conditions and humidity values from the online weather service can be used by leaving the corresponding parameters empty.  
+    Otherwise they will be replaced by the item values. Two additional items take further values.
+    <br>
+    The following example shows temperature from the online service and other values from the backend. The wind condition comes as a string 
+    constructed by the backend (option 'text').
+    
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ weather.current('weather3','','','', 'weather.wind', 'text', 'weather.airpressure', 'Air pressure ', 'hPa', 'weather.rain', 'Rain ', 'l/m²', 'weather.humidity', 'Humidity ', '%') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="twig">
+            {{ weather.current('weather3','','','', 'weather.wind', 'text', 'weather.airpressure', 'Air pressure ', 'hPa', 'weather.rain', 'Rain ', 'l/m²', 'weather.humidity', 'Humidity ', '%') }}
+    </div>
+    
 
 {% endblock %}

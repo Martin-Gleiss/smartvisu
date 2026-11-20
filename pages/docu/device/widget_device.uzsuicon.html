@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -18,47 +18,55 @@
 
   io.write('uzsuitem', kurve1);
 </script>
-	<h5>Example</h5>
+    <h5>Example</h5>
 
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu1', 'uzsuitem') &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ device.uzsuicon('uzsu1', 'uzsuitem') }}
-	</div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ device.uzsuicon('uzsu1', 'uzsuitem') }}
+    </div>
 
-	FHEM style and value as list (style depends on backend I/O driver)
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2']) &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2'], '', '', '', '2') }}
-	</div>
+    FHEM style and value as list (style depends on backend I/O driver)
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2']) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ device.uzsuicon('uzsu2', 'uzsuitem', 'FHEM style and value as list', '', '', 'list', ['a:0','b:1','c:2'], '', '', '', '2') }}
+    </div>
 
-	Numeric input (validation depends on browser, see also <a href="https://www.w3.org/html/wiki/Elements/input/number">https://www.w3.org/html/wiki/Elements/input/number</a>)
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) }}
-	</div>
-	Use the "style" parameter to show a button in 'micro', 'mini' or 'midi' size. Control groups can be used, too.
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; device.uzsuicon('uzsu4', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', '', 'micro') &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ device.uzsuicon('uzsu4', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'micro') }}
-		{{ device.uzsuicon('uzsu5', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
-		{{ device.uzsuicon('uzsu6', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'midi') }}
-		<div data-role="controlgroup" data-type="horizontal">
-			{{ device.uzsuicon('uzsu7', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
-			{{ device.uzsuicon('uzsu8', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
-			{{ device.uzsuicon('uzsu9', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
-		</div>
-	</div>
-	<h5>Usage inside popups</h5>
-	Until v3.5.0, device.uzsuicon does not work if placed inside a popup because chaining of popups is forbidden. As of v3.6.0, the widget closes the parent popup before opening the UZSU editor. 
-	Re-opening of the parent popup after closing the editor can be configured by giving the popup &lt;div data-role="popup"&gt; the class "uzsu_reopen". This makes sense if the popup is clearly positioned 
-	on the page by CSS. Otherwise the popup will open somewhere but not resume its original position. 	
+    Numeric input (validation depends on browser, see also <a href="https://www.w3.org/html/wiki/Elements/input/number">https://www.w3.org/html/wiki/Elements/input/number</a>)
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ device.uzsuicon('uzsu3', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5]) }}
+    </div>
+    Use the "style" parameter to show a button in 'micro', 'mini' or 'midi' size. Control groups can be used, too.
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.uzsuicon('uzsu4', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', '', 'micro') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ device.uzsuicon('uzsu4', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'micro') }}
+        {{ device.uzsuicon('uzsu5', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
+        {{ device.uzsuicon('uzsu6', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'midi') }}
+        <div data-role="controlgroup" data-type="horizontal">
+            {{ device.uzsuicon('uzsu7', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
+            {{ device.uzsuicon('uzsu8', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
+            {{ device.uzsuicon('uzsu9', 'uzsuitem', '3 to 5', '', '', 'num', [3, 5, 0.5], '', '', 'mini') }}
+        </div>
+    </div>
+    <h5>Usage inside popups</h5>
+    Until v3.5.0, device.uzsuicon does not work if placed inside a popup because chaining of popups is forbidden. As of v3.6.0, the widget closes the parent popup before opening the UZSU editor. 
+    Re-opening of the parent popup after closing the editor can be configured by giving the popup &lt;div data-role="popup"&gt; the class "uzsu_reopen". This makes sense if the popup is clearly positioned 
+    on the page by CSS. Otherwise the popup will open somewhere but not resume its original position.     
 
 {% endblock %}

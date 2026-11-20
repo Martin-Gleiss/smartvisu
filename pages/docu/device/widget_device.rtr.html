@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,63 +12,63 @@
 
 {% block example %}
 
-	If you want to use knx dpt '20.102' use that gad/item 3 times for 'gad_mode', 'gad_night' and 'gad_frost'.
+    If you want to use knx dpt '20.102' (byte mode) use that item 3 times for 'item_comfort', 'item_night' and 'item_frost'.
 
-	<h5>Examples</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ device.rtr('rtr1', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night', 'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') }}
-			
-			{{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
+    <h5>Examples</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ device.rtr('rtr1', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night', 'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') }}
 
-			{{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
-			'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
-				device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
-				icon.heating('','','bath.rtr.set',0,90)
-			]) }}
+            {{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
 
-			{{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
+            {{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+            'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
+                device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
+                icon.heating('','','bath.rtr.set',0,90)
+            ]) }}
 
-	<div class="html">
+            {{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
 
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 3x bit-mode</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night',
-				'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') }}
-			</div>
-		</div>
+    <div class="html">
 
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 1x byte-mode</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
-				'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
-			</div>
-		</div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 3x bit-mode</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                {{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.comfort', 'bath.rtr.night',
+                'bath.rtr.frost', 'bath.rtr.state', 'bath.rtr.text') }}
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">RTR in "MDT-mode" (as described in <a href="https://github.com/smarthomeNG/smarthome/wiki/Der-Glas-RTR-von-MDT-in-Smarthome.py-und-Smartvisu/" target="_blank">SmartHomeNG wiki</a>)</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
-				'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
-					device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
-					icon.heating('','','bath.rtr.set',0,90)
-				]) }}
-				<br>
-				Notice: The set temperature will not change in offline mode as changes are sent to 'bath.rtr.offset' and have to be reflected by backend.
-			</div>
-		</div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">RTR in 1x byte-mode</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                {{ device.rtr('rtr2', 'Heating', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+                'bath.rtr.mode', 'bath.rtr.state', 'bath.rtr.text') }}
+            </div>
+        </div>
 
-		<div class="block">
-			<div class="ui-bar-c ui-li-divider ui-corner-top">Simple RTR w/o mode and state</div>
-			<div class="ui-fixed ui-body-a ui-corner-bottom">
-				{{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set') }}
-			</div>
-		</div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">RTR in "MDT-mode" (as described in <a href="https://github.com/smarthomeNG/smarthome/wiki/Der-Glas-RTR-von-MDT-in-Smarthome.py-und-Smartvisu/" target="_blank">SmartHomeNG wiki</a>)</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                {{ device.rtr('', '', 'bath.rtr.act', 'bath.rtr.set', 'bath.rtr.mode', 'bath.rtr.mode',
+                'bath.rtr.mode', '', '', 0.2, 'bath.rtr.offset', [
+                    device.uzsuicon('','uzsuitem','Presence','','','list','Present:1,Absent:2,Night:3'),
+                    icon.heating('','','bath.rtr.set',0,90)
+                ]) }}
+                <br>
+                Notice: The set temperature will not change in offline mode as changes are sent to 'bath.rtr.offset' and have to be reflected by backend.
+            </div>
+        </div>
 
-	</div>
+        <div class="block">
+            <div class="ui-bar-c ui-li-divider ui-corner-top">Simple RTR w/o mode and state</div>
+            <div class="ui-fixed ui-body-a ui-corner-bottom">
+                {{ device.rtr('', 'Heating', 'bath.rtr.act', 'bath.rtr.set') }}
+            </div>
+        </div>
+
+    </div>
 
 {% endblock %}

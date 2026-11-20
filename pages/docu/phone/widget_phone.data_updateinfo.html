@@ -14,7 +14,9 @@
 
     <h5>Example</h5>
     <div class="twig">
-        <code class="prettyprint">&#123;&#123; phone.data_updateinfo('', '1d' ) &#125;&#125;</code>
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ phone.data_updateinfo('', '1d' ) }}
+        {% endverbatim %}{% endfilter %}</code>
     </div>
     <div class="html">
         This widget calls the configured phone service (Fritz!box TR-064 only!) and requests the "User Interface Info" which contains information on firmware updates. 

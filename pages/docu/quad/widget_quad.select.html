@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -15,16 +15,16 @@
 {% block example %}
 <script>
   $( document ).ready(function() {
-  		 io.write('this', '0' );
-  		 io.write('that', '4' );
-  		 io.write('this.sperren', '0' );
-  		 io.write('this.timer', '2' );
-  		 io.write('bwm.this.sperren', '0' );
-  		 io.write('this.zwangvalue', '0' );
-  		 io.write('that.sperren', '0' );
-  		 io.write('bwm.that.sperren', '0' );
-  		 io.write('that.zwangvalue', '0' );
-  	});
+    io.write('this', '0' );
+    io.write('that', '4' );
+    io.write('this.sperren', '0' );
+    io.write('this.timer', '2' );
+    io.write('bwm.this.sperren', '0' );
+    io.write('this.zwangvalue', '0' );
+    io.write('that.sperren', '0' );
+    io.write('bwm.that.sperren', '0' );
+    io.write('that.zwangvalue', '0' );
+  });
 </script>
 {% set extpopup = {
 'extra': ['edit_favorites.svg', [['linetext', 'select', 'switch'], 'Text', ['item.automatik.settings.sollwert', 'mini', [0,4,6]], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], [['switch', 'slider'], ['item.automatik.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']], ['item.automatik.settings.suspendduration', '0', '60', '5', '', 'handle']], [['slider'], ['item.automatik.settings.sollwert', '0', '1', '0']], [['linetext', 'flip'], 'Flip:', ['licht.og.kueche.automatik.lock', 'On', 'Off', '1', '0']]],
@@ -32,50 +32,50 @@
 }
  %}
 
-	<h5>Example</h5>
+    <h5>Example</h5>
 
 Multiple Select
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.select('select1', ['this', 'that'], ['menu', 'menu'], [[0,3],[4,5]], [['edit_numeric_0.svg','edit_numeric_3.svg'],['edit_numeric_4.svg','edit_numeric_5.svg']], [['0','3'],['4','5']], ['',''], ['',''], '', '', 'Select as menu', ['Select1', 'Select2'], ['this.uzsu','that.uzsu'], ['', ''], ['plotitem1', 'plotitem2']) }}
-		{% endraw %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <ul data-role="listview" data-dividertheme="c" class="quad_list">
 {{ quad.select('select01', ['this', 'that'], ['menu', 'menu'], [[0,3],[4,5]], [['edit_numeric_0.svg','edit_numeric_3.svg'],['edit_numeric_4.svg','edit_numeric_5.svg']], [['0','3'],['4','5']], ['',''], ['',''], '', '', 'Select as menu', ['Select1', 'Select2'], ['this.uzsu','that.uzsu'], ['', ''], ['plotitem1', 'plotitem2']) }}
-	</ul></div>
+    </ul></div>
 
 Single select Item [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.select('select2', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', '', '', '', 'Select as horizontal group', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), ['this.sperren'], 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
-		{% endraw %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <ul data-role="listview" data-dividertheme="c" class="quad_list">
 {{ quad.select('select02', 'this', 'icon', [0,1,2,3], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg'], ['','','',''], '', '', '', '', 'Select as horizontal group', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', (extpopup['extra']), ['this.sperren'], 'this.slider', '', '', [['uzsu','select'], '10', ['plot','stateengine', 'extpopup'], '10', 'locks']) }}
-	</ul></div>
+    </ul></div>
 
 Single select item
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.select('select3', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', ['this.sperren'], ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
-		{% endraw %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <ul data-role="listview" data-dividertheme="c" class="quad_list">
 {{ quad.select('select03', 'this', 'icon', [0,1,2,3,4], ['edit_numeric_0.svg','edit_numeric_1.svg','edit_numeric_2.svg','edit_numeric_3.svg','edit_numeric_4.svg'], ['','','','',''], '', '', '', '', 'Select as none group', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '', ['this.sperren'], ['dies.timer', 0, 10, 1, 'min', 'handle'], '', '', ['select', 'plot', 'uzsu']) }}
-	</ul></div>
+    </ul></div>
 
 Single select item without column order
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {{ quad.select('select4', 'this', 'mini', [0,1,2,3,4], '', ['0','1','2','3','4'], '', '', '', '', 'Select standard columns', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '') }}
-		{% endraw %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		<ul data-role="listview" data-dividertheme="c" class="quad_list">
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <ul data-role="listview" data-dividertheme="c" class="quad_list">
 {{ quad.select('select4', 'this', 'mini', [0,1,2,3,4], '', ['0','1','2','3','4'], '', '', '', '', 'Select standard columns', '', 'this.uzsu', '', 'plotitem', 'measure_power_meter.svg', 'this.automatik', '') }}
-	</ul></div>
+    </ul></div>
 
 {% endblock %}

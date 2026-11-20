@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -63,9 +63,9 @@ $( document ).ready(function() {
   <h5>Example</h5>
     ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine'] with stateengine popup. Short press on move icons moves the blind immediately up/down, otherwise only a long press will move the blind.
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.blind('blind1', 'Blind Popup. Quad-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, false, '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', 'blind.automatik', (stateengine['item1']), '', '', '', ['plot', 'uzsu', ['move_down', 'stop', 'move_up'],'pos_popup_blind', 'stateengine']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -74,9 +74,9 @@ $( document ).ready(function() {
 
     ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.blind('blind2', 'Blind Slider. Standard-UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['pic_on', 'pic_off', 'valueType', 'valueParameterList', 'color_on', 'color_off'], 'blind.hoehe', '', '', '', '', '', '', ['move_down', 'move_up','pos_slider', 'plot', 'uzsu', '40']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -85,9 +85,9 @@ $( document ).ready(function() {
 
     ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.blind('blind3', 'Blind with position selector', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', '', 'blind.hoehe', '', '', ['edit_favorites.svg', ['switch', ['item1.lock', 'icon', [0,1], ['secur_open.svg','secur_locked.svg']]], ['flip', ['item1.flip', 'on', 'off', '0', '1']] ], ['blind.hoehe', '50', '80', '0'], '', '', ['move_down', 'move_up', ' ', ['pos1', 'pos2'], 'extpopup']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -96,9 +96,9 @@ $( document ).ready(function() {
 
     [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.blind('blind4', 'Blind 2 different popups', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter', ['time_automatic', 'time_automatic', 'num', [0,255,10], 'icon1', 'icon0'], 'blind.hoehe', '', '', '', '', '', '', [40, 'move_down', 'move_up', 'pos_popup_blind', 'pos_popup_shutter']) }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">
@@ -107,9 +107,9 @@ $( document ).ready(function() {
 
   no column_order
   <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
     {{ quad.blind('blind5', 'Blind Standard witz UZSU', 'blind.lz', 'blind.kz', 'blind.hoehe', 'blind.kz', 'blind.lamellen', 0, 100, 5, '', '', 'blind.hoehe.zeitschalter') }}
-    {% endraw %}{% endfilter %}</code>
+    {% endverbatim %}{% endfilter %}</code>
   </div>
   <div class="html">
     <ul data-role="listview" data-dividertheme="c" class="quad_list">

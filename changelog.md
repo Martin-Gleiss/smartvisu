@@ -40,6 +40,7 @@
 
 ### Deprecated
 - base template for quad design is now quad_base.html (according to base.html in standard design). quad_root.html is deprecated and kept only to avoid breaking changes.
+- basic.glue (not needed for backends with live item update)
 
 ### Removed Features
 - drivers deprecated in 2022 have been removed from ./driver/deprecated/

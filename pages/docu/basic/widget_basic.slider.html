@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2024
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,73 +12,74 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
-	See the various scaling options in the following examples.<br><br>
-	
-	Silent mode<br>
-	Per default, sliders send their values constantly during operation. There is also a silent mode
-	which limits value output to the end of the sliding phase. See the difference by moving different sliders.
-	The bottom slider is switched to silent mode while the others send their values live.
-	
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.slider('', 'bath.light.value') &#125;&#125;<br />
-      &#123;&#123; basic.slider('', 'bath.light.value', 0, 100, 10) &#125;&#125;<br />
-      &#123;&#123; basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.slider('', 'bath.light.value') }}
-		{{ basic.slider('', 'bath.light.value', 0, 100, 10) }}
-		{{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) }}
-	</div>
+    <h5>Examples</h5>
+    See the various scaling options in the following examples.<br><br>
+    
+    Silent mode<br>
+    Per default, sliders send their values constantly during operation. There is also a silent mode
+    which limits value output to the end of the sliding phase. See the difference by moving different sliders.
+    The bottom slider is switched to silent mode while the others send their values live.
 
-	Orientation
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, 'vertical') &#125;&#125;<br />
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, 'bottomup') &#125;&#125;<br />
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, 'semicircle') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		<div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
-			{{ basic.slider('', 'bath.light.value', 0, 255, 5, 'vertical') }}
-		</div>
-		<div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
-			{{ basic.slider('', 'bath.light.value', 0, 255, 5, 'bottomup') }}
-		</div>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.slider('', 'bath.light.value') }}
+            {{ basic.slider('', 'bath.light.value', 0, 100, 10) }}
+            {{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('', 'bath.light.value') }}<br />
+        {{ basic.slider('', 'bath.light.value', 0, 100, 10) }}<br />
+        {{ basic.slider('', 'bath.light.value', 0, 255, '', '', '', 0, 100, 0) }}
+    </div>
 
-		<div style="height: 180px; width: auto; display: inline-block; vertical-align: top;">
-			{{ basic.slider('', 'bath.light.value', 0, 255, 5, 'semicircle') }}
-		</div>
+    Orientation
+    <div class="twig">
+        <code class="prettyprint">
+            {% filter trim|escape|nl2br %}{% verbatim %}
+            {{  basic.slider('', 'bath.light.value', 0, 255, 5, 'vertical') }}
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, 'bottomup') }}
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, 'semicircle') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        <div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, 'vertical') }}
+        </div>
+        <div style="height: 180px; width: auto; display: inline-block; margin-right: 2em;">
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, 'bottomup') }}
+        </div>
 
-	</div>
+        <div style="height: 180px; width: auto; display: inline-block; vertical-align: top;">
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, 'semicircle') }}
+        </div>
 
-	Value display types
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, '', 'handle') &#125;&#125;<br>
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, '', 'none') &#125;&#125;<br>
-			&#123;&#123; basic.slider('', 'bath.light.value', 0, 255, 5, '', 'both') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'handle') }}<br>
-		{{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'none') }}<br>
-		{{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'both') }}
-	</div>
+    </div>
 
-	Style
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') &#125;&#125;<br>
-			&#123;&#123; basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') &#125;&#125;
-		</code>
-	</div>
-	<div class="html">
-		{{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') }}<br>
-		{{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') }}
-	</div>
+    Value display types
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'handle') }}
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'none') }}
+            {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'both') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'handle') }}<br />
+        {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'none') }}<br />
+        {{ basic.slider('', 'bath.light.value', 0, 255, 5, '', 'both') }}
+    </div>
+
+    Style
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{  basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') }}
+            {{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))') }}<br />
+        {{ basic.slider('', 'bath.light.color_temperature',0, 255, 5, '', 'none', '', '', 1, 'linear-gradient(90deg, rgb(255, 0, 0), rgb(0, 0, 255))') }}
+    </div>
 
 {% endblock %}

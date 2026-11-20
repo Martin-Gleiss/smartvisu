@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,32 +12,34 @@
 
 {% block example %}
 
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">
-			&#123;&#123; plot.comfortchart('p1', 'bath.plot.temp', 'bath.plot.humidity') &#125;&#125;<br />
-		</code>
-	</div>
-	<div class="html">
-		Use the slider to control the temperature
-		{{ basic.slider('s1', 'bath.plot.temp', 10, 35, 1) }}
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">
+            {% filter trim|escape|nl2br %}{% verbatim %}
+            {{ plot.comfortchart('p1', 'bath.plot.temp', 'bath.plot.humidity') }}
+        {% endverbatim %}{% endfilter %}<br />
+        </code>
+    </div>
+    <div class="html">
+        Use the slider to control the temperature
+        {{ basic.slider('s1', 'bath.plot.temp', 10, 35, 1) }}
 
-		Use the slider to control the humidity
-		{{ basic.slider('s2', 'bath.plot.humidity', 0, 100, 1) }}
+        Use the slider to control the humidity
+        {{ basic.slider('s2', 'bath.plot.humidity', 0, 100, 1) }}
 
-		<br />
+        <br />
 
-		<div class="block">
-			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+        <div class="block">
+            <div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
 
-				<div data-role="collapsible" data-collapsed="false">
-					<h3>comfortchart plot</h3>
+                <div data-role="collapsible" data-collapsed="false">
+                    <h3>comfortchart plot</h3>
 
-					{{ plot.comfortchart('p1', 'bath.plot.temp', 'bath.plot.humidity') }}
-				</div>
+                    {{ plot.comfortchart('p1', 'bath.plot.temp', 'bath.plot.humidity') }}
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

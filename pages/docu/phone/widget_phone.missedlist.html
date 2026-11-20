@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,12 +12,14 @@
 
 {% block example %}
 
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">&#123;&#123; phone.missedlist('phonelist', 'Phonelist', 3) &#125;&#125;</code>
-	</div>
-	<div class="html">
-		{{ phone.missedlist('phonelist', 'Phonelist', 3) }}
-	</div>
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ phone.missedlist('phonelist', 'Phonelist', 3) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ phone.missedlist('phonelist', 'Phonelist', 3) }}
+    </div>
 
 {% endblock %}

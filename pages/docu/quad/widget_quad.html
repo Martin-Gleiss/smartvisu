@@ -25,19 +25,19 @@
     <p>Afterwards adjust the following:</p>
 
 <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {% extends "base.html" %} should be replaced by {% extends "quad_base.html" %}
 {% import "widget_visu.html" as visu %} has to be removed.
 {% import "widget_list.html" as list %}  has to be removed.
-{% endraw %}{% endfilter %}</code>
+{% endverbatim %}{% endfilter %}</code>
 </div>
 <p>Replace all "list.*" and "visu.*" entries by "quad.*".<br>
     Replace all "nw_*" classes by "quad_*".
 </p><p>You might also need to change the following in your rooms.html:</p>
 <div class="twig">
-    <code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+    <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
 {% block quad_top %} gets {% block sidebar %}
-{% endraw %}{% endfilter %}</code>
+{% endverbatim %}{% endfilter %}</code>
 </div>
 <p>
 After that you have to update all your former list entries based on the documentation. The order of the parameters is now the same as in the standard smartVISU and therefore different from the original 2ndSky quad version!

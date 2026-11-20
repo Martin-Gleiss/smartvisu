@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß
-* @copyright   2012 - 2015
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,40 +12,39 @@
 
 {% block example %}
 <script>
-	$( document ).on('pageinit', function() {
-		var now = +new Date();	
-		io.write('bath.light.timestamp', 0 );
-		io.write('bath.light.timestamp2', 0 );
-	});
+    $( document ).on('pageinit', function() {
+        var now = +new Date();    
+        io.write('bath.light.timestamp', 0 );
+        io.write('bath.light.timestamp2', 0 );
+    });
 </script>
-	<h5>Example</h5>
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-			{{ clock.countdown('t', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '5s'}}
-			{{ clock.countdown('t2', 'bath.light.switch2', 'bath.light.timestamp2', '15s', '1s', 'zero', ' ', 1) }}
-		{% endverbatim %}{% endfilter %}
-		</code>
-	</div>
-	<br />
-	Press the "Trigger" button to create a timestamp for the start time. Countdown will start only if a duration is entered. 
-	You can change start time and duration during runtime of the countdown. Timer will stop if the item is changed while the timestamp remains unchanged.
-	<br><br />
-	<div class="html">
-		{{ basic.flip ('', 'bath.light.switch') }} Item to switch.&nbsp; &nbsp; &nbsp;  
-		{{ lib.timestamp ('t', 'bath.light.timestamp') }} &nbsp;&nbsp;&nbsp;=&gt;&nbsp;&nbsp;&nbsp;Timestamp for "now" is:  {{ basic.print ('', 'bath.light.timestamp') }} <br /><br />
-		Enter timer duration in standard duration format e.g. &quot;1h 45i 30s&quot;:
-		<div data-role="fieldcontain" class="ui-field-contain" style="width: 60%;">
-			<label>Duration  </label> {{ basic.input ('', 'bath.light.timer', 'text')}} <br />
-		</div>
-		<h3><u>Countdown Timer:</u> &nbsp;&nbsp;{{ clock.countdown('', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '5s') }}</h3>
-		<br />
-	</div>
-	This example comes with a fixed countdown duration and starts only if the switching item equals the value of 1.
-	<div class="html">
-		{{ basic.flip ('', 'bath.light.switch2') }} Item to switch.&nbsp; &nbsp; &nbsp;  
-		{{ lib.timestamp ('t2', 'bath.light.timestamp2') }} &nbsp;&nbsp;&nbsp;=&gt;&nbsp;&nbsp;&nbsp;
-		Timestamp for "now" is:  {{ basic.print ('', 'bath.light.timestamp2') }} <br /><br />
-		<h3><u>Countdown Timer:</u> &nbsp;&nbsp;{{ clock.countdown('', 'bath.light.switch2', 'bath.light.timestamp2', '15s', '1s', 'zero', ' ', 1) }}</h3>
-	</div>
+    <h5>Example</h5>
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+            {{ clock.countdown('t', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '5s'}}
+            {{ clock.countdown('t2', 'bath.light.switch2', 'bath.light.timestamp2', '15s', '1s', 'zero', ' ', 1) }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <br />
+    Press the "Trigger" button to create a timestamp for the start time. Countdown will start only if a duration is entered. 
+    You can change start time and duration during runtime of the countdown. Timer will stop if the item is changed while the timestamp remains unchanged.
+    <br><br />
+    <div class="html">
+        {{ basic.flip ('', 'bath.light.switch') }} Item to switch.&nbsp; &nbsp; &nbsp;  
+        {{ lib.timestamp ('t', 'bath.light.timestamp') }} &nbsp;&nbsp;&nbsp;=&gt;&nbsp;&nbsp;&nbsp;Timestamp for "now" is:  {{ basic.print ('', 'bath.light.timestamp') }} <br /><br />
+        Enter timer duration in standard duration format e.g. &quot;1h 45i 30s&quot;:
+        <div data-role="fieldcontain" class="ui-field-contain" style="width: 60%;">
+            <label>Duration  </label> {{ basic.input ('', 'bath.light.timer', 'text')}} <br />
+        </div>
+        <h3><u>Countdown Timer:</u> &nbsp;&nbsp;{{ clock.countdown('', 'bath.light.switch', 'bath.light.timestamp', 'bath.light.timer', '5s') }}</h3>
+        <br />
+    </div>
+    This example comes with a fixed countdown duration and starts only if the switching item equals the value of 1.
+    <div class="html">
+        {{ basic.flip ('', 'bath.light.switch2') }} Item to switch.&nbsp; &nbsp; &nbsp;  
+        {{ lib.timestamp ('t2', 'bath.light.timestamp2') }} &nbsp;&nbsp;&nbsp;=&gt;&nbsp;&nbsp;&nbsp;
+        Timestamp for "now" is:  {{ basic.print ('', 'bath.light.timestamp2') }} <br /><br />
+        <h3><u>Countdown Timer:</u> &nbsp;&nbsp;{{ clock.countdown('', 'bath.light.switch2', 'bath.light.timestamp2', '15s', '1s', 'zero', ' ', 1) }}</h3>
+    </div>
 
 {% endblock %}

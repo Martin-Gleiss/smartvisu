@@ -2,7 +2,7 @@
 * -----------------------------------------------------------------------------
 * @package     smartVISU
 * @author      Martin Gleiß and Stefan Widmer
-* @copyright   2012 - 2016
+* @copyright   2012 - 2026
 * @license     GPL [http://www.gnu.de]
 * -----------------------------------------------------------------------------
 */
@@ -12,65 +12,65 @@
 
 {% block example %}
 
-	<h5>Examples</h5>
+    <h5>Examples</h5>
 
-	Circular view
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }}
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 7 steps and 10 colors (default)
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }} 6 steps and 8 colors
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 15 steps and 19 colors
-	</div>
+    Circular view
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }}
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b') }} 7 steps and 10 colors (default)
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8) }} 6 steps and 8 colors
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', 0, 255, 15, 19) }} 15 steps and 19 colors
+    </div>
 
-	Rectangular view
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }}
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }} 7 steps and 10 colors (default)
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }} 6 steps and 8 colors
-	</div>
+    Rectangular view
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }}
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'rect') }} 7 steps and 10 colors (default)
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', 6, 8, 'rect') }} 6 steps and 8 colors
+    </div>
 
-	Slider view (the sliders show hue, saturation and brightness)
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
-	</div>
+    Slider view (the sliders show hue, saturation and brightness)
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.color('', 'bath.color.r', 'bath.color.g', 'bath.color.b', '', '', '', '', 'slider') }}
+    </div>
 
-	HSL and HSV color space
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
-		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
-		{{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
-	</div>
+    HSL and HSV color space
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+        {{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.l', '', '', '', '', 'rect', 'hsl') }}
+        {{ basic.color('', 'bath.color.h', 'bath.color.s', 'bath.color.v', '', '', '', '', '', 'hsv') }}
+    </div>
 
-	Values as list in a single item
-	<div class="twig">
-		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
-		{{ basic.color('', 'bath.color.rgb') }}
-		{% endverbatim %}{% endfilter %}</code>
-	</div>
-	<div class="html">
-		{{ basic.color('', 'bath.color.rgb') }}
-	</div>
+    Values as list in a single item
+    <div class="twig">
+        <code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+        {{ basic.color('', 'bath.color.rgb') }}
+        {% endverbatim %}{% endfilter %}</code>
+    </div>
+    <div class="html">
+        {{ basic.color('', 'bath.color.rgb') }}
+    </div>
 
 {% endblock %}
 
@@ -96,13 +96,13 @@ background-image: linear-gradient(90deg, rgb(0,0,0), rgb(255,255,127.5));
 
 
 background-image: linear-gradient(90deg,
-	rgb(255, 0, 0),
-	rgb(255, 255, 0),
-	rgb(0, 255, 0),
-	rgb(0, 255, 255),
-	rgb(0, 0, 255),
-	rgb(255, 0, 255),
-	rgb(255, 0, 0)
+    rgb(255, 0, 0),
+    rgb(255, 255, 0),
+    rgb(0, 255, 0),
+    rgb(0, 255, 255),
+    rgb(0, 0, 255),
+    rgb(255, 0, 255),
+    rgb(255, 0, 0)
 )
 
 
