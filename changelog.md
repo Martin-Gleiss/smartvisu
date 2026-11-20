@@ -37,6 +37,7 @@
 ### Updated Libraries
 - ICS Parser v3.5.1
 - Highcharts v13.1.1 (vulnerability fixes)
+- Twig patched for compatibility with php8.6
 
 ### Deprecated
 - base template for quad design is now quad_base.html (according to base.html in standard design). quad_root.html is deprecated and kept only to avoid breaking changes.
@@ -64,7 +65,7 @@
 - background images defined with "url(myImageLocation)" - used e.g. on tabs - do not support dark mode in some design combinations. This can be individually corrected by using media queries (@media (prefers-color-scheme: dark) ...) with different icon paths in the urls. 
 
 ### PHP Version
-- smartVISU is successfully tested up to php 8.5.12
+- smartVISU is successfully tested up to php 8.6.0
 - php 8.2.0 is minimum required for the backup function since smartVISU v3.6
 
 
