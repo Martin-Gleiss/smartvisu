@@ -38,7 +38,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
 
     public function getSafe(\Twig_NodeInterface $node)
     {
-        $hash = spl_object_hash($node);
+        $hash = spl_object_id($node);
         if (!isset($this->data[$hash])) {
             return;
         }
@@ -58,7 +58,7 @@ class SafeAnalysisNodeVisitor extends AbstractNodeVisitor
 
     protected function setSafe(\Twig_NodeInterface $node, array $safe)
     {
-        $hash = spl_object_hash($node);
+        $hash = spl_object_id($node);
         if (isset($this->data[$hash])) {
             foreach ($this->data[$hash] as &$bucket) {
                 if ($bucket['key'] === $node) {
