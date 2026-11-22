@@ -178,6 +178,12 @@ Valid values:
 
 * None
 
+## Parameter type 'struct'
+Parameter indicates an item struct, i.e. the widget is called with a top-item and constructs sub-items in its code.
+The Parameter allows the template checker to construct the sub-items and call the item checker for each of it.
+Valid values are given as parametersm e.g. '(switch|bool,value|num)'. If a widger is called with the top item name "bath.light"
+the template checker will check if the items "bath.light.switch" and "bath.light.value" are defined in masteritem.json with the correct type. 
+
 # Widget Result Descriptor
 Since v3.6.a there is a new "internal" item type identified by a leading "@" character. Internal items are written by widgets and are 
 independent of the backend system. E.g. the widget "phone.data_updateinfo" sets items like "@phone.update.available".
