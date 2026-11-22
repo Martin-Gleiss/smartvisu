@@ -197,6 +197,10 @@ class WidgetParameterChecker {
                 case 'item':
                     $this->checkParameterTypeItem($value);
                     break;
+                case 'struct':
+                    // top item which contains sub-items to be resolved and checked individually
+                    $this->checkParameterTypeStruct($value);    //new
+                    break;
                 case 'mode':
                     $this->checkParameterTypeMode($value);    //new
                     break;
@@ -562,7 +566,7 @@ class WidgetParameterChecker {
      *
      * @param $value mixed parameter value
      */
-    private function checkParameterTypeItem($value) {
+    private function checkParameterTypeItem($value, $type = NULL) {
         if ($value == "" || $this->items->getState() == FALSE)
             return;
         
@@ -579,26 +583,66 @@ class WidgetParameterChecker {
         }
 
         if ($this->items->ItemExists($value)) {
-        if (Settings::SHOW_SUCCESS_TOO)
+            if (Settings::SHOW_SUCCESS_TOO)
                 $this->addInfo('ITEM-EXISTING CHECK', 'Item is valid', $value, array());
         } else {
             $this->addError('ITEM-EXISTING CHECK', 'Item is not valid - not found in MasterItem-File', $value, array());
             return FALSE;
         }
 
-        if (isset($this->paramConfig['valid_values']) && $this->paramConfig['valid_values']) {
+        if ((isset($this->paramConfig['valid_values']) && $this->paramConfig['valid_values']) || $type != NULL) {
+            $validValues = [];
             if ($this->items->getItemType($value)) {
-                if (\in_array($this->items->getItemType($value), $this->paramConfig['valid_values'])) {
+                $itemType = $this->items->getItemType($value);
+                if ($type != NULL) {
+                    $validValues[0] = $type;
+                    $returnArray = array('sub item' => $value, 'Valid Values' => $validValues);
+                } else {
+                    $validValues = $this->paramConfig['valid_values'];
+                    $returnArray = array('Valid Values' => $validValues);
+                }
+                if (\in_array($itemType, $validValues)) {
                     if (Settings::SHOW_SUCCESS_TOO)
-                        $this->addInfo('ITEM-TYPE CHECK', 'Type is valid', $this->items->getItemType($value), array('Valid Values' => $this->paramConfig['valid_values']));
+                        $this->addInfo('ITEM-TYPE CHECK', 'Type is valid', $itemType, $returnArray);
                     return TRUE;
                 } else {
-                    $this->addError('ITEM-TYPE CHECK', 'Type of Item is not valid', $this->items->getItemType($value), array('Valid Values' => $this->paramConfig['valid_values']));
+                    $this->addError('ITEM-TYPE CHECK', 'Type of Item is not valid', $this->items->getItemType($value), $returnArray);
                     return FALSE;
                 }
             }
         }
+    }
 
+    /**
+     * Check widget parameter of type "struct"
+     *
+     * Considered ParamConfig values: array of item names and their valid types [move|num,pos|num]
+     *
+     * The struct has a top item which must exist but maybe its type is not defined 
+     *
+     * @param $value mixed parameter value
+     */
+    private function checkParameterTypeStruct($value) {
+        if ($value == "" || $this->items->getState() == FALSE)
+            return;
+        
+        if ($this->items->ItemExists($value)) {
+            if (Settings::SHOW_SUCCESS_TOO)
+                $this->addInfo('STRUCT-ITEM-EXISTING CHECK', 'Item is valid', $value, array());
+        } else {
+            $this->addError('STRUCT-ITEM-EXISTING CHECK', 'Item is not valid - not found in MasterItem-File', $value, array());
+            return FALSE;
+        }
+
+        // read the sub items and their types from valid_values and send each pair to item checker
+        if (isset($this->paramConfig['valid_values']) && $this->paramConfig['valid_values']) {
+            foreach($this->paramConfig['valid_values'] as $entry){
+                [$subItem, $type] = explode('|', $entry);
+                $newItem = $value.'.'.$subItem;
+                //DEBUG: echo ($newItem.': '.$type.' ');
+                $this->checkParameterTypeItem($newItem, $type);
+            }
+        }
     }
 
     /**

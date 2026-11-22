@@ -19,6 +19,7 @@
 - new type of "internal" items starting with a "@" character. These items are provided by widgets (e.g. phone.data_updateinfo) and do not get requested from the backend.
 - new docstring property "result" defines the "internal"  items with item types for the documentation, templatechecker and widget assistant
 - fhem driver now supports activity indicator for the websocket (blink until all items received)
+- a new widget parameter type "struct" is introduced for the template checker. It allows checking for availability and correctness of all items if a widget has only a top-item parameter but uses fixed sub-items from a struct.
 
 ### Improvements
 - a destroy method for widgets is now available. Useful e.g. for the app "analyse_plot" to destroy a plot before displaying a new one
