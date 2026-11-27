@@ -1509,7 +1509,10 @@ input[type=number].textfield::-webkit-inner-spin-button {
   float: left;
   height: 3.8em;
   border: 1px dotted;
-  margin: 0 0.6em 1.2em 1.2em;
+  margin: 0 0.1em 1.2em 0.8em;
+}
+.uzsuRowHoliday{
+    margin-left: 0;
 }
 .uzsuRowExpHoli:after{
   clear: both;
@@ -1624,9 +1627,16 @@ div.ui-slider-switch{
   opacity: 0.7 !important;
 }
 #uzsuPopupContent .ui-select.ui-mini {
-  width: 100px;
+  width: 80px;
   margin-left: 0;
   margin-right: 0;
+}
+#uzsuPopupContent .ui-select.ui-mini .ui-btn {
+    padding-left: .4em;
+    padding-right: 1.4em;
+}
+#uzsuPopupContent .ui-select.ui-mini .ui-btn::after {
+    right: .1em;
 }
 .uzsuTextWideInput{
   width: 350px !important;

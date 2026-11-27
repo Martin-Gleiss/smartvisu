@@ -343,9 +343,9 @@ $.widget("sv.device_rtrslider", $.sv.widget, {
   //            "series"  :          Liste für die Beschreibung der Zeitserien-Parameter
   //                      "active": true,
   //                      "timeSeriesMin": "16:00<sunset+20m<20:00"   Startzeit der Serie
-  //                       "timeSeriesMax": "04:00"                      Endzeit der Serie
+  //                      "timeSeriesMax": "04:00"                      Endzeit der Serie
   //                      "timeSeriesCount": 4                          Anzahl Zyklen (alternativ zu timeSeriesMax)
-  //                       "timeSeriesIntervall": "01:00"}              Intervall für die Serie
+  //                      "timeSeriesIntervall": "01:00"}              Intervall für die Serie
   //            "condition"  :   {  Ein Struct für die Verwendung mit conditions (aktuell nur FHEM), weil dort einige Option mehr angeboten werden
   //                      "deviceString"  : text  Bezeichnung des Devices oder Auswertestring
   //                      "type"      : text  Auswertetype (logische Verknüpfung oder Auswahl String)
@@ -423,7 +423,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
     tt += "<div class='uzsuRow'>" +
             "<div class='uzsuCell'>" +
-              "<div class='uzsuCellText'>" + sv_lang.uzsu.weekday + "</div>" +
+              "<div class='uzsuCellText'>" + trans('uzsu', 'weekday', true) + "</div>" +
               "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuWeekday'>";
                var daydate = new Date(0);
                $.each([ 'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU' ], function(index, value) {
@@ -434,7 +434,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
            "</div>";
 
     tt += "<div class='uzsuCell uzsuValueCell'>" +
-            "<div class='uzsuCellText'>" + sv_lang.uzsu.value + "</div>";
+            "<div class='uzsuCellText'>" + trans('uzsu', 'value', true) + "</div>";
             if (this.options.valuetype === 'bool') {
               // Unterscheidung Anzeige und Werte
               if (valueParameterList[0].split(':')[1] === undefined) {
@@ -473,19 +473,19 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             }
     tt+= "</div>"
     tt+= "<div class='uzsuCell'>" +
-           "<div class='uzsuCellText'>" + sv_lang.uzsu.time + "</div>" +
+           "<div class='uzsuCellText'>" + trans('uzsu', 'time', true) + "</div>" +
            "<input type='time' data-clear-btn='false' class='uzsuTimeInput uzsuTimeCron'>" +
          "</div>" +
          "<div class='uzsuCell'>" +
            "<div class='uzsuCellText'></div>" +
            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-             "<label><input type='checkbox' class='uzsuActive'>" + sv_lang.uzsu.act + "</label>";
+             "<label><input type='checkbox' class='uzsuActive'>" + trans('uzsu', 'act', true) + "</label>";
     if (this.hasOnce)
         tt+= "<label><input type='checkbox' class='uzsuOnce'>1 x</label>";
     tt+=    "</fieldset>" +
          "</div>" +
          "<div class='uzsuCellExpert'>" +
-           "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
+           "<div class='uzsuCellText'>" + trans('uzsu', 'expert', true) + "</div>" +
            "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
          "</div>"
     if (this.options.designtype == '0' && this.hasSeries){
@@ -497,7 +497,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         tt+= "<div class='uzsuCell'>" +
            "<div class='uzsuCellText'></div>" +
            "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-             "<button class='uzsuDelTableRow' data-mini='true'>" + sv_lang.uzsu.del + "</button>" +
+             "<button class='uzsuDelTableRow' data-mini='true'>" + trans('uzsu', 'del', true) + "</button>" +
            "</fieldset>" +
          "</div>";
 
@@ -535,12 +535,12 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           "<div class='uzsuCell'>" +
             "<div class='uzsuCellText'></div>" +
             "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-              "<label><input type='checkbox' class='uzsuSeriesActive'>" + sv_lang.uzsu.act + "</label>" +
+              "<label><input type='checkbox' class='uzsuSeriesActive'>" + trans('uzsu', 'act', true) + "</label>" +
             "</fieldset>" +
           "</div>" +
         "</div>" +
         "<div class='uzsuCellExpertSeries'>" +
-          "<div class='uzsuCellText'>" + sv_lang.uzsu.expert + "</div>" +
+          "<div class='uzsuCellText'>" + trans('uzsu', 'expert', true) + "</div>" +
           "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
         "</div> </div>"
         // unsichtbare Expertenzeilen für Serienstart und -end
@@ -556,16 +556,16 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           tt = "<div class='uzsuRowExpHoli uzsuExpertLine "+(caller != '' ? 'Series' : '')+"' style='display:none;'>" +
               "<div class='uzsuCellText'>" + (caller != '' ? sv_lang.uzsu.series + ' ' + sv_lang.uzsu[caller] : '') + "</div>" +
               "<div class='uzsuRowExpert' style='float: left;'>" +
-              "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.sun + "</div>" +
+              "<div class='uzsuRowExpertText'>" + trans('uzsu', 'sun', true) + "</div>" +
               "<div class='uzsuCell'>" +
-                "<div class='uzsuCellText'>" + sv_lang.uzsu.earliest + "</div>" +
+                "<div class='uzsuCellText'>" + trans('uzsu', 'earliest') + "</div>" +
                 "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMin"+caller+"'>" +
               "</div>" +
               "<div class='uzsuCell uzsuEvent"+caller+"'>" +
                 "<div class='uzsuCellText'>Event</div>" +
                 "<select data-mini='true' data-native-menu='false'>" +
-                  "<option value='sunrise'>" + sv_lang.uzsu.sunrise + "</option>" +
-                  "<option value='sunset'>" + sv_lang.uzsu.sunset + "</option>" +
+                  "<option value='sunrise'>" + trans('uzsu', 'sunrise') + "</option>" +
+                  "<option value='sunset'>" + trans('uzsu', 'sunset') + "</option>" +
                 "</select>" +
               "</div>" +
               "<div class='uzsuCell'>" +
@@ -577,25 +577,25 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             tt +=   "<div class='uzsuCell'>" +
               "<div class='uzsuCellText'></div>" +
                 "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true' class='uzsuTimeOffsetTypeInput"+caller+"'>" +
-                  "<label title='"+sv_lang.uzsu.minutes+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value='m' checked='checked'>m</label>" +
-                  "<label title='"+sv_lang.uzsu.degrees+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value=''>°</label>" +
+                  "<label title='"+trans('uzsu', 'minutes')+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value='m' checked='checked'>m</label>" +
+                  "<label title='"+trans('uzsu', 'degrees')+"'><input type='radio' name='uzsuTimeOffsetTypeInput"+caller+numberOfRow+"' value=''>°</label>" +
                 "</fieldset>" +
               "</div>";
           }
         tt += "<div class='uzsuCell'>" +
-                "<div class='uzsuCellText'>" + sv_lang.uzsu.latest + "</div>" +
+                "<div class='uzsuCellText'>" + trans('uzsu', 'latest') + "</div>" +
                 "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuTimeMax"+caller+"'>" +
               "</div>" +
               "<div class='uzsuCell'>" +
                 "<div class='uzsuCellText'></div>" +
                 "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
-                  "<label><input type='checkbox' class='expertActive"+caller+" uzsuSunActive"+caller+"'>" + sv_lang.uzsu.act + "</label>" +
+                  "<label><input type='checkbox' class='expertActive"+caller+" uzsuSunActive"+caller+"'>" + trans('uzsu', 'act', true) + "</label>" +
                 "</fieldset>" +
               "</div>";
             // UZSU Interpolation
-            if(sv_lang.uzsu.interpolation && this.hasInterpolation){
+            if(this.hasInterpolation){
               tt +=   "<div class='uzsuCell'>" +
-                "<div class='uzsuCellText'>" + sv_lang.uzsu.calculated + "</div>" +
+                "<div class='uzsuCellText'>" + trans('uzsu', 'calculated') + "</div>" +
                 "<div data-tip='" + sv_lang.uzsu.calculatedtip + "'>" +
                   "<input type='time' data-clear-btn='false' class='uzsuTimeMaxMinInput uzsuCalculated"+caller+"' disabled>" +
                 "</div>" +
@@ -603,7 +603,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             }
       tt += "</div>";  // end .uzsuRowExpert
 
-      // hier die Einträge für holiday weekend oder nicht
+      // hier die Einträge für fhem holiday weekend oder nicht
       if (this.options.designtype == '2'){
         tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
               "<div class='uzsuRowHolidayText'>Holiday</div>" +
@@ -612,6 +612,26 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                 "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
                   "<label><input type='checkbox' class='expertActive uzsuHolidayWorkday'>!WE</label>" +
                    "<label><input type='checkbox' class='expertActive uzsuHolidayWeekend'>WE</label>" +
+                "</fieldset>" +
+              "</div>" +
+            "</div>";
+      } else if (this.options.designtype == '0' && caller == '') {
+        // neu für smarthomeNG: Feiertage (öffentlich + eigene)
+        tt +=   "<div class='uzsuRowHoliday' style='float: left;'>" +
+              "<div class='uzsuCell uzsuHolidayMode'>" +
+                "<div class='uzsuCellText'>"+trans('uzsu','holidays', true)+"</div>" +
+                "<select data-mini='true' data-native-menu='false'>" +
+                  "<option value='exclude'>" + trans('uzsu', 'exclude') + "</option>" +
+                  "<option value='include'>" + trans('uzsu', 'include') + "</option>" +
+                  "<option value='only'>" + trans('uzsu', 'only') + "</option>" +
+                  "<option value='ignore'>" + trans('uzsu', 'ignore') + "</option>" +
+                  "<option value='restrict'>" + trans('uzsu', 'match') + "</option>" +
+                "</select>" +
+              "</div>" +
+              "<div class='uzsuCell'>" +
+                "<div class='uzsuCellText'>" + trans('uzsu', 'selection', true) + "</div>" +
+                "<fieldset data-role='controlgroup' data-type='horizontal' data-mini='true'>" +
+                  "<label title='" + trans('uzsu', 'public or all') + "'><input type='checkbox' class='uzsuHolidayScope'>" + trans('uzsu', 'all') + "</label>" +
                 "</fieldset>" +
               "</div>" +
             "</div>";
@@ -684,21 +704,19 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
   _uzsuFillTableRow: function(responseEntry, tableRow) {
-
-    var self = this;
     // dann die Werte einer Tabellenzeile füllen
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
 
     if(responseEntry.value != null) {
       // beim Schreiben der Daten Unterscheidung, da sonst das Element falsch genutzt wird mit Flipswitch für die bool Variante
-      if (self.options.valuetype === 'bool') {
+      if (this.options.valuetype === 'bool') {
         uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).flipswitch("refresh");
       }
       // mit int Value für die num Variante
-      else if ((self.options.valuetype === 'num') || (self.options.valuetype === 'text')) {
+      else if ((this.options.valuetype === 'num') || (this.options.valuetype === 'text')) {
         uzsuCurrentRows.find('.uzsuValueCell input').val(responseEntry.value);
       }
-      else if (self.options.valuetype === 'list') {
+      else if (this.options.valuetype === 'list') {
         uzsuCurrentRows.find('.uzsuValueCell select').val(responseEntry.value).selectmenu('refresh', true);
       }
     }
@@ -707,7 +725,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     if (this.hasOnce)
         uzsuCurrentRows.find('.uzsuOnce').prop('checked',responseEntry.once).checkboxradio("refresh");
     // hier die conditions, wenn sie im json angelegt worden sind und zwar pro zeile !
-    if(self.options.designtype == '2'){
+    if(this.options.designtype == '2'){
       // Condition
       uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val(responseEntry.condition.deviceString);
       uzsuCurrentRows.find('select.uzsuConditionType').val(responseEntry.condition.type).selectmenu('refresh', true);
@@ -722,7 +740,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // fill expert line
     uzsuCurrentRows.find('.uzsuTimeMin').val(responseEntry.timeMin);
     uzsuCurrentRows.find('.uzsuTimeOffsetInput').val(parseInt(responseEntry.timeOffset));
-    if(self.options.designtype == '0') {
+    if(this.options.designtype == '0') {
       uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
         .end().find('[value="'+responseEntry.timeOffsetType+'"]:radio').prop('checked', true).checkboxradio("refresh");
     }
@@ -732,7 +750,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       uzsuCurrentRows.find('.uzsuCalculated').val(responseEntry.calculated);
 
     // fill time series
-    if(self.options.designtype == '0' && this.hasSeries) {
+    if(this.options.designtype == '0' && this.hasSeries) {
         if (responseEntry.hasOwnProperty("series"))
             {
             uzsuCurrentRows.find('.uzsuSeriesActive').prop('checked',responseEntry.series.active).checkboxradio("refresh");
@@ -743,7 +761,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
                 timeSeriesEndType ="";
             uzsuCurrentRows.find('.uzsuSeriesEndTypeInput').find(':radio').prop('checked', false).checkboxradio("refresh")
                .end().find('[value="'+timeSeriesEndType+'"]:radio').prop('checked', true).checkboxradio("refresh");
-            self._uzsuSetSeriesEndType(uzsuCurrentRows.find('.uzsuSeriesEndTypeInput'));
+            this._uzsuSetSeriesEndType(uzsuCurrentRows.find('.uzsuSeriesEndTypeInput'));
             uzsuCurrentRows.find('.uzsuTimeSerieMax').val(timeSeriesEndType == "t" ? responseEntry.series.timeSeriesMax : responseEntry.series.timeSeriesCount);
 
             // fill expert lines for series
@@ -768,8 +786,8 @@ $.widget("sv.device_uzsu", $.sv.widget, {
             // den Status richtig setzen
             if (responseEntry.series.active == true)
                 {
-                self._uzsuSetSeriesColor(uzsuCurrentRows.find('.uzsuSeriesActive').first());
-                self._uzsuSetSeriesActiveState(uzsuCurrentRows.find('.uzsuRowSeriesLine .uzsuSeriesActive'))
+                this._uzsuSetSeriesColor(uzsuCurrentRows.find('.uzsuSeriesActive').first());
+                this._uzsuSetSeriesActiveState(uzsuCurrentRows.find('.uzsuRowSeriesLine .uzsuSeriesActive'))
                 }
             }
       }
@@ -818,18 +836,21 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       });
     }
     // jetzt die holiday themen für fhem
-    if(self.options.designtype == '2'){
+    if(this.options.designtype == '2'){
       uzsuCurrentRows.find('.uzsuHolidayWorkday').prop('checked', responseEntry.holiday.workday).checkboxradio("refresh");
       uzsuCurrentRows.find('.uzsuHolidayWeekend').prop('checked', responseEntry.holiday.weekend).checkboxradio("refresh");
+    } else if(this.options.designtype == '0' && this.hasHolidays ){
+        uzsuCurrentRows.find('.uzsuRowHoliday select').val(responseEntry.holidays.mode).selectmenu('refresh', true);
+        uzsuCurrentRows.find('.uzsuHolidayScope').prop('checked', responseEntry.holidays.scope == 'all').checkboxradio("refresh");        
     }
     // Fallunterscheidung für den Expertenmodus
-    self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'),'');
-    self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
-    if(self.options.designtype == '0' && this.hasSeries){
-        self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
-        self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesstart').first());
-        self._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select'), 'seriesend');
-        self._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesend').first());
+    this._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEvent select'),'');
+    this._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActive').first());
+    if(this.options.designtype == '0' && this.hasSeries){
+        this._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesstart select'), 'seriesstart');
+        this._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesstart').first());
+        this._uzsuSetSunActiveState(uzsuCurrentRows.find('.uzsuRowExpert .uzsuEventseriesend select'), 'seriesend');
+        this._uzsuSetExpertColor(uzsuCurrentRows.find('.expertActiveseriesend').first());
     }
   },
 
@@ -838,7 +859,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   //----------------------------------------------------------------------------
   // Setzt die Farbe des Expertenbuttons, je nach dem, ob eine der Optionen aktiv geschaltet wurde
   _uzsuSetExpertColor: function(changedCheckbox){
-    var sourceRow = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec'); //.prev('.uzsuRow, .uzsuRowSeries').first().nextUntil('.uzsuRow').addBack();
+    var sourceRow = changedCheckbox.parents('.uzsuRowExpHoli, .uzsuRowCondition, .uzsuRowDelayedExec'); 
     var targetRow = sourceRow.prevAll('.uzsuRow, .uzsuRowSeries').first();
     if (sourceRow.find('[class*="expertActive"]').is(':checked'))
       {
@@ -961,9 +982,6 @@ $.widget("sv.device_uzsu", $.sv.widget, {
 
   //Interpolationszeile
   _uzsuShowInterpolationLine: function(e) {
-
-    // erst einmal alle verschwinden lassen
-    // this._uzsuHideInterpolationLine();
     // Tabellezeile ermitteln, wo augerufen wurde
     var uzsuInterpolationButton = $(e.currentTarget);
     $('#uzsuRowInterpolation').show();
@@ -976,15 +994,13 @@ $.widget("sv.device_uzsu", $.sv.widget, {
   },
 
   _uzsuSaveTableRow: function(responseEntry, tableRow) {
-    var self = this;
-
     uzsuCurrentRows = $(tableRow).nextUntil('.uzsuRow').addBack();
     responseEntry.value = uzsuCurrentRows.find('.uzsuValueCell select, .uzsuValueCell input').val();
     responseEntry.active = uzsuCurrentRows.find('.uzsuActive').is(':checked');
     if (this.hasOnce)
         responseEntry.once = uzsuCurrentRows.find('.uzsuOnce').is(':checked');
     // hier die conditions, wenn im json angelegt
-    if(self.options.designtype == '2'){
+    if(this.options.designtype == '2'){
       // conditions
       responseEntry.condition.deviceString = uzsuCurrentRows.find('.uzsuConditionDeviceStringInput').val();
       responseEntry.condition.type = uzsuCurrentRows.find('select.uzsuConditionType').val();
@@ -998,7 +1014,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     }
     responseEntry.timeMin = uzsuCurrentRows.find('.uzsuTimeMin').val();
     responseEntry.timeOffset = uzsuCurrentRows.find('.uzsuTimeOffsetInput').val();
-    if(self.options.designtype == '0'){
+    if(this.options.designtype == '0'){
       responseEntry.timeOffsetType = uzsuCurrentRows.find('.uzsuTimeOffsetTypeInput :radio:checked').val();
     }
     responseEntry.timeMax = uzsuCurrentRows.find('.uzsuTimeMax').val();
@@ -1026,13 +1042,18 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     });
     responseEntry.rrule = rrule;
     // jetzt die holiday themem für fhem
-    if(self.options.designtype === '2'){
+    if(this.options.designtype === '2'){
       responseEntry.holiday.workday = uzsuCurrentRows.find('.uzsuHolidayWorkday').is(':checked');
       responseEntry.holiday.weekend = uzsuCurrentRows.find('.uzsuHolidayWeekend').is(':checked');
     }
+    // hier die neuen holiday-Themen für shNG
+    if(this.options.designtype === '0' && this.hasHolidays){
+      responseEntry.holidays.mode = uzsuCurrentRows.find('.uzsuRowHoliday select').val();
+      responseEntry.holidays.scope = uzsuCurrentRows.find('.uzsuHolidayScope').is(':checked') ? 'all' : 'public';
+    }
 
     // Serienzeiten
-    if(self.options.designtype === '0' && this.hasSeries){
+    if(this.options.designtype === '0' && this.hasSeries){
         if (uzsuCurrentRows.find('.uzsuCellSeries button').hasClass("ui-btn-active") == true)
             {
             responseEntry.series = {};
@@ -1102,56 +1123,56 @@ $.widget("sv.device_uzsu", $.sv.widget, {
           "<div class='uzsuRowFooter'>" +
             "<span style='float:right'>";
               // UZSU Interpolation
-              if(sv_lang.uzsu.interpolation && this.hasInterpolation){
+              if(this.hasInterpolation){
                 tt += "<div class='uzsuCellInterpolation' style='float:left;'>" +
-                  "<div class='uzsuCellText'>" + sv_lang.uzsu.options + "</div>" +
+                  "<div class='uzsuCellText'>" + trans('uzsu', 'options', true) + "</div>" +
                   "<button data-mini='true' data-icon='arrow-d' data-iconpos='notext' class='ui-icon-shadow'></button>" +
                 "</div>";
               }
            tt+= "<div class='uzsuCell' style='float: left'>" +
                   "<fieldset  data-mini='true'>" +
-                    "<label><input type='checkbox' id='uzsuGeneralActive'>" + sv_lang.uzsu.active + "</label>" +
+                    "<label><input type='checkbox' id='uzsuGeneralActive'>" + trans('uzsu', 'active', true) + "</label>" +
                   "</fieldset>"+
                 "</div>";
               if (this.hasOnce)
                tt+= "<div class='uzsuCell' style='float: left'>" +
                       "<fieldset data-mini='true'>" +
-                         "<label><input type='checkbox' id='uzsuGeneralOnce'>"+ sv_lang.uzsu.once +"</label>" +
+                         "<label><input type='checkbox' id='uzsuGeneralOnce'>"+ trans('uzsu', 'once') +"</label>" +
                       "</fieldset>" +
                      "</div>";
          tt+="<div class='uzsuCell' style='float: left'>" +
               "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
-                "<button id='uzsuAddTableRow'>" + sv_lang.uzsu.add + "</button>" +
-                "<button id='uzsuSortTime'>" + sv_lang.uzsu.sort + "</button>" +
+                "<button id='uzsuAddTableRow'>" + trans('uzsu', 'add', true) + "</button>" +
+                "<button id='uzsuSortTime'>" + trans('uzsu', 'sort', true) + "</button>" +
               "</div>" +
             "</div>" +
               "<div class='uzsuCell' style='float: right'>" +
                   "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
-                    "<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
-                    "<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
+                    "<button id='uzsuCancel'>" + trans('uzsu', 'cancel', true) + "</button>" +
+                    "<button id='uzsuSaveQuit'>" + trans('uzsu', 'ok').toUpperCase() + "</button>" +
                   "</div>" +
                 "</div>" +
               "</div>" +
             "</span>";
-            if(sv_lang.uzsu.interpolation && this.hasInterpolation){
+            if(this.hasInterpolation){
               tt +=
                 "<div id='uzsuRowInterpolation' style='display: none; float: right; margin: 0 15px 5px 0;'>" +
                   "<span style='float:left; margin-right: 12px;'>" +
-                    "<div class='uzsuRowExpertText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                    "<div class='uzsuRowExpertText'>" + trans('uzsu', 'interpolation', true) + "</div>" +
                     "<div class='uzsuCell'>" +
-                      "<div class='uzsuCellText'>" + sv_lang.uzsu.interpolation + "</div>" +
+                      "<div class='uzsuCellText'>" + trans('uzsu', 'interpolation', true) + "</div>" +
                       "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationType'>" +
-                        "<option value='none'>" + sv_lang.uzsu.nointerpolation + "</option>" +
-                        "<option value='cubic'>" + sv_lang.uzsu.cubic + "</option>" +
-                        "<option value='linear'>" + sv_lang.uzsu.linear + "</option>" +
+                        "<option value='none'>" + trans('uzsu', 'nointerpolation') + "</option>" +
+                        "<option value='cubic'>" + trans('uzsu', 'cubic') + "</option>" +
+                        "<option value='linear'>" + trans('uzsu', 'linear') + "</option>" +
                       "</select>" +
                     "</div>"
               if(this.hasOnce)
                  tt += "<div class='uzsuCell'>" +
-                      "<div class='uzsuCellText'>" + sv_lang.uzsu.intperiod + "</div>" +
+                      "<div class='uzsuCellText'>" + trans('uzsu', 'intperiod') + "</div>" +
                       "<select data-mini='true' data-native-menu='false' id='uzsuInterpolationPeriod'>" +
-                        "<option value='false'>" + sv_lang.uzsu.conti + "</option>" +
-                        "<option value='true'>" + sv_lang.uzsu.perday + "</option>" +
+                        "<option value='false'>" + trans('uzsu', 'conti') + "</option>" +
+                        "<option value='true'>" + trans('uzsu', 'perday') + "</option>" +
                       "</select>" +
                     "</div>"
               tt += "<div class='uzsuCell'>" +
@@ -1423,7 +1444,7 @@ $.widget("sv.device_uzsu", $.sv.widget, {
     // Fehlerbehandlung für ein nicht vorhandenes DOM Objekt. Das response Objekt ist erst da, wenn es mit update angelegt wurde. Da diese
     // Schritte asynchron erfolgen, kann es sein, dass das Icon bereits da ist, clickbar, aber noch keine Daten angekommen. Dann darf ich nicht auf diese Daten zugreifen wollen !
     if(response.list === undefined){
-         var supplement = (this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
+         var supplement = (designType == 0 && this.options.item.substr(-5) != ".uzsu") ? "Seems this is not an uzsu item. Try '" + this.options.item+".uzsu'." : "";
       notify.message("error", "UZSU widget", "No UZSU data available in item '" + this.options.item + "'" + (this.options.id ? " for widget '" + this.options.id + "'. " : ". ") + supplement);
       return false;
     }
@@ -1438,14 +1459,15 @@ $.widget("sv.device_uzsu", $.sv.widget, {
       notify.message("error", "UZSU widget", "Value type '" + valueType + "' is not supported in widget " + this.id + ".");
       return false;
     }
-
+    
+    // Prüfung, welche Features das Backend mitbringt: Interpolation, Serien,  Einmalaktion (once), Feiertage
     this.hasOnce = false;
+    this.hasHolidays = false;
     // Interpolation für SmartHomeNG setzen
     if(designType == '0') {
       if(response.interpolation === undefined){
         this.hasInterpolation = false
         console.log('UZSU interpolation not available. Update the smarthomeNG UZSU plugin to enable interpolation.');
-        //response.interpolation = {type:'none',interval:0,initage:0,initialized:false,itemtype:'none'};
       }
       else if(!response.interpolation.itemtype in ['num']) {
         this.hasInterpolation = false
@@ -1455,15 +1477,18 @@ $.widget("sv.device_uzsu", $.sv.widget, {
         this.hasInterpolation = true
         console.log('UZSU interpolation for item "' + this.options.item + '" set to ' + response.interpolation.type);
       }
-      //plugin version in dict has been introduced with the series functionality - no explicit version check necessary
+      // Serien - erkennbar über Plugin-Version (war vor Einführung der Serien noch nicht im Dict)
       if (response.plugin_version === undefined){
         this.hasSeries = false
         console.log('UZSU series not available. Update the smarthomeNG UZSU plugin to enable series.');
       }
+      // Plugin Version vorhanden. Features versionsabhängig setzen
       else {
           this.hasSeries = true;
           if (response.plugin_version >= '2.1.0')
               this.hasOnce = true;
+          if (response.plugin_version >= '3.0.0')
+              this.hasHolidays = true; 
       }
     }
 
@@ -2061,11 +2086,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
       chart.renderer.button(String.fromCharCode(160)+String.fromCharCode(10004)+String.fromCharCode(160), 40, null, function(e) {
             self._uzsudata.active = !self._uzsudata.active;
             self._save();
-            this.attr('title', !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
+            this.attr('title', !self._uzsudata.active ? trans('uzsu', 'inactive', true) : self._uzsudata.once ? trans('uzsu', 'once') : trans('uzsu', 'active', true));
         }, {} , {}, {}, {}, 'callout')
         .attr({
           align: 'right',
-          title: !self._uzsudata.active ? sv_lang.uzsu.inactive : self._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active
+          title: !self._uzsudata.active ? trans('uzsu', 'inactive', true) : self._uzsudata.once ? trans('uzsu', 'once') : trans('uzsu', 'active', true)
         })
         .addClass('highcharts-color-0 uzsu-active-toggler')
         .add()
@@ -2095,7 +2120,7 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
               }, false, null);
           });
 
-          chart.renderer.text(sv_lang.uzsu.interpolation+': ', null, null)
+          chart.renderer.text(trans('uzsu', 'interpolation', true)+': ', null, null)
             .attr({
               align: 'right'}
             )
@@ -2182,8 +2207,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
             this.element.find('.uzsu-active-toggler>text').text(String.fromCharCode(160)+'1 x' + String.fromCharCode(160));
         }
     }
-    this.element.find('.uzsu-active-toggler').attr('title', !this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active)
-    .end().find('title').text(!this._uzsudata.active ? sv_lang.uzsu.inactive : this._uzsudata.once ? sv_lang.uzsu.once : sv_lang.uzsu.active);
+    this.element.find('.uzsu-active-toggler').attr('title', !this._uzsudata.active ? trans('uzsu', 'inactive', true) : this._uzsudata.once ? trans('uzsu', 'once') : trans('uzsu', 'active', true))
+    .end().find('title').text(!this._uzsudata.active ? trans('uzsu', 'inactive', true) : this._uzsudata.once ? trans('uzsu', 'once') : trans('uzsu', 'active', true));
 
     var hasDays = false;
     var hasSunrise = false;
@@ -2308,11 +2333,11 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                 }
                 if(!hasBurst && (xMin !== undefined || xMax !== undefined)) {
                     if(xMin !== undefined)
-                        seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: sv_lang.uzsu.earliest, uzsuEntry: responseEntry, className: 'uzsu-min' });
+                        seriesData.range.push({ x: xMin+rruleOffset, y: yValue, name: trans('uzsu', 'earliest'), uzsuEntry: responseEntry, className: 'uzsu-min' });
                     else
                         seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-min uzsu-hidden', marker: { enabled: false } });
                     if(xMax !== undefined)
-                        seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: sv_lang.uzsu.latest, uzsuEntry: responseEntry, className: 'uzsu-max' });
+                        seriesData.range.push({ x: xMax+rruleOffset, y: yValue, name: trans('uzsu', 'latest'), uzsuEntry: responseEntry, className: 'uzsu-max' });
                     else
                         seriesData.range.push({ x: xRecurring, y: yValue, uzsuEntry: responseEntry, className: 'uzsu-max uzsu-hidden', marker: { enabled: false } });
                     seriesData.range.push({ x: xMax+rruleOffset+1, y: null, uzsuEntry: responseEntry });
@@ -2403,17 +2428,17 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
                 plotLines.push({
                     value: self._getSunTime('sunrise', dayIdx) + dayIdx * dayLength,
                     className: 'uzsu-event-sunrise',
-                    label: { text: sv_lang.uzsu.sunrise }
+                    label: { text: trans('uzsu', 'sunrise') }
                 });
-                sunData.push({ x: self._getSunTime('sunrise', dayIdx) + dayIdx * dayLength, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunrise, className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', uzsuDay: dayIdx, marker: { symbol: 'sunrise' } });
+                sunData.push({ x: self._getSunTime('sunrise', dayIdx) + dayIdx * dayLength, y: chart.yAxis[0].min, name: trans('uzsu', 'sunrise'), className: 'uzsu-event-sunrise', uzsuEvent: 'sunrise', uzsuDay: dayIdx, marker: { symbol: 'sunrise' } });
             }
             if(hasSunset) {
                 plotLines.push({
                     value: self._getSunTime('sunset', dayIdx)+dayIdx* dayLength,
                     className: 'uzsu-event-sunset',
-                    label: { text: sv_lang.uzsu.sunset }
+                    label: { text: trans('uzsu', 'sunset') }
                 });
-                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx* dayLength, y: chart.yAxis[0].min, name: sv_lang.uzsu.sunset, className: 'uzsu-event-sunset', uzsuEvent: 'sunset', uzsuDay: dayIdx, marker: { symbol: 'sunset' } })
+                sunData.push({ x: self._getSunTime('sunset', dayIdx)+dayIdx* dayLength, y: chart.yAxis[0].min, name: trans('uzsu', 'sunset'), className: 'uzsu-event-sunset', uzsuEvent: 'sunset', uzsuDay: dayIdx, marker: { symbol: 'sunset' } })
             }
         }
     }
@@ -2626,8 +2651,8 @@ $.widget("sv.device_uzsugraph", $.sv.device_uzsu, {
           "<div class='uzsuRowFooter'>" +
               "<div class='uzsuCell' style='float: right'>" +
                   "<div data-role='controlgroup' data-type='horizontal' data-inline='true' data-mini='true'>" +
-                    "<button id='uzsuCancel'>" + sv_lang.uzsu.cancel + "</button>" +
-                    "<button id='uzsuSaveQuit'>" + sv_lang.uzsu.ok + "</button>" +
+                    "<button id='uzsuCancel'>" + trans('uzsu', 'cancel', true) + "</button>" +
+                    "<button id='uzsuSaveQuit'>" + trans('uzsu', 'ok').toUpperCase() + "</button>" +
                   "</div>" +
               "</div>" +
           "</div>" +
@@ -3227,7 +3252,7 @@ $.widget("sv.device_uzsutable", $.sv.device_uzsu, {
             }
         }
         var myDays = [sv_lang.uzsu.mo, sv_lang.uzsu.tu, sv_lang.uzsu.we, sv_lang.uzsu.th, sv_lang.uzsu.fr, sv_lang.uzsu.sa, sv_lang.uzsu.su]
-        txtActive = sv_lang.uzsu.inactive
+        txtActive = trans('uzsu', 'inactive', true)
         var preFix = TableName
         var HeadlineHeight = 40
         weekDays = {

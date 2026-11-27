@@ -7,6 +7,7 @@
 - activity indicator in basic.select and basic stateswitch can now be limited to actions where the item value changes (e.g. blink 15 seconds if item changes: indicator = 'blink:15:change')
 - new widgets phone.data_updateinfo and phone.data_deviceinfo provide Fritz!Box data as "internal" items, e.g. "@phone.update.available"
 - plot.xyplot is now able to display x-axis units in the tooltip
+- device.uzsuicon handles the holidays function of smarthomeNG UZSU-Plugin v3.0.0 and above
 
 ### Other New Features
 - German "Kurzanleitung" v2.5 is now integrated in the pages dircectory
@@ -33,7 +34,8 @@
 - smarthomeng and offline driver convert an item to a Date object if value is an ISO timedate string (starting with e.g. 2026-03-29T12:03)
 - offline driver allows shorter time increments for series and checks uniqueness of series in order to avoid duplicate updates
 - smarthomeNG, fhem and ioBroker drivers send a debug warning to console naming the items missing from backend (io.openItems) after 15 seconds
-- to avoid conflicts, the configuraion tab "pages" can not change the configured pages folder any more. I.e. pages must be configured in global or device tab. 
+- to avoid conflicts, the configuraion tab "pages" can not change the configured pages folder any more. I.e. pages must be configured in global or device tab.
+- new translation function "trans()" in javaScript (similar to trans() in functions.php) and prototype-function "firstCapit()" to capitalize the first letter of a string 
 
 ### Updated Libraries
 - ICS Parser v3.5.1
